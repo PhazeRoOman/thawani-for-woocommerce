@@ -15,23 +15,23 @@
  *@package WooCommerce\Thawani
  */
 
-error_reporting(E_ALL);
-use \Thawani\ThawaniGateway;
+require_once plugin_dir_path(__FILE__) . '/vendor/autoload.php';
+
+use \Thawani\WC_Gateway_ThawaniGateway;
+
 if (!defined('ABSPATH'))
     exit;
 
-    
+
 /**
  * Check if the WooCommerce plugin is active
  */
 if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins'))))
     return;
 
-require_once plugin_dir_path(__FILE__) . '/vendor/autoload.php';
-
 function add_thawani_gateway($gateways)
 {
-    $gateways[] = 'WC_Gateway_ThawaniGateway';
+    $gateways[] = '\Thawani\WC_Gateway_ThawaniGateway';
     return $gateways;
 }
 
@@ -42,7 +42,6 @@ add_action('plugins_loaded', 'init_WC_Gateway_ThawaniGateway', 11);
 function init_WC_Gateway_ThawaniGateway()
 {
     if (class_exists('WC_Payment_Gateway')) {
-       $app = new ThawaniGateway(); 
-
+        new WC_Gateway_ThawaniGateway();
     }
 }
