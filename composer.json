@@ -1,0 +1,19 @@
+{
+    "name": "alrisi/thawani",
+    "description": "Woocommerce plugin for Thawani Gateway",
+    "type": "library",
+    "license": "GPL2",
+    "authors": [
+        {
+            "name": "Muhannad",
+            "email": "w7sh.oman@gmail.com"
+        }
+    ],
+    "minimum-stability": "beta",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Thawani\\": "src"
+        }
+    }
+}
