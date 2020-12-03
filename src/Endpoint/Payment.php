@@ -1,10 +1,12 @@
 <?php
 namespace Thawani\Endpoint;
 
+use \Thawani\RestAPI;
+
 /**
- * Thwawni gateWay Payment endpoint handler 
+ * Thwawni gateWay Payment endpoint handler
  *
- * Integration of Thawani API class 
+ * Integration of Thawani API class
  *
  * @class       Payment
  * @version     1.0.0
@@ -49,7 +51,7 @@ class Payment
     {
         return wp_remote_request($this->api->get_endpoint('api/v1/payment_methods/') . $customer_token,
             [
-                'method' => 'DELETE',,
+                'method' => 'DELETE',
             ]);
     }
 
