@@ -81,6 +81,26 @@ class Customer
             ]
         );
     }
+
+    public function get_all($http_query = null)
+    {
+        if ($http_query) {
+            return wp_remote_get(
+                $this->api->get_endpoint('api/v1/customers/'),
+                [
+                    'headers' => $this->api->get_headers()
+                ]
+            );
+        } else {
+            $query = http_build_query($http_query);
+            return wp_remote_get(
+                $this->api->get_endpoint('api/v1/customers/?') . $query,
+                [
+                    'headers' => $this->api->get_headers()
+                ]
+            );
+        }
+    }
     /**
      * Delete customer token in Thawani Gateway API 
      * 

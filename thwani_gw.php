@@ -18,10 +18,13 @@
 require_once plugin_dir_path(__FILE__) . '/vendor/autoload.php';
 
 use \Thawani\WC_Gateway_ThawaniGateway;
+use \Thawani\AdminDashboard;
 
 if (!defined('ABSPATH'))
     exit;
 
+// define the path of the plugin 
+define('THAWANI_GW_DIR', plugin_dir_path(__FILE__));
 
 /**
  * Check if the WooCommerce plugin is active
@@ -43,5 +46,6 @@ function init_WC_Gateway_ThawaniGateway()
 {
     if (class_exists('WC_Payment_Gateway')) {
         new WC_Gateway_ThawaniGateway();
+        new AdminDashboard();
     }
 }
