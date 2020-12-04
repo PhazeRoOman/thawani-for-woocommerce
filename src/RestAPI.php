@@ -5,6 +5,7 @@ namespace Thawani;
 use Thawani\Endpoint\Customer;
 use Thawani\Endpoint\Payment;
 use Thawani\Endpoint\Session;
+use Thawani\ThawaniAjax;
 
 /**
  * Thwawni REST API Handler
@@ -38,6 +39,8 @@ class RestAPI
         $this->session = new Session($this);
         $this->customer = new Customer($this);
         $this->payment = new Payment($this);
+
+        new ThawaniAjax($this);
     }
 
     /**
@@ -48,8 +51,8 @@ class RestAPI
     public function get_endpoint_env()
     {
         return (strtolower($this->env) == 'development')
-        ? self::DEV_ENDPOINT
-        : self::PROD_ENDPOINT;
+            ? self::DEV_ENDPOINT
+            : self::PROD_ENDPOINT;
     }
 
     /**
@@ -136,6 +139,13 @@ class RestAPI
 
         return $this->customer->get_customer_meta();
     }
+
+    public function get_all_customers($http_query = null)
+    {
+        if ($http_query)
+            return  $this->customer->get_all($http_query);
+        return $this->customer->get_all();
+    }
     /**
      * get the session from Thawani gateway
      *
@@ -149,15 +159,25 @@ class RestAPI
     }
 
     /**
+     * Get all user session 
+     */
+    public function get_all_sessions($http_query = null)
+    {
+        if ($http_query)
+            return $this->session->get_all($http_query);
+        return $this->session->get_all();
+    }
+
+    /**
      * get payment method of the customers
      *
      * @param string $customer_token
      *
      * @return array response
      */
-    public function get_payment($cutomer_token)
+    public function get_payment($customer_token)
     {
-        return $this->payment->get($cutomer_token);
+        return $this->payment->get($customer_token);
     }
 
     /**

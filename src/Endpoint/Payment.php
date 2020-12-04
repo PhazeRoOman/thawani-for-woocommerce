@@ -1,4 +1,5 @@
 <?php
+
 namespace Thawani\Endpoint;
 
 use \Thawani\RestAPI;
@@ -34,10 +35,12 @@ class Payment
      */
     public function get($customer_token)
     {
-        return wp_remote_get($this->api->get_endpoint('api/v1/payment_methods?customerId=') . $customer_token,
+        return wp_remote_get(
+            $this->api->get_endpoint('api/v1/payment_methods?customerId=') . $customer_token,
             [
-                'headers' => $this->gapi->get_headers(),
-            ]);
+                'headers' => $this->api->get_headers(),
+            ]
+        );
     }
 
     /**
@@ -49,10 +52,11 @@ class Payment
      */
     public function delete($card_token)
     {
-        return wp_remote_request($this->api->get_endpoint('api/v1/payment_methods/') . $customer_token,
+        return wp_remote_request(
+            $this->api->get_endpoint('api/v1/payment_methods/') . $customer_token,
             [
                 'method' => 'DELETE',
-            ]);
+            ]
+        );
     }
-
 }
