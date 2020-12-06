@@ -1,16 +1,16 @@
 <template>
   <div
-    class="fixed right-0 top-0 w-1/3 bottom-0 h-screen bg-thawani text-white"
+    class="fixed right-0 top-0 w-1/3 bottom-0 h-screen bg-gray-100 text-thawani shadow-lg"
     v-if="sessionIndex > -1"
   >
-    <div class="text-white mt-12 p-4">
-      <h1 class="text-2xl text-white uppercase tracking-wider relative mb-4">
+    <div class="text-white mt-14 p-4">
+      <h1 class="text-2xl text-thawani uppercase tracking-wider relative mb-4">
         Session infromation
 
         <div class="absolute top-0 -mt-8">
           <div
             @click="hide()"
-            class="flex space-x-2 cursor-pointer bg-green-600 transition-colors duration-300 bg-opacity-50 hover:bg-green-600 p-1 rounded-lg"
+            class="flex space-x-2 cursor-pointer bg-green-600 text-white transition-colors duration-300 hover:bg-green-600 p-1 rounded-lg"
           >
             <div class="flex">
               <svg
@@ -36,45 +36,55 @@
       </h1>
       <!-- display  the selected session information -->
       <div class="flex space-x-6 my-1">
-        <div class="bg-green-600 bg-opacity-50 p-2 rounded-lg">
+        <div
+          class="bg-gray-200 text-thawani shadow my-2 p-2 rounded-lg text-base"
+        >
           <h2 class="text-xl">created at</h2>
           {{ format_date(sessionList[sessionIndex].created_at) }}
         </div>
-        <div class="bg-green-600 bg-opacity-50 p-2 rounded-lg flex-1">
+        <div
+          class="bg-gray-200 text-thawani shadow my-2 p-2 rounded-lg flex-1 text-base"
+        >
           <h2 class="text-xl">expire at</h2>
           {{ format_date(sessionList[sessionIndex].expire_at) }}
         </div>
       </div>
 
       <div class="flex space-x-8 justify-items-auto">
-        <div class="bg-green-600 bg-opacity-50 p-2 rounded-lg my-1 flex-1">
+        <div class="bg-gray-200 text-thawani shadow my-2 p-2 rounded-lg flex-1">
           <h2 class="text-xl">Payment Status</h2>
-          {{ sessionList[sessionIndex].payment_status }}
+          <span class="text-base">
+            {{ sessionList[sessionIndex].payment_status }}</span
+          >
         </div>
-        <div class="bg-green-600 bg-opacity-50 p-2 rounded-lg my-1">
+        <div class="bg-gray-200 text-thawani shadow my-2 p-2 rounded-lg">
           <h2 class="text-xl">Total</h2>
-          {{ price_format(sessionList[sessionIndex].total_amount) }}
+          <span class="text-base">
+            {{ price_format(sessionList[sessionIndex].total_amount) }}</span
+          >
         </div>
-        <div class="bg-green-600 bg-opacity-50 p-2 rounded-lg my-1">
+        <div class="bg-gray-200 text-thawani shadow my-2 p-2 rounded-lg">
           <h2 class="text-xl">Order id</h2>
-          <span v-if="sessionList[sessionIndex].metadata">
+          <span v-if="sessionList[sessionIndex].metadata" class="text-base">
             {{ sessionList[sessionIndex].metadata.order_id }}
           </span>
         </div>
       </div>
 
-      <div class="bg-green-600 bg-opacity-50 p-2 rounded-lg my-1">
+      <div class="bg-gray-200 text-thawani shadow my-2 p-2 rounded-lg">
         <h2 class="text-xl">session id</h2>
         <span class="break-words inline-block box-border container text-xl">
           {{ sessionList[sessionIndex].session_id }}
         </span>
       </div>
-      <div class="bg-green-600 bg-opacity-50 p-2 rounded-lg my-1">
+      <div class="bg-gray-200 text-thawani shadow my-2 p-2 rounded-lg">
         <h2 class="text-xl">customer id</h2>
-        {{ sessionList[sessionIndex].customer_id || "guest" }}
+        <span class="text-base">
+          {{ sessionList[sessionIndex].customer_id || "guest" }}</span
+        >
       </div>
 
-      <div class="bg-green-600 bg-opacity-50 p-2 rounded-lg my-1">
+      <div class="bg-gray-200 text-thawani shadow my-2 p-2 rounded-lg">
         <h2 class="text-xl">Products</h2>
         <div
           class="flex space-x-8"
