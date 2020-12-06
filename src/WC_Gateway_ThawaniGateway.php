@@ -106,12 +106,12 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
 
         $id =  $_GET[self::GET_MER_REF];
 
-        if (isset($id) && is_int($id)) {
-
+        echo $id;
+        // exit;
+        if (($id && intval($id)) ?? false) {
             //get the session token
             $session_token = $this->get_session_token($id);
             $response = $this->api->get_session($session_token);
-
             //parse the response 
             $data  = json_decode($response['body']);
             if ($data->success) {
@@ -179,7 +179,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         $order_thanks_page =  $this->get_return_url($order);
 
         $order->update_status('wc-cancelled', __('payment cancelled by the client', 'woocommerce'));
-        wc_add_notice(__('Payment cancelled by you', 'woocommerce'), 'error');
+        wc_add_notice(__(' You have cancelled the payment ', 'woocommerce'), 'error');
         wp_redirect($order_thanks_page);
         exit;
     }
