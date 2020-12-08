@@ -3,25 +3,30 @@
 namespace Thawani;
 
 use Thawani\RestAPI;
+use Thawani\WC_Gateway_ThawaniGateway;
 
-class ThawaniAjax
+class ThawaniAjax extends WC_Gateway_ThawaniGateway
 {
 
 
-    private $id  = 'thawani_gw';
+    private $ajax_id  = 'thawani_gw';
 
     private $api = null;
     /**
      * initialize wordpress do_action hook 
      * 
      */
-    public function __construct(RestAPI $api)
+    public function __construct()
     {
-        $this->api = $api;
-
-        add_action('wp_ajax_' . $this->id . '_get_all_sessions', [$this, 'get_all_sessions']);
-        add_action('wp_ajax_' . $this->id . '_get_all_customers', [$this, 'get_all_customers']);
-        add_action('wp_ajax_' . $this->id . '_get_customer_payment', [$this, 'get_customer_payment']);
+        $this->init();
+        $secret_key = $this->get_option('secret_key');
+        $publishable_key = $this->get_option('publishable_key');
+        $environment = $this->get_option('environment');
+        $this->api = new RestAPI($secret_key, $publishable_key, $environment);
+        add_action('wp_ajax_' . $this->ajax_id . '_get_all_sessions', [$this, 'get_all_sessions']);
+        add_action('wp_ajax_' . $this->ajax_id . '_get_all_customers', [$this, 'get_all_customers']);
+        add_action('wp_ajax_' . $this->ajax_id . '_get_customer_payment', [$this, 'get_customer_payment']);
+        add_action('wp_ajax_' . $this->ajax_id . '_get_checkout', [$this, 'get_checkout_url']);
     }
 
 
@@ -43,9 +48,6 @@ class ThawaniAjax
         }
     }
 
-    public function check_sessions()
-    {
-    }
     public function get_all_sessions()
     {
 
@@ -64,9 +66,51 @@ class ThawaniAjax
         }
         //
     }
-    public function get_customer()
+
+    public function get_checkout_url()
     {
+        if (isset($_POST['order_id'])) {
+            // now get the products  
+            // $products = $this->prepare_products($_POST['order_id']);
+            $order  = wc_get_order($_POST['order_id']);
+            if ($order->get_user_ID() != 0) {
+                $customer_id = $this->get_customer_key($order->get_user_ID());
+                $payload  = $this->payload($order, $customer_id);
+            } else
+                $payload = $this->payload($order);
+
+            $response  = $this->api->create_session($payload);
+            $parsed_response  = json_decode($response['body']);
+            if ($parsed_response->success) {
+
+                $this->set_session_token($parsed_response->data->session_id, $order->get_id());
+                $order->update_status('wc-pending', __('waiting to complete the payment by thawani', 'thawani-gw'));
+                $checkout_link = $this->api->get_redirect_uri($parsed_response->data->session_id);
+                wp_send_json($checkout_link, 200);
+            }
+
+            wp_send_json('something went wrong', 200);
+        }
     }
+
+    protected function get_customer_key($customer_id)
+    {
+        $customer = $this->api->get_customer_instance();
+
+        $customer_meta  = $customer->get_customer_meta();
+        if ($customer_meta == null) {
+
+            $get_response = $customer->create($customer_id);
+            $response  = json_decode($get_response);
+
+            $customer->set_customer_meta($response->id, $customer_id);
+
+            return $response->id;
+        }
+
+        return  $customer_meta;
+    }
+
     public function get_customer_payment()
     {
         if (isset($_POST['customer_token'])) {
@@ -76,8 +120,5 @@ class ThawaniAjax
             wp_die();
         }
         wp_send_json('hello', 200);
-    }
-    public function remove_customer_payment()
-    {
     }
 }
