@@ -19,6 +19,8 @@ require_once plugin_dir_path(__FILE__) . '/vendor/autoload.php';
 
 use \Thawani\WC_Gateway_ThawaniGateway;
 use \Thawani\AdminDashboard;
+use Thawani\RestAPI;
+use \Thawani\ThawaniAjax;
 
 if (!defined('ABSPATH'))
     exit;
@@ -45,7 +47,20 @@ add_action('plugins_loaded', 'init_WC_Gateway_ThawaniGateway', 11);
 function init_WC_Gateway_ThawaniGateway()
 {
     if (class_exists('WC_Payment_Gateway')) {
-        new WC_Gateway_ThawaniGateway();
         new AdminDashboard();
+        new ThawaniAjax();
     }
 }
+/**
+ * Enqueue a script in the WordPress admin on post.php.
+ *
+ * @param int $hook Hook suffix for the current admin page.
+ */
+function thawani_gw_enqueue_script($hook)
+{
+    if ('post.php' != $hook) {
+        return;
+    }
+    wp_enqueue_script('my_custom_script', plugin_dir_url(__FILE__) . '/dist/thawani-generate.js', array('jquery'), '1.0');
+}
+add_action('admin_enqueue_scripts', 'thawani_gw_enqueue_script');

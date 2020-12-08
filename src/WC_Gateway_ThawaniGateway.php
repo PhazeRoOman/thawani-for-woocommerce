@@ -3,6 +3,7 @@
 namespace Thawani;
 
 use Thawani\RestAPI;
+use Thawani\ThawaniAjax;
 
 /**
  * Thwawni gateWay 
@@ -106,12 +107,12 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
 
         $id =  $_GET[self::GET_MER_REF];
 
-        if (isset($id) && is_int($id)) {
-
+        echo $id;
+        // exit;
+        if (($id && intval($id)) ?? false) {
             //get the session token
             $session_token = $this->get_session_token($id);
             $response = $this->api->get_session($session_token);
-
             //parse the response 
             $data  = json_decode($response['body']);
             if ($data->success) {
@@ -123,7 +124,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                 else
                     $this->update_order_status_success($id); // this means success 
             } else {
-                $this->update_order_status_failed($id);
+                $this->update_order_status_cancelled($id);
             }
         }
         wp_redirect(site_url(), 301);
@@ -179,7 +180,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         $order_thanks_page =  $this->get_return_url($order);
 
         $order->update_status('wc-cancelled', __('payment cancelled by the client', 'woocommerce'));
-        wc_add_notice(__('Payment cancelled by you', 'woocommerce'), 'error');
+        wc_add_notice(__(' You have cancelled the payment ', 'woocommerce'), 'error');
         wp_redirect($order_thanks_page);
         exit;
     }
@@ -287,7 +288,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         if ((int) $this->format_price($shipping_total) > 0) {
             $products[] = [
                 'name' => 'Shipping',
-                'unit_amount' => $shipping_total,
+                'unit_amount' => $this->format_price($shipping_total),
                 'quantity' => 1,
             ];
         }
@@ -302,21 +303,33 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
      * 
      * @return array payload 
      */
-    protected function payload($order)
+    protected function payload($order, $customer_key = null)
     {
 
-        $customer_key = $this->api->get_customer();
-        $_SESSION['customer_key'] = $customer_key;
-        $parameters = [
-            'client_reference_id' => (int) $order->get_id(),
-            'customer_id' => $customer_key,
-            'products' => $this->prepare_products($order->get_id()),
-            'success_url' => $this->get_callback_url($order->get_id()),
-            'cancel_url' => $this->get_callback_url($order->get_id()),
-            'metadata' => [
-                'order_id' => $order->get_id()
-            ]
-        ];
+        if ($order->get_user_ID() == 0) {
+            $parameters = [
+                'client_reference_id' => (int) $order->get_id(),
+                'products' => $this->prepare_products($order->get_id()),
+                'success_url' => $this->get_callback_url($order->get_id()),
+                'cancel_url' => $this->get_callback_url($order->get_id()),
+                'metadata' => [
+                    'order_id' => $order->get_id()
+                ]
+            ];
+        } else {
+            if (!$customer_key)
+                $customer_key = $this->api->get_customer();
+            $parameters = [
+                'client_reference_id' => (int) $order->get_id(),
+                'customer_id' => $customer_key,
+                'products' => $this->prepare_products($order->get_id()),
+                'success_url' => $this->get_callback_url($order->get_id()),
+                'cancel_url' => $this->get_callback_url($order->get_id()),
+                'metadata' => [
+                    'order_id' => $order->get_id()
+                ]
+            ];
+        }
         return $parameters;
     }
     /**
@@ -391,12 +404,18 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
     {
         woocommerce_wp_text_input(array(
             'id' => $this->get_field_name('session'),
-            'label' => 'session refrence:',
+            'label' => 'session reference:',
             'wrapper_class' => 'form-field-wide',
             'custom_attributes' => array(
                 'disabled' => true
             )
         ));
+
+        echo "<p class='form-field form-field-wide'>
+        <button type='button' name='th_generate' id='thawani-gw-generate' class='button-secondary' style='margin-bottom:0.5rem' > generate checkout link</button>
+        <button type='button' name='th_copy_btn' id='thawani-gw-copy' class='button-secondary' style='margin-bottom:0.5rem' disabled > copy </button>
+        <input type='text' name='th_generated_link' id='thawani-gw-generated-link' name='link generated' placeholder='link will be generated' />
+        </p>";
     }
 
     /**
@@ -420,6 +439,6 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
      */
     public function get_session_token($order_id)
     {
-        return get_post_meta($order_id, $this->get_field_name('session'), true);
+        return get_post_meta($order_id, $this->get_field_name('session'));
     }
 }

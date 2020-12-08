@@ -40,7 +40,7 @@ class RestAPI
         $this->customer = new Customer($this);
         $this->payment = new Payment($this);
 
-        new ThawaniAjax($this);
+        // new ThawaniAjax($this);
     }
 
     /**
@@ -190,5 +190,14 @@ class RestAPI
     public function delete_payment_method($card_token)
     {
         return $this->payment->delete($card_token);
+    }
+    /**
+     * get the customer instance 
+     * 
+     * @return object \Thawani\Customer
+     */
+    public function get_customer_instance()
+    {
+        return  $this->customer;
     }
 }

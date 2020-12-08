@@ -33,10 +33,14 @@ class Customer
      * Set customer token/session in WP DB in user meta 
      * 
      * @param string $customer_key 
+     * @param string  $customer_id 
      */
-    public function set_customer_meta($customer_key)
+    public function set_customer_meta($customer_key, $customer_id = null)
     {
-        add_user_meta(wp_get_current_user()->ID, self::WP_USER_META, $customer_key, true);
+        if ($customer_id)
+            add_user_meta($customer_id, self::WP_USER_META, $customer_key, true);
+        else
+            add_user_meta(wp_get_current_user()->ID, self::WP_USER_META, $customer_key, true);
     }
     /**
      * get customer token/session in WP DB in user meta
@@ -51,11 +55,24 @@ class Customer
     /**
      * create or add customer to get access to the card 
      * @param array $customer 
-     * 
+     * @param int $customer_id
      * @return array response 
      */
-    public function create()
+    public function create($customer_id = null)
     {
+        if ($customer_id) {
+
+            $user  = get_userdata($customer_id);
+            return wp_remote_post(
+                $this->api->get_endpoint('api/v1/customers'),
+                [
+                    'headers' => $this->api->get_headers(),
+                    'body' => json_encode([
+                        'client_customer_id' => $user->user_email
+                    ])
+                ]
+            );
+        }
         return wp_remote_post(
             $this->api->get_endpoint('api/v1/customers'),
             [
