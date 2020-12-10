@@ -307,18 +307,23 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
     {
 
         if ($order->get_user_ID() == 0) {
+            $order_data  = $order->get_data();
             $parameters = [
                 'client_reference_id' => (int) $order->get_id(),
                 'products' => $this->prepare_products($order->get_id()),
                 'success_url' => $this->get_callback_url($order->get_id()),
                 'cancel_url' => $this->get_callback_url($order->get_id()),
                 'metadata' => [
-                    'order_id' => $order->get_id()
+                    'order_id' => $order->get_id(),
+                    'customer_name' => $order_data['billing']['first_name'] . ' ' . $order_data['billing']['last_name'],
+                    'phone' => $order_data['billing']['phone']
                 ]
             ];
         } else {
             if (!$customer_key)
                 $customer_key = $this->api->get_customer();
+            //get the order data 
+            $order_data  = $order->get_data();
             $parameters = [
                 'client_reference_id' => (int) $order->get_id(),
                 'customer_id' => $customer_key,
@@ -326,7 +331,9 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                 'success_url' => $this->get_callback_url($order->get_id()),
                 'cancel_url' => $this->get_callback_url($order->get_id()),
                 'metadata' => [
-                    'order_id' => $order->get_id()
+                    'order_id' => $order->get_id(),
+                    'customer_name' => $order_data['billing']['first_name'] . ' ' . $order_data['billing']['last_name'],
+                    'phone' => $order_data['billing']['phone']
                 ]
             ];
         }
