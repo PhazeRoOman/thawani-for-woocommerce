@@ -3,12 +3,11 @@
 namespace Thawani;
 
 use Thawani\RestAPI;
-use Thawani\ThawaniAjax;
 
 /**
- * Thwawni gateWay 
+ * Thwawni gateWay
  *
- * Integration of Thawani API class 
+ * Integration of Thawani API class
  *
  * @class       WC_Gateway_ThawaniGateway
  * @extends     WC_Payment_Gateway
@@ -32,7 +31,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
      */
     protected $environment;
     /**
-     * @var mixed true if allowing the plugin to enable saving cards 
+     * @var mixed true if allowing the plugin to enable saving cards
      */
     protected $is_save_cards = null;
     /**
@@ -40,11 +39,11 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
      */
     private $api = null;
     /**
-     * @var string Thawani prefix field  
+     * @var string Thawani prefix field
      */
     const PREFIX_NAME = 'thawani';
     /**
-     * @var string HTTP GET name for wc-api callback 
+     * @var string HTTP GET name for wc-api callback
      */
     const GET_MER_REF = 'ref';
 
@@ -86,10 +85,10 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
 
     /**
      * get callback url to woocommerce hook
-     * 
+     *
      * @param int $order_id WooCommerce order id
-     *  
-     * @return string woocommerce wc-api callback uri 
+     *
+     * @return string woocommerce wc-api callback uri
      */
     public function get_callback_url($order_id)
     {
@@ -103,30 +102,34 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
     }
     /**
      * callback API after the client is redirected form
-     * Tawani gateway 
-     * 
+     * Tawani gateway
+     *
      */
     public function process_callback()
     {
 
-        $id =  $_GET[self::GET_MER_REF];
+        $id = $_GET[self::GET_MER_REF];
 
-        echo $id;
-        // exit;
         if (($id && intval($id)) ?? false) {
             //get the session token
             $session_token = $this->get_session_token($id);
-            $response = $this->api->get_session($session_token);
-            //parse the response 
-            $data  = json_decode($response['body']);
+            $response = $this->api->get_session($session_token[0]);
+            //parse the response
+            $data = json_decode($response['body']);
+
             if ($data->success) {
-                //check the state of the pay,emt 
-                if (strtolower($data->data->payment_status) == 'unpaid')
-                    $this->redirect_to_order_page($id); // this mean unpaid
-                elseif (strtolower($data->data->payment_status) == 'cancelled')
-                    $this->update_order_status_cancelled($id); //cancelled in status
-                else
-                    $this->update_order_status_success($id); // this means success 
+                $status = strtolower($data->data->payment_status);
+                switch ($status) {
+                    case 'unpaid':
+                        $this->redirect_to_order_page($id);
+                        break;
+                    case 'paid':
+                        $this->update_order_status_success($id);
+                        break;
+                    case 'cancelled':
+                        $this->update_order_status_cancelled($id);
+                        break;
+                }
             } else {
                 $this->update_order_status_cancelled($id);
             }
@@ -136,32 +139,32 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
     }
 
     /**
-     * redirect the user to the order page 
-     * 
+     * redirect the user to the order page
+     *
      * @param int $order_id
-     * 
+     *
      */
     public function redirect_to_order_page($order_id)
     {
         $order = wc_get_order($order_id);
-        $order_thanks_page =  $this->get_return_url($order);
+        $order_thanks_page = $this->get_return_url($order);
         wp_redirect($order_thanks_page);
         exit;
     }
     /**
-     * update the status of the transaction 
+     * update the status of the transaction
      * after getting the response of Thawani
      * in the Callback to failed
-     * 
-     * @param int $order_id  
-     * 
-     * 
+     *
+     * @param int $order_id
+     *
+     *
      * @since 1.0.0
      */
     protected function update_order_status_failed($order_id)
     {
         $order = wc_get_order($order_id);
-        $order_thanks_page =  $this->get_return_url($order);
+        $order_thanks_page = $this->get_return_url($order);
 
         $order->update_status('wc-failed', __('payment failed ', 'woocommerce'));
         wc_add_notice(__('Payment failed', 'woocommerce'), 'error');
@@ -169,19 +172,19 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         exit;
     }
     /**
-     * update the status of the transaction 
+     * update the status of the transaction
      * after getting the response of Thawani
      * in the Callback to cancelled
-     * 
-     * @param int $order_id  
-     * 
-     * 
+     *
+     * @param int $order_id
+     *
+     *
      * @since 1.0.0
      */
     protected function update_order_status_cancelled($order_id)
     {
         $order = wc_get_order($order_id);
-        $order_thanks_page =  $this->get_return_url($order);
+        $order_thanks_page = $this->get_return_url($order);
 
         $order->update_status('wc-cancelled', __('payment cancelled by the client', 'woocommerce'));
         wc_add_notice(__(' You have cancelled the payment ', 'woocommerce'), 'error');
@@ -190,19 +193,19 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
     }
 
     /**
-     * update the status of the transaction 
+     * update the status of the transaction
      * after getting the response of Thawani
      * in the Callback to success
-     * 
-     * @param int $order_id 
-     * 
-     * 
+     *
+     * @param int $order_id
+     *
+     *
      * @since 1.0.0
      */
     protected function update_order_status_success($order_id)
     {
         $order = wc_get_order($order_id);
-        $order_thanks_page =  $this->get_return_url($order);
+        $order_thanks_page = $this->get_return_url($order);
 
         $order->update_status('wc-processing', __('payment Success', 'woocommerce'));
 
@@ -212,8 +215,8 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
     /**
      * Form fields thats shows up in
      * setup page of the payment gateway
-     * 
-     * @return void 
+     *
+     * @return void
      */
     public function init_form_fields()
     {
@@ -237,7 +240,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                 'type' => 'text',
                 'description' => __('shows in the checkout page', 'thawani-gw'),
                 'desc_tip' => true,
-                'default' => 'Pay with thawani'
+                'default' => 'Pay with thawani',
             ),
             'secret_key' => array(
                 'title' => __('Secret key', 'thawani-gw'),
@@ -271,11 +274,11 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
     }
 
     /**
-     * 
-     * create a products payload for the request payload 
-     * 
-     * @param int $order_id order id 
-     * 
+     *
+     * create a products payload for the request payload
+     *
+     * @param int $order_id order id
+     *
      * @return array products
      */
     protected function prepare_products($order_id)
@@ -284,17 +287,17 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         $order_items = wc_get_order($order_id);
         $items = $order_items->get_data()['line_items'];
 
-        $products  = [];
+        $products = [];
 
         foreach ($items as $item) {
-            $unit_price  = $this->format_price($item->get_data()['total']);
+            $unit_price = $this->format_price($item->get_data()['total']);
             $products[] = [
                 'name' => $item->get_data()['name'],
-                'unit_amount' => ($unit_price / (int)$item->get_data()['quantity']),
+                'unit_amount' => ($unit_price / (int) $item->get_data()['quantity']),
                 'quantity' => $item->get_data()['quantity'],
             ];
         }
-        //do the shipping  
+        //do the shipping
         $shipping_total = $order_items->get_data()['shipping_total'];
         if ((int) $this->format_price($shipping_total) > 0) {
             $products[] = [
@@ -307,18 +310,18 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
     }
 
     /**
-     * Get request payload(body) for 
-     * Thawani API 
-     * 
-     * @param WC_Order $order WooCommerce order object 
-     * 
-     * @return array payload 
+     * Get request payload(body) for
+     * Thawani API
+     *
+     * @param WC_Order $order WooCommerce order object
+     *
+     * @return array payload
      */
     protected function payload($order, $customer_key = null)
     {
 
         if ($this->is_save_cards == 'no') {
-            $order_data  = $order->get_data();
+            $order_data = $order->get_data();
             $parameters = [
                 'client_reference_id' => (int) $order->get_id(),
                 'products' => $this->prepare_products($order->get_id()),
@@ -328,14 +331,14 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                     'order_id' => $order->get_id(),
                     'customer_name' => $order_data['billing']['first_name'] . ' ' . $order_data['billing']['last_name'],
                     'phone' => $order_data['billing']['phone'],
-                    'email' => $order_data['billing']['email']
-                ]
+                    'email' => $order_data['billing']['email'],
+                ],
             ];
             return $parameters;
         }
 
         if ($order->get_user_ID() == 0) {
-            $order_data  = $order->get_data();
+            $order_data = $order->get_data();
             $parameters = [
                 'client_reference_id' => (int) $order->get_id(),
                 'products' => $this->prepare_products($order->get_id()),
@@ -345,14 +348,16 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                     'order_id' => $order->get_id(),
                     'customer_name' => $order_data['billing']['first_name'] . ' ' . $order_data['billing']['last_name'],
                     'phone' => $order_data['billing']['phone'],
-                    'email' => $order_data['billing']['email']
-                ]
+                    'email' => $order_data['billing']['email'],
+                ],
             ];
         } else {
-            if (!$customer_key)
+            if (!$customer_key) {
                 $customer_key = $this->api->get_customer();
-            //get the order data 
-            $order_data  = $order->get_data();
+            }
+
+            //get the order data
+            $order_data = $order->get_data();
             $parameters = [
                 'client_reference_id' => (int) $order->get_id(),
                 'customer_id' => $customer_key,
@@ -363,17 +368,17 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                     'order_id' => $order->get_id(),
                     'customer_name' => $order_data['billing']['first_name'] . ' ' . $order_data['billing']['last_name'],
                     'phone' => $order_data['billing']['phone'],
-                    'email' => $order_data['billing']['email']
-                ]
+                    'email' => $order_data['billing']['email'],
+                ],
             ];
         }
         return $parameters;
     }
     /**
-     * format price 
-     * @param mixed $price 
-     * 
-     * @return int formatted number for OMR 
+     * format price
+     * @param mixed $price
+     *
+     * @return int formatted number for OMR
      */
     public function format_price($price)
     {
@@ -382,18 +387,18 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
 
     /**
      * Payment process function for the gateway
-     * to checkout choosing Thawani as payment method 
-     * 
+     * to checkout choosing Thawani as payment method
+     *
      * @param int $order_id the id of the new order
-     * 
+     *
      * @see https://docs.woocommerce.com/document/managing-orders/
-     * 
-     * @return array state[success|fail] & redirection 
+     *
+     * @return array state[success|fail] & redirection
      */
     public function process_payment($order_id)
     {
         global $woocommerce;
-        //create the order 
+        //create the order
         $order = new \WC_Order($order_id);
 
         $payload = $this->payload($order);
@@ -407,7 +412,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
             $woocommerce->cart->empty_cart();
             return array(
                 'result' => 'success',
-                'redirect' => $this->api->get_redirect_uri($response->data->session_id)
+                'redirect' => $this->api->get_redirect_uri($response->data->session_id),
             );
         }
 
@@ -416,15 +421,15 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         $woocommerce->cart->empty_cart();
         return array(
             'result' => 'fail',
-            'redirect' => $this->get_return_url($order)
+            'redirect' => $this->get_return_url($order),
         );
     }
 
     /**
      * Get the prefix name of the fielda
-     * 
+     *
      * @param string $name field name/ id
-     * 
+     *
      * @return string prefixt_name
      */
     protected function get_field_name($name)
@@ -432,10 +437,10 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         return self::PREFIX_NAME . '_' . $name;
     }
     /**
-     * Wocommerce bulit in metabox 
+     * Wocommerce bulit in metabox
      * create fields to show up in the admin order page
-     * 
-     * @return void 
+     *
+     * @return void
      */
     public function thawani_payment_fields()
     {
@@ -444,8 +449,8 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
             'label' => 'session reference:',
             'wrapper_class' => 'form-field-wide',
             'custom_attributes' => array(
-                'disabled' => true
-            )
+                'disabled' => true,
+            ),
         ));
 
         echo "<p class='form-field form-field-wide'>
@@ -457,21 +462,21 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
 
     /**
      * Set session token in the order's meta
-     * 
+     *
      * @param string $session_token session token
-     * @param int  $order_id 
-     * 
-     * @return void 
+     * @param int  $order_id
+     *
+     * @return void
      */
     public function set_session_token($session_token, $order_id)
     {
         update_post_meta($order_id, $this->get_field_name('session'), $session_token);
     }
     /**
-     * Get the session token from the order id 
-     * 
-     * @param int $order_id  
-     * 
+     * Get the session token from the order id
+     *
+     * @param int $order_id
+     *
      * @return string session token
      */
     public function get_session_token($order_id)
