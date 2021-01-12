@@ -12,6 +12,7 @@ class ThawaniAjax extends WC_Gateway_ThawaniGateway
     private $ajax_id  = 'thawani_gw';
 
     private $api = null;
+    protected $is_save_cards = null;
     /**
      * initialize wordpress do_action hook 
      * 
@@ -22,6 +23,7 @@ class ThawaniAjax extends WC_Gateway_ThawaniGateway
         $secret_key = $this->get_option('secret_key');
         $publishable_key = $this->get_option('publishable_key');
         $environment = $this->get_option('environment');
+        $this->is_save_cards = $this->get_option('save_cards');
         $this->api = new RestAPI($secret_key, $publishable_key, $environment);
         add_action('wp_ajax_' . $this->ajax_id . '_get_all_sessions', [$this, 'get_all_sessions']);
         add_action('wp_ajax_' . $this->ajax_id . '_get_all_customers', [$this, 'get_all_customers']);
@@ -73,7 +75,7 @@ class ThawaniAjax extends WC_Gateway_ThawaniGateway
             // now get the products  
             // $products = $this->prepare_products($_POST['order_id']);
             $order  = wc_get_order($_POST['order_id']);
-            if ($order->get_user_ID() != 0) {
+            if ($order->get_user_ID() != 0 && ($this->is_save_cards != 'no')) {
                 $customer_id = $this->get_customer_key($order->get_user_ID());
                 $payload  = $this->payload($order, $customer_id);
             } else
@@ -86,7 +88,10 @@ class ThawaniAjax extends WC_Gateway_ThawaniGateway
                 $this->set_session_token($parsed_response->data->session_id, $order->get_id());
                 $order->update_status('wc-pending', __('waiting to complete the payment by thawani', 'thawani-gw'));
                 $checkout_link = $this->api->get_redirect_uri($parsed_response->data->session_id);
-                wp_send_json($checkout_link, 200);
+                wp_send_json([
+                    'checkout' => $checkout_link,
+                    'session_id' => $parsed_response->data->session_id
+                ], 200);
             }
 
             wp_send_json('something went wrong', 200);
