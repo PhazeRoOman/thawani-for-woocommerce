@@ -327,7 +327,8 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                 'metadata' => [
                     'order_id' => $order->get_id(),
                     'customer_name' => $order_data['billing']['first_name'] . ' ' . $order_data['billing']['last_name'],
-                    'phone' => $order_data['billing']['phone']
+                    'phone' => $order_data['billing']['phone'],
+                    'email' => $order_data['billing']['email']
                 ]
             ];
             return $parameters;
@@ -343,7 +344,8 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                 'metadata' => [
                     'order_id' => $order->get_id(),
                     'customer_name' => $order_data['billing']['first_name'] . ' ' . $order_data['billing']['last_name'],
-                    'phone' => $order_data['billing']['phone']
+                    'phone' => $order_data['billing']['phone'],
+                    'email' => $order_data['billing']['email']
                 ]
             ];
         } else {
@@ -360,7 +362,8 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                 'metadata' => [
                     'order_id' => $order->get_id(),
                     'customer_name' => $order_data['billing']['first_name'] . ' ' . $order_data['billing']['last_name'],
-                    'phone' => $order_data['billing']['phone']
+                    'phone' => $order_data['billing']['phone'],
+                    'email' => $order_data['billing']['email']
                 ]
             ];
         }
