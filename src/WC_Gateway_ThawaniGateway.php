@@ -127,7 +127,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                         $this->update_order_status_success($id);
                         break;
                     case 'cancelled':
-                        $this->update_order_status_cancelled($id);
+                        $this->update_order_status_failed($id);
                         break;
                 }
             } else {
