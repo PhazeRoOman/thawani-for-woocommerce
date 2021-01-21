@@ -163,12 +163,9 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
      */
     protected function update_order_status_failed($order_id)
     {
-        $order = wc_get_order($order_id);
-        $order_thanks_page = $this->get_return_url($order);
-
         $order->update_status('wc-failed', __('payment failed ', 'woocommerce'));
         wc_add_notice(__('Payment failed', 'woocommerce'), 'error');
-        wp_redirect($order_thanks_page);
+        wp_redirect(wc_get_cart_url());
         exit;
     }
     /**
@@ -409,7 +406,6 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
 
             $this->set_session_token($response->data->session_id, $order->get_id());
             $order->update_status('wc-pending', __('waiting to complete the payment by thawani', 'thawani-gw'));
-            $woocommerce->cart->empty_cart();
             return array(
                 'result' => 'success',
                 'redirect' => $this->api->get_redirect_uri($response->data->session_id),
@@ -418,7 +414,6 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
 
         $this->set_session_token('faild order', $order->get_id());
         $order->update_status('wc-failed', __('Failed', 'woocommerce'));
-        $woocommerce->cart->empty_cart();
         return array(
             'result' => 'fail',
             'redirect' => $this->get_return_url($order),
