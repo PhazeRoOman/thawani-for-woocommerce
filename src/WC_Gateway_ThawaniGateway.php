@@ -163,6 +163,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
      */
     protected function update_order_status_failed($order_id)
     {
+        $order = wc_get_order($order_id);
         $order->update_status('wc-failed', __('payment failed ', 'woocommerce'));
         wc_add_notice(__('Payment failed', 'woocommerce'), 'error');
         wp_redirect(wc_get_cart_url());
