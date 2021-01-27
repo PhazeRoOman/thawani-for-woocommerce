@@ -164,8 +164,8 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
     protected function update_order_status_failed($order_id)
     {
         $order = wc_get_order($order_id);
-        $order->update_status('wc-failed', __('payment failed ', 'woocommerce'));
-        wc_add_notice(__('Payment failed', 'woocommerce'), 'error');
+        $order->update_status('wc-failed', __('Customer has cancelled the payment or not completed it ', 'thawani'));
+        wc_add_notice(__('You have cancelled the payment, maybe adding to cart or remove item', 'thawani'), 'notice');
         wp_redirect(wc_get_cart_url());
         exit;
     }
@@ -184,8 +184,8 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         $order = wc_get_order($order_id);
         $order_thanks_page = $this->get_return_url($order);
 
-        $order->update_status('wc-cancelled', __('payment cancelled by the client', 'woocommerce'));
-        wc_add_notice(__(' You have cancelled the payment ', 'woocommerce'), 'error');
+        $order->update_status('wc-cancelled', __('payment cancelled by the client', 'thawani'));
+        wc_add_notice(__(' You have cancelled the payment ', 'thawani'), 'error');
         wp_redirect($order_thanks_page);
         exit;
     }
@@ -205,7 +205,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         $order = wc_get_order($order_id);
         $order_thanks_page = $this->get_return_url($order);
 
-        $order->update_status('wc-processing', __('payment Success', 'woocommerce'));
+        $order->update_status('wc-processing', __('payment Success', 'thawani'));
 
         wp_redirect($order_thanks_page);
         exit;
@@ -220,53 +220,53 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
     {
         $this->form_fields = [
             'enabled' => array(
-                'title' => __('Enable/Disable', 'thawani-gw'),
-                'label' => __('Enable Thawani payment', 'thawani-gw'),
+                'title' => __('Enable/Disable', 'thawani'),
+                'label' => __('Enable Thawani payment', 'thawani'),
                 'type' => 'checkbox',
                 'description' => '',
                 'default' => 'no',
             ),
             'title' => array(
-                'title' => __('Title', 'thawani-gw'),
+                'title' => __('Title', 'thawani'),
                 'type' => 'text',
-                'description' => __('Payment with Thawani e-commerce ', 'thawani-gw'),
-                'default' => __('Thawani E-commerce Payments', 'thawani-gw'),
+                'description' => __('Payment with Thawani e-commerce ', 'thawani'),
+                'default' => __('Thawani E-commerce Payments', 'thawani'),
                 'desc_tip' => true,
             ),
             'description' => array(
-                'title' => __('Description', 'thawani-gw'),
+                'title' => __('Description', 'thawani'),
                 'type' => 'text',
-                'description' => __('shows in the checkout page', 'thawani-gw'),
+                'description' => __('shows in the checkout page', 'thawani'),
                 'desc_tip' => true,
                 'default' => 'Pay with thawani',
             ),
             'secret_key' => array(
-                'title' => __('Secret key', 'thawani-gw'),
+                'title' => __('Secret key', 'thawani'),
                 'type' => 'text',
-                'description' => __('Add your secret key', 'thawani-gw'),
+                'description' => __('Add your secret key', 'thawani'),
                 'desc_tip' => true,
             ),
             'publishable_key' => array(
-                'title' => __('publishable Key', 'thawani-gw'),
+                'title' => __('publishable Key', 'thawani'),
                 'type' => 'text',
-                'description' => __('publishable key provided by Thawani', 'thawani-gw'),
+                'description' => __('publishable key provided by Thawani', 'thawani'),
                 'desc_tip' => true,
             ),
             'save_cards' => array(
-                'title' => __('Save Customer cards', 'thawani-gw'),
-                'label' => __('Enable Thawani payment to save the customer cards', 'thawani-gw'),
+                'title' => __('Save Customer cards', 'thawani'),
+                'label' => __('Enable Thawani payment to save the customer cards', 'thawani'),
                 'type' => 'checkbox',
                 'description' => '',
                 'default' => 'no',
             ),
             'environment' => array(
-                'title' => __('Select the environment', 'thawani-gw'),
+                'title' => __('Select the environment', 'thawani'),
                 'type' => 'select',
                 'options' => array(
                     'development' => 'Development',
                     'production' => 'production',
                 ),
-                'description' => __('USE THE DEVELOPMENT ENVIRONMENT FOR TESTING ONLY', 'thawani-gw'),
+                'description' => __('USE THE DEVELOPMENT ENVIRONMENT FOR TESTING ONLY', 'thawani'),
             ),
         ];
     }
@@ -406,7 +406,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         if (isset($response->success) && $response->success) {
 
             $this->set_session_token($response->data->session_id, $order->get_id());
-            $order->update_status('wc-pending', __('waiting to complete the payment by thawani', 'thawani-gw'));
+            $order->update_status('wc-pending', __('waiting to complete the payment ', 'thawani'));
             return array(
                 'result' => 'success',
                 'redirect' => $this->api->get_redirect_uri($response->data->session_id),
@@ -414,7 +414,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         }
 
         $this->set_session_token('faild order', $order->get_id());
-        $order->update_status('wc-failed', __('Failed', 'woocommerce'));
+        $order->update_status('wc-failed', __('Failed to redirect to the payment gateway', 'thawani'));
         return array(
             'result' => 'fail',
             'redirect' => $this->get_return_url($order),

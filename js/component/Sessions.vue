@@ -2,51 +2,62 @@
   <div class="my-2 p-2">
     <div class="shadow-md">
       <div
-        class="grid grid-cols-7 gap-2 font-semibold bg-gray-100 text-thawani text-base p-2 rounded-md"
+        class="grid grid-cols-5 gap-2 font-semibold bg-gray-100 text-thawani text-base p-2 rounded-md border-b-2"
       >
         <div>created at</div>
-        <div>Session id</div>
-        <div>client_reference_id</div>
-        <div>customer_id</div>
+        <div>client reference / order id</div>
+        <div>Customer infromation</div>
         <div>payment_status</div>
         <div>total_amount</div>
-        <div>Order id</div>
       </div>
 
       <div v-if="sessions">
         <div
-          class="grid grid-cols-7 gap-2 font-semibold bg-gray-100 text-gray-500 text-base p-2 rounded-md"
+          class="grid grid-cols-5 gap-2 items-center font-semibold bg-gray-50 text-gray-500 text-base p-2 rounded-md hover:bg-blue-100"
           v-for="(session, index) in sessions"
           :key="index"
-          :class="{ 'bg-gray-200': index % 2 == 0 }"
+          :class="{ 'bg-gray-100': index % 2 == 0 }"
         >
           <div>
-            {{ format_date(session.created_at) }}
-          </div>
-          <div>
-            <Popup
-              :text="session.session_id"
-              :index="index"
-              @show-sidebar="show"
-            />
+            <div class="flex">
+              <div>
+                <Popup
+                  :text="session.session_id"
+                  :index="index"
+                  @show-sidebar="show"
+                />
+              </div>
+              <div>
+                <span class="block font-semibold">
+                  {{ from_now(session.created_at) }}</span
+                >
+                <span class="text-xs">
+                  {{ format_date(session.created_at) }}</span
+                >
+              </div>
+            </div>
           </div>
           <div>
             {{ session.client_reference_id.trim() }}
           </div>
-          <div>{{ session.customer_id || "guest" }}</div>
-          <div>{{ session.payment_status }}</div>
+          <div>
+            <span class="font-semibold block">{{
+              session.metadata.customer_name || "guest"
+            }}</span>
+            <span class="text-sm text-gray-400">{{
+              session.metadata.phone
+            }}</span>
+          </div>
+          <div><payment-status :state="session.payment_status" /></div>
           <div>
             {{ price_format(session.total_amount) }}
           </div>
-          <div>{{ order_id(session) }}</div>
         </div>
       </div>
       <div v-else>
         <div
-          class="grid grid-cols-7 gap-2 font-semibold bg-gray-100 text-thawani text-base p-2 rounded-md animate-pulse"
+          class="grid grid-cols-5 gap-2 font-semibold bg-gray-100 text-thawani text-base p-2 rounded-md animate-pulse"
         >
-          <div class="bg-gray-200 rounded-lg h-3 w-20"></div>
-          <div class="bg-gray-200 rounded-lg h-3 w-20"></div>
           <div class="bg-gray-200 rounded-lg h-3 w-20"></div>
           <div class="bg-gray-200 rounded-lg h-3 w-20"></div>
           <div class="bg-gray-200 rounded-lg h-3 w-20"></div>
@@ -60,11 +71,14 @@
 <script>
 import moment from "moment";
 import Popup from "./popup";
+import PaymentStatus from "./PaymentStatus";
+// import PaymentStatus from './PaymentStatus.vue';
 export default {
   name: "Sessions",
   props: ["sessions"],
   components: {
     Popup,
+    PaymentStatus,
   },
   data() {
     return {};
@@ -89,7 +103,10 @@ export default {
       this.$emit("show-sidebar", data);
     },
     format_date(date) {
-      return moment(date).format("dddd, MMMM Do YYYY, h:mm:ss a");
+      return moment(date).format("LLL");
+    },
+    from_now(date) {
+      return moment(date).fromNow();
     },
   },
 };
