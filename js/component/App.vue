@@ -31,64 +31,44 @@
           </svg>
         </div>
         <div class="place-self-center">
-          <h1 class="text-3xl text-thawani">Thawani GateWay Dashboard</h1>
+          <h1 class="text-3xl text-thawani font-bold">Thawani Gateway</h1>
         </div>
       </div>
     </section>
 
     <!-- navigation -->
-    <div class="flex justify-between space-x-8 p-4">
-      <div class="flex space-x-8">
-        <div>
-          <a
-            href="#"
-            @click="tabsToggle(1)"
-            class="p-2 rounded-lg inline-block text-xl hover:underline hover:text-white"
-            :class="{
-              'bg-thawani text-white': tabs.session,
-              ' border border-thawani text-thawani hover:text-thawani': !tabs.session,
-            }"
-          >
-            Sessions
-          </a>
-        </div>
-        <div>
-          <a
-            href="#"
-            @click="tabsToggle(2)"
-            class="p-2 rounded-lg inline-block text-xl hover:underline hover:text-white"
-            :class="{
-              'bg-thawani text-white': tabs.customer,
-              ' border border-thawani text-thawani hover:text-thawani': !tabs.customer,
-            }"
-          >
-            Customers
-          </a>
-        </div>
-      </div>
-      <div>
-        <form action="#" method="post" @submit.prevent="get_sessions()">
-          <div class="flex-1">
-            <label for="limit" class="block text-gray-500 mb-1">page</label>
-            <select
-              name="limit"
-              class="p-2 w-12 bg-transparent"
-              v-model="page"
-              @change="pageChange()"
-            >
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-            </select>
-          </div>
-        </form>
-      </div>
-    </div>
     <!-- content  -->
     <div v-if="tabs.session">
-      <h1 class="my-1 font-bold text-2xl p-4 py-0">
-        <span class="border-b-2 border-thawani pb-2">Session</span> List
-      </h1>
+      <div class="flex justify-between">
+        <div>
+          <h1 class="my-1 font-bold text-2xl p-4 py-0">
+            <span class="border-b-2 border-thawani pb-2">Session</span> History
+          </h1>
+          <span class="text-sm block px-4 mt-2">
+            page {{ page }} - results per page {{ limit }}</span
+          >
+        </div>
+        <div>
+          <form action="#" method="post" @submit.prevent="get_sessions()">
+            <div class="flex-1">
+              <label for="limit" class="inline-block text-gray-500 mb-1"
+                >View</label
+              >
+              <select
+                name="limit"
+                class="p-2 w-12 bg-transparent mr-8"
+                v-model="limit"
+                @change="limitChange()"
+              >
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
+              </select>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
     <div v-if="tabs.customer">
       <h1 class="my-1 font-bold text-2xl p-4 py-0">
@@ -118,6 +98,25 @@
       :customer-index="selectedIndex"
       @hide-sidebar="hide"
     />
+    <!-- navigation -->
+    <div class="flex my-3 justify-end">
+      <div class="mx-4">
+        <div
+          v-if="page > 1"
+          class="inline-block bg-gray-200 text-gray-700 transition duration-300 p-3 w-20 text-center rounded-md shadow cursor-pointer hover:bg-gray-100"
+          @click="prevPage()"
+        >
+          Prev
+        </div>
+        <div
+          @click="nextPage()"
+          class="inline-block bg-blue-500 text-white transition duration-300 p-3 w-20 text-center -m-1 rounded-md shadow cursor-pointer hover:bg-blue-700"
+        >
+          Next
+        </div>
+      </div>
+    </div>
+    <!-- /navigation -->
     <!-- footer  -->
     <div
       class="text-gray-500 bg-gray-100 shadow-sm p-3 rounded-mf flex space-x-4 container my-4 mx-auto"
@@ -131,9 +130,7 @@
 </template>
 <script>
 import axios from "axios";
-import qs from "querystring";
-// import popup from "./popup";
-// import Popup from "./popup.vue";
+import qs, { parse } from "querystring";
 import Sessions from "./Sessions";
 import SessionSidebar from "./SessionSidebar";
 import CustomerList from "./CustomerList";
@@ -154,6 +151,7 @@ export default {
       sessionList: null,
       customerList: null,
       page: 1,
+      limit: 10,
       selectedIndex: -1,
       tabs: {
         session: true,
@@ -171,6 +169,8 @@ export default {
         site_url + "/wp-admin/admin-ajax.php",
         qs.stringify({
           action: `${action_prefix}_get_all_sessions`,
+          skip: this.skip,
+          limit: this.limit,
         })
       )
       .then((response) => {
@@ -192,7 +192,7 @@ export default {
           qs.stringify({
             action: `${action_prefix}_get_all_sessions`,
             skip: this.page,
-            limit: 10,
+            limit: this.limit,
           })
         )
         .then((response) => {
@@ -228,7 +228,7 @@ export default {
           console.log(err);
         });
     },
-    pageChange() {
+    limitChange() {
       if (this.tabs.session) this.get_sessions();
       else this.get_customers();
     },
@@ -269,6 +269,16 @@ export default {
     },
     hide(data) {
       this.selectedIndex = data;
+    },
+    nextPage() {
+      this.page++;
+      this.get_sessions();
+    },
+    prevPage() {
+      this.page--;
+      if (this.page == 0) this.page = 1;
+
+      this.get_sessions();
     },
   },
 };

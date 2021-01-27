@@ -17,16 +17,15 @@
           />
         </svg>
       </div>
-      <div @click="toggle()">{{ text.substr(1, 10) }} ...</div>
     </div>
 
     <div
       class="flex space-x-4 absolute top-0 bg-gray-700 text-white text-gray font-semibold p-3 rounded-lg"
       :class="{ hidden: !popup }"
     >
-      <div>
+      <!-- <div>
         {{ text }}
-      </div>
+      </div> -->
       <div class="cursor-pointer" @click="toggle()">
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -36,87 +36,95 @@
       </h1>
       <!-- display  the selected session information -->
       <div class="flex-1 space-y-2 my-1">
-        <div
-          class="bg-gray-100 text-gray-600 shadow my-2 p-2 rounded-lg text-base"
-        >
+        <div class="text-gray-600 my-2 p-2 text-base">
           <h2 class="text-xl">created at</h2>
-          {{ format_date(sessionList[sessionIndex].created_at) }}
+          <span class="text-sm">{{
+            format_date(sessionList[sessionIndex].created_at)
+          }}</span>
         </div>
-        <div
-          class="bg-gray-100 text-gray-600 shadow my-2 p-2 rounded-lg flex-1 text-base"
-        >
+        <div class="text-gray-600 my-2 p-2 text-base">
           <h2 class="text-xl">expire at</h2>
-          {{ format_date(sessionList[sessionIndex].expire_at) }}
+          <span class="text-sm">{{
+            format_date(sessionList[sessionIndex].expire_at)
+          }}</span>
         </div>
       </div>
 
-      <div class="flex-1 space-y-2 justify-items-auto">
-        <div class="bg-gray-100 text-gray-600 shadow my-2 p-2 rounded-lg flex-1">
-          <h2 class="text-xl">Payment Status  <span class="text-base mx-4">
-            {{ sessionList[sessionIndex].payment_status }}</span
-          ></h2>
-        </div>
-        
+      <div class="my2">
+        <PaymentStatus :state="sessionList[sessionIndex].payment_status" />
       </div>
 
-      <div class="bg-gray-100 text-gray-600 shadow my-2 p-2 rounded-lg">
+      <div class="text-gray-600 my-2 p-2 rounded-lg">
         <h2 class="text-xl">session id</h2>
-        <span class="break-words inline-block box-border container text-xl">
+        <span class="break-words block box-border container text-sm">
           {{ sessionList[sessionIndex].session_id }}
         </span>
       </div>
-      <div class="bg-gray-100 text-gray-600 shadow my-2 p-2 rounded-lg">
-        <h2 class="text-xl">customer id</h2>
-        <span class="text-base">
-          {{ sessionList[sessionIndex].customer_id || "guest" }}</span
-        >
-      </div>
 
-      <div class="bg-gray-100 text-gray-600 shadow my-2 p-2 rounded-lg">
+      <div class="text-gray-600 my-2 p-2">
         <h2 class="text-xl">Products</h2>
+        <div class="grid grid-cols-3 gap-2 bg-gray-200 border-b-2">
+          <div>product</div>
+          <div>quantity</div>
+          <div>Price</div>
+        </div>
         <div
-          class="grid grid-cols-2 gap-2"
+          class="grid grid-cols-3 gap-2"
           v-for="product in sessionList[sessionIndex].products"
           :key="product.name"
         >
           <div>
-            <span class="text-base">{{ product.name }}</span> x
-            <span class="text-sm"> {{ product.quantity }} </span>
+            <span class="text-base">{{ product.name }}</span>
+          </div>
+          <div>
+            <span class="text-base"> {{ product.quantity }} </span>
           </div>
           <div class="place-self-center">
             {{ price_format(product.unit_amount) }}
           </div>
         </div>
       </div>
-      <div class="bg-gray-100 text-gray-600 shadow my-2 p-2 rounded-lg">
-          <h2 class="text-xl">Total</h2>
-          <span class="text-base font-semibold">
+      <div class="flex justify-end space-x-8 text-gray-600 bg-gray-200">
+        <div><h2 class="text-base">Total</h2></div>
+        <div>
+          <span class="text-base">
             {{ price_format(sessionList[sessionIndex].total_amount) }}</span
           >
         </div>
-       <div class="bg-gray-100 text-gray-600 shadow my-2 p-2 rounded-lg">
-          <h2 class="text-xl">Order id</h2>
-          <span v-if="sessionList[sessionIndex].metadata" class="text-base">
-            {{ sessionList[sessionIndex].metadata.order_id }}
-          </span>
-          <h2 class="text-xl">Customer name</h2>
-          <span v-if="sessionList[sessionIndex].metadata" class="text-base">
-            {{ sessionList[sessionIndex].metadata.customer_name }}
-          </span>
-           <h2 class="text-xl">Customer phone number</h2>
-          <span v-if="sessionList[sessionIndex].metadata" class="text-base">
-            {{ sessionList[sessionIndex].metadata.phone }}
-          </span>
-        </div>
+      </div>
+      <div class="text-gray-600 my-2 p-2">
+        <h2 class="text-xl">Order id</h2>
+        <span v-if="sessionList[sessionIndex].metadata" class="text-base">
+          {{ sessionList[sessionIndex].metadata.order_id }}
+        </span>
+        <h2 class="text-xl">Customer infromation</h2>
+        <span v-if="sessionList[sessionIndex].metadata" class="text-base">
+          {{ sessionList[sessionIndex].metadata.customer_name }}
+        </span>
+        <span v-if="sessionList[sessionIndex].metadata" class="text-base block">
+          {{ sessionList[sessionIndex].metadata.phone }}
+        </span>
+        <span
+          v-if="sessionList[sessionIndex].metadata.email"
+          class="text-base block"
+        >
+          {{ sessionList[sessionIndex].metadata.email }}
+        </span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import moment from "moment";
+import PaymentStatus from "./PaymentStatus.vue";
+
 export default {
   name: "SessionSidebar",
   props: ["session-list", "session-index"],
+  components: {
+    PaymentStatus,
+  },
   data() {
     return {};
   },
