@@ -289,8 +289,11 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
 
         foreach ($items as $item) {
             $unit_price = $this->format_price($item->get_data()['total']);
+            $product_name = $item->get_data()['name'];
+            if (strlen($product_name) > 40)
+                $product_name = substr($product_name, 0, 30) . '...';
             $products[] = [
-                'name' => $item->get_data()['name'],
+                'name' => $product_name,
                 'unit_amount' => ($unit_price / (int) $item->get_data()['quantity']),
                 'quantity' => $item->get_data()['quantity'],
             ];
@@ -380,7 +383,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
      */
     public function format_price($price)
     {
-        return number_format($price, 3, '', '.');
+        return number_format($price, 3, '', '');
     }
 
     /**
