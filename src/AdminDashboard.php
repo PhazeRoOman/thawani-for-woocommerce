@@ -16,8 +16,8 @@ class AdminDashboard
     public function init_menu()
     {
         add_menu_page(
-            'Thawani Gateway',
-            'Thawani Gateway',
+            __('Thawani Gateway', "thawani"),
+            __('Thawani Gateway', "thawani"),
             'manage_woocommerce',
             'thawani_gw',
             [$this, 'dashboard_template'],

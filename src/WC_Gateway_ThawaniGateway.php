@@ -453,8 +453,8 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         ));
 
         echo "<p class='form-field form-field-wide'>
-        <button type='button' name='th_generate' id='thawani-gw-generate' class='button-secondary' style='margin-bottom:0.5rem' > generate checkout link</button>
-        <button type='button' name='th_copy_btn' id='thawani-gw-copy' class='button-secondary' style='margin-bottom:0.5rem' disabled > copy </button>
+        <button type='button' name='th_generate' id='thawani-gw-generate' class='button-secondary' style='margin-bottom:0.5rem' > ".__("generate checkout link" , "thawani")."</button>
+        <button type='button' name='th_copy_btn' id='thawani-gw-copy' class='button-secondary' style='margin-bottom:0.5rem' disabled > ".__('copy' , 'woocommerce')." </button>
         <input type='text' name='th_generated_link' id='thawani-gw-generated-link' name='link generated' placeholder='link will be generated' />
         </p>";
     }

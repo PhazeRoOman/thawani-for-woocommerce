@@ -31,7 +31,7 @@ class ThawaniAjax extends WC_Gateway_ThawaniGateway
         add_action('wp_ajax_' . $this->ajax_id . '_get_checkout', [$this, 'get_checkout_url']);
     }
 
-
+    
     public function get_all_customers()
     {
         if (!isset($_POST['skip'])) {
@@ -86,7 +86,7 @@ class ThawaniAjax extends WC_Gateway_ThawaniGateway
             if ($parsed_response->success) {
 
                 $this->set_session_token($parsed_response->data->session_id, $order->get_id());
-                $order->update_status('wc-pending', __('waiting to complete the payment by thawani', 'thawani-gw'));
+                $order->update_status('wc-pending', __('waiting to complete the payment by thawani', 'thawani'));
                 $checkout_link = $this->api->get_redirect_uri($parsed_response->data->session_id);
                 wp_send_json([
                     'checkout' => $checkout_link,
