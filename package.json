@@ -4,12 +4,11 @@
   "description": "This plugin based on (Developer Docs the new API of Thawani)[https://developer.thawani.om/]",
   "main": "index.js",
   "scripts": {
-    "dev": "npm run development",
-    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "watch": "npm run development -- --watch",
-    "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "prod": "npm run production",
-    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "development": "mix",
+    "watch": "mix watch",
+    "watch-poll": "mix watch -- --watch-options-poll=1000",
+    "hot": "mix watch --hot",
+    "production": "mix --production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,16 +24,18 @@
   "homepage": "https://github.com/w7shdev/thawani_gw#readme",
   "dependencies": {
     "autoprefixer": "^10.0.4",
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
+    "laravel-mix": "^6.0.13",
     "moment": "^2.29.1",
     "postcss": "^8.1.14",
     "postcss-loader": "^4.1.0",
     "tailwindcss": "^2.0.1",
-    "vue": "^2.6.12"
+    "vue": "^2.6.12",
+    "vue-i18n": "^8.23.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "laravel-mix": "^5.0.9",
+    "vue-loader": "^15.9.6",
     "vue-template-compiler": "^2.6.12"
   }
 }

@@ -1,11 +1,11 @@
 <template>
   <div
-    class="fixed right-0 top-0 w-1/3 bottom-0 h-screen bg-gray-100 text-thawani shadow-lg overscroll-auto overflow-auto"
+    class="fixed right-0 left-0 top-12 mx-auto h-4/5 w-full md:w-1/2 bg-gray-100 text-thawani shadow-xl rounded-md overscroll-auto overflow-auto"
     v-if="sessionIndex > -1"
   >
     <div class="text-white mt-14 p-4">
       <h1 class="text-2xl text-thawani uppercase tracking-wider relative mb-4">
-        Session infromation
+        {{ $t("session_info") }}
 
         <div class="absolute top-0 -mt-8">
           <div
@@ -29,7 +29,7 @@
               </svg>
             </div>
             <div class="flex">
-              <span class="text-sm inline-block">Close</span>
+              <span class="text-sm inline-block"> {{ $t("close") }} </span>
             </div>
           </div>
         </div>
@@ -37,13 +37,13 @@
       <!-- display  the selected session information -->
       <div class="flex-1 space-y-2 my-1">
         <div class="text-gray-600 my-2 p-2 text-base">
-          <h2 class="text-xl">created at</h2>
+          <h2 class="text-xl">{{ $t("created_at") }}</h2>
           <span class="text-sm">{{
             format_date(sessionList[sessionIndex].created_at)
           }}</span>
         </div>
         <div class="text-gray-600 my-2 p-2 text-base">
-          <h2 class="text-xl">expire at</h2>
+          <h2 class="text-xl">{{ $t("expire_at") }}</h2>
           <span class="text-sm">{{
             format_date(sessionList[sessionIndex].expire_at)
           }}</span>
@@ -55,18 +55,18 @@
       </div>
 
       <div class="text-gray-600 my-2 p-2 rounded-lg">
-        <h2 class="text-xl">session id</h2>
+        <h2 class="text-xl">{{ $t("session_id") }}</h2>
         <span class="break-words block box-border container text-sm">
           {{ sessionList[sessionIndex].session_id }}
         </span>
       </div>
 
       <div class="text-gray-600 my-2 p-2">
-        <h2 class="text-xl">Products</h2>
+        <h2 class="text-xl">{{ $t("products") }}</h2>
         <div class="grid grid-cols-3 gap-2 bg-gray-200 border-b-2">
-          <div>product</div>
-          <div>quantity</div>
-          <div>Price</div>
+          <div>{{ $t("product.title") }}</div>
+          <div>{{ $t("product.qty") }}</div>
+          <div>{{ $t("product.price") }}</div>
         </div>
         <div
           class="grid grid-cols-3 gap-2"
@@ -85,7 +85,9 @@
         </div>
       </div>
       <div class="flex justify-end space-x-8 text-gray-600 bg-gray-200">
-        <div><h2 class="text-base">Total</h2></div>
+        <div>
+          <h2 class="text-base">{{ $t("total_amount") }}</h2>
+        </div>
         <div>
           <span class="text-base">
             {{ price_format(sessionList[sessionIndex].total_amount) }}</span
@@ -93,11 +95,11 @@
         </div>
       </div>
       <div class="text-gray-600 my-2 p-2">
-        <h2 class="text-xl">Order id</h2>
+        <h2 class="text-xl">{{ $t("order_id") }}</h2>
         <span v-if="sessionList[sessionIndex].metadata" class="text-base">
           {{ sessionList[sessionIndex].metadata.order_id }}
         </span>
-        <h2 class="text-xl">Customer infromation</h2>
+        <h2 class="text-xl">{{ $t("customer_info") }}</h2>
         <span v-if="sessionList[sessionIndex].metadata" class="text-base">
           {{ sessionList[sessionIndex].metadata.customer_name }}
         </span>

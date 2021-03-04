@@ -4,6 +4,12 @@
  * Released under the MIT License.
  */
 
+/*!
+ * vue-i18n v8.23.0 
+ * (c) 2021 kazuya kawaguchi
+ * Released under the MIT License.
+ */
+
 //! moment.js
 
 //! moment.js locale configuration
