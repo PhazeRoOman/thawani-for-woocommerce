@@ -59,7 +59,8 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         $this->secret_key = $this->get_option('secret_key');
         $this->publishable_key = $this->get_option('publishable_key');
         $this->environment = $this->get_option('environment');
-        $this->is_save_cards = $this->get_option('save_cards');
+        // disabled for now -- may updated later to enable this feature 
+        // $this->is_save_cards = $this->get_option('save_cards');
         $this->api = new RestAPI($this->secret_key, $this->publishable_key, $this->environment);
         add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
         add_action('woocommerce_api_' . $this->id, [$this, 'process_callback']);
@@ -252,13 +253,14 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                 'description' => __('publishable key provided by Thawani', 'thawani'),
                 'desc_tip' => true,
             ),
-            'save_cards' => array(
-                'title' => __('Save Customer cards', 'thawani'),
-                'label' => __('Enable Thawani payment to save the customer cards', 'thawani'),
-                'type' => 'checkbox',
-                'description' => '',
-                'default' => 'no',
-            ),
+            // removed since version 1.1.0 and may later be included 
+            // 'save_cards' => array(
+            //     'title' => __('Save Customer cards', 'thawani'),
+            //     'label' => __('Enable Thawani payment to save the customer cards', 'thawani'),
+            //     'type' => 'checkbox',
+            //     'description' => '',
+            //     'default' => 'no',
+            // ),
             'environment' => array(
                 'title' => __('Select the environment', 'thawani'),
                 'type' => 'select',
@@ -321,58 +323,19 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
     protected function payload($order, $customer_key = null)
     {
 
-        if ($this->is_save_cards == 'no') {
-            $order_data = $order->get_data();
-            $parameters = [
-                'client_reference_id' => (int) $order->get_id(),
-                'products' => $this->prepare_products($order->get_id()),
-                'success_url' => $this->get_callback_url($order->get_id()),
-                'cancel_url' => $this->get_callback_url($order->get_id()),
-                'metadata' => [
-                    'order_id' => $order->get_id(),
-                    'customer_name' => $order_data['billing']['first_name'] . ' ' . $order_data['billing']['last_name'],
-                    'phone' => $order_data['billing']['phone'],
-                    'email' => $order_data['billing']['email'],
-                ],
-            ];
-            return $parameters;
-        }
-
-        if ($order->get_user_ID() == 0) {
-            $order_data = $order->get_data();
-            $parameters = [
-                'client_reference_id' => (int) $order->get_id(),
-                'products' => $this->prepare_products($order->get_id()),
-                'success_url' => $this->get_callback_url($order->get_id()),
-                'cancel_url' => $this->get_callback_url($order->get_id()),
-                'metadata' => [
-                    'order_id' => $order->get_id(),
-                    'customer_name' => $order_data['billing']['first_name'] . ' ' . $order_data['billing']['last_name'],
-                    'phone' => $order_data['billing']['phone'],
-                    'email' => $order_data['billing']['email'],
-                ],
-            ];
-        } else {
-            if (!$customer_key) {
-                $customer_key = $this->api->get_customer();
-            }
-
-            //get the order data
-            $order_data = $order->get_data();
-            $parameters = [
-                'client_reference_id' => (int) $order->get_id(),
-                'customer_id' => $customer_key,
-                'products' => $this->prepare_products($order->get_id()),
-                'success_url' => $this->get_callback_url($order->get_id()),
-                'cancel_url' => $this->get_callback_url($order->get_id()),
-                'metadata' => [
-                    'order_id' => $order->get_id(),
-                    'customer_name' => $order_data['billing']['first_name'] . ' ' . $order_data['billing']['last_name'],
-                    'phone' => $order_data['billing']['phone'],
-                    'email' => $order_data['billing']['email'],
-                ],
-            ];
-        }
+        $order_data = $order->get_data();
+        $parameters = [
+            'client_reference_id' => (int) $order->get_id(),
+            'products' => $this->prepare_products($order->get_id()),
+            'success_url' => $this->get_callback_url($order->get_id()),
+            'cancel_url' => $this->get_callback_url($order->get_id()),
+            'metadata' => [
+                'order_id' => $order->get_id(),
+                'customer_name' => $order_data['billing']['first_name'] . ' ' . $order_data['billing']['last_name'],
+                'phone' => $order_data['billing']['phone'],
+                'email' => $order_data['billing']['email'],
+            ],
+        ];
         return $parameters;
     }
     /**
@@ -453,8 +416,8 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         ));
 
         echo "<p class='form-field form-field-wide'>
-        <button type='button' name='th_generate' id='thawani-gw-generate' class='button-secondary' style='margin-bottom:0.5rem' > generate checkout link</button>
-        <button type='button' name='th_copy_btn' id='thawani-gw-copy' class='button-secondary' style='margin-bottom:0.5rem' disabled > copy </button>
+        <button type='button' name='th_generate' id='thawani-gw-generate' class='button-secondary' style='margin-bottom:0.5rem' > " . __("generate checkout link", "thawani") . "</button>
+        <button type='button' name='th_copy_btn' id='thawani-gw-copy' class='button-secondary' style='margin-bottom:0.5rem' disabled > " . __('copy', 'woocommerce') . " </button>
         <input type='text' name='th_generated_link' id='thawani-gw-generated-link' name='link generated' placeholder='link will be generated' />
         </p>";
     }

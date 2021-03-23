@@ -1,15 +1,16 @@
 <?php
 
 /**
- * Plugin Name: Thawani Gateway Woocommerce
+ * Plugin Name: Thawani Express 
  * Plugin URI: https://Alrisi.net
  * Author: Muhannad Alrisi
  * Author URI: https://alrisi.net
  * Description: Thawani Payments Gateway for Woocommerce.
- * Version: 1.0.8
+ * Version: 1.1.0
  * License: GPL2
  * License URL: http://www.gnu.org/licenses/gpl-2.0.txt
  * text-domain: thawani
+ * Domain Path : /languages
  *
  *
  *@package WooCommerce\Thawani
@@ -50,6 +51,20 @@ function init_WC_Gateway_ThawaniGateway()
         new AdminDashboard();
         new ThawaniAjax();
     }
+}
+
+/**
+ * loading the translation files to support arabic version 
+ * @since 1.1.0 
+ */
+add_action('init', 'thawani_gw_load_textDomain');
+
+/**
+ * Load plugin textdomain.
+ */
+function thawani_gw_load_textDomain()
+{
+    load_plugin_textdomain('thawani', false, dirname(plugin_basename(__FILE__)) . '/languages');
 }
 /**
  * Enqueue a script in the WordPress admin on post.php.

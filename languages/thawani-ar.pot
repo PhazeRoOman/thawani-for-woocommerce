@@ -1,0 +1,136 @@
+# Copyright (C) 2021 Muhannad Alrisi
+# This file is distributed under the same license as the Thawani Gateway Woocommerce plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Thawani Gateway Woocommerce 1.0.8\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/thawani_gw\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2021-02-25T15:47:45+01:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.4.0\n"
+"X-Domain: thawani\n"
+
+#. Plugin Name of the plugin
+msgid "Thawani Gateway Woocommerce"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://Alrisi.net"
+msgstr ""
+
+#. Description of the plugin
+msgid "Thawani Payments Gateway for Woocommerce."
+msgstr ""
+
+#. Author of the plugin
+msgid "Muhannad Alrisi"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://alrisi.net"
+msgstr ""
+
+#: src/AdminDashboard.php:19
+#: src/AdminDashboard.php:20
+msgid "Thawani Gateway"
+msgstr "ثواني"
+
+#: src/ThawaniAjax.php:89
+msgid "waiting to complete the payment by thawani"
+msgstr "في انتظار الدفع في بوابة ثواني"
+
+#: src/WC_Gateway_ThawaniGateway.php:167
+msgid "Customer has cancelled the payment or not completed it "
+msgstr "الزبون قام بالغاء عملية الدفع"
+
+#: src/WC_Gateway_ThawaniGateway.php:168
+msgid "You have cancelled the payment, maybe adding to cart or remove item"
+msgstr "لقد قمت بإلغاء عملية الدفع  لربما لتعديل السلة"
+
+#: src/WC_Gateway_ThawaniGateway.php:187
+msgid "payment cancelled by the client"
+msgstr "العملية ألغيت من قبل الزبون"
+
+#: src/WC_Gateway_ThawaniGateway.php:188
+msgid " You have cancelled the payment "
+msgstr "لقد ألغيت عملية الدفع"
+
+#: src/WC_Gateway_ThawaniGateway.php:208
+msgid "payment Success"
+msgstr "عملية الدفع نجحت"
+
+#: src/WC_Gateway_ThawaniGateway.php:223
+msgid "Enable/Disable"
+msgstr "تفعيل/تعطيل"
+
+#: src/WC_Gateway_ThawaniGateway.php:224
+msgid "Enable Thawani payment"
+msgstr "تفعيل بوابة الدفع لثواني"
+
+#: src/WC_Gateway_ThawaniGateway.php:230
+msgid "Title"
+msgstr "العنوان"
+
+#: src/WC_Gateway_ThawaniGateway.php:232
+msgid "Payment with Thawani e-commerce "
+msgstr "الدفع مع بوابة ثواني"
+
+#: src/WC_Gateway_ThawaniGateway.php:233
+msgid "Thawani E-commerce Payments"
+msgstr "بوابة الدفع من ثواني"
+
+#: src/WC_Gateway_ThawaniGateway.php:237
+msgid "Description"
+msgstr "الوصف"
+
+#: src/WC_Gateway_ThawaniGateway.php:239
+msgid "shows in the checkout page"
+msgstr "تظهر في صفحة اتمام الطلب"
+
+#: src/WC_Gateway_ThawaniGateway.php:244
+msgid "Secret key"
+msgstr ""
+
+#: src/WC_Gateway_ThawaniGateway.php:246
+msgid "Add your secret key"
+msgstr ""
+
+#: src/WC_Gateway_ThawaniGateway.php:250
+msgid "publishable Key"
+msgstr ""
+
+#: src/WC_Gateway_ThawaniGateway.php:252
+msgid "publishable key provided by Thawani"
+msgstr ""
+
+#: src/WC_Gateway_ThawaniGateway.php:256
+msgid "Save Customer cards"
+msgstr "حفظ بيانات الزبون"
+
+#: src/WC_Gateway_ThawaniGateway.php:257
+msgid "Enable Thawani payment to save the customer cards"
+msgstr "تفعيل خاصة حفظ بيانات الزبون في ثواني"
+
+#: src/WC_Gateway_ThawaniGateway.php:263
+msgid "Select the environment"
+msgstr "اختار بيئة"
+
+#: src/WC_Gateway_ThawaniGateway.php:269
+msgid "USE THE DEVELOPMENT ENVIRONMENT FOR TESTING ONLY"
+msgstr "البيئة التجريبة فقطط لغرض التجربة"
+
+#: src/WC_Gateway_ThawaniGateway.php:412
+msgid "waiting to complete the payment "
+msgstr "في انتظار اكتمال عملية الدفع"
+
+#: src/WC_Gateway_ThawaniGateway.php:420
+msgid "Failed to redirect to the payment gateway"
+msgstr "فشل في نقل الزبون الى بوابة الدفع"
+
+#: src/WC_Gateway_ThawaniGateway.php:456
+msgid "generate checkout link"
+msgstr "انشاء رابط الدفع"

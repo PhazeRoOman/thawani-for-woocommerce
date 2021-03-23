@@ -2,23 +2,24 @@
   <div class="my-2 p-2">
     <div class="shadow-md">
       <div
-        class="grid grid-cols-5 gap-2 font-semibold bg-gray-100 text-thawani text-base p-2 rounded-md border-b-2"
+        class="hidden md:grid md:grid-cols-5 md:gap-2 font-semibold bg-gray-100 text-thawani text-base p-2 rounded-md border-b-2"
       >
-        <div>created at</div>
-        <div>client reference / order id</div>
-        <div>Customer infromation</div>
-        <div>payment_status</div>
-        <div>total_amount</div>
+        <div>{{ $t("created_at") }}</div>
+        <div>{{ $t("order_id") }}</div>
+        <div>{{ $t("customer_info") }}</div>
+        <div>{{ $t("payment_status.title") }}</div>
+        <div>{{ $t("total_amount") }}</div>
       </div>
 
       <div v-if="sessions">
         <div
-          class="grid grid-cols-5 gap-2 items-center font-semibold bg-gray-50 text-gray-500 text-base p-2 rounded-md hover:bg-blue-100"
+          class="grid grid-row-5 md:grid-cols-5 md:gap-2 items-center font-semibold bg-gray-50 text-gray-500 text-base p-2 rounded-md hover:bg-blue-100"
           v-for="(session, index) in sessions"
           :key="index"
           :class="{ 'bg-gray-100': index % 2 == 0 }"
         >
           <div>
+            <div class="text-thawani md:hidden">{{ $t("created_at") }}</div>
             <div class="flex">
               <div>
                 <Popup
@@ -38,18 +39,26 @@
             </div>
           </div>
           <div>
+            <div class="text-thawani md:hidden">{{ $t("order_id") }}</div>
             {{ session.client_reference_id.trim() }}
           </div>
           <div>
+            <div class="text-thawani md:hidden">{{ $t("customer_info") }}</div>
             <span class="font-semibold block">{{
-              session.metadata.customer_name || "guest"
+              session.metadata.customer_name || $t("guest")
             }}</span>
             <span class="text-sm text-gray-400">{{
               session.metadata.phone
             }}</span>
           </div>
-          <div><payment-status :state="session.payment_status" /></div>
           <div>
+            <div class="text-thawani md:hidden">
+              {{ $t("payment_status.title") }}
+            </div>
+            <payment-status :state="session.payment_status" />
+          </div>
+          <div>
+            <div class="text-thawani md:hidden">{{ $t("total_amount") }}</div>
             {{ price_format(session.total_amount) }}
           </div>
         </div>

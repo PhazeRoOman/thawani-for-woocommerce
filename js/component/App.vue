@@ -1,6 +1,12 @@
 <template>
   <div>
     <!-- header --->
+    <transition name="fade">
+      <div
+        v-if="selectedIndex >= 0"
+        class="bg-gray-600 bg-opacity-50 top-0 fixed right-0 left-0 bottom-0"
+      ></div>
+    </transition>
     <section id="header" class="p-2 my-2">
       <div class="flex space-x-4">
         <div>
@@ -31,7 +37,7 @@
           </svg>
         </div>
         <div class="place-self-center">
-          <h1 class="text-3xl text-thawani font-bold">Thawani Gateway</h1>
+          <h1 class="text-3xl text-thawani font-bold">{{ $t("plugin") }}</h1>
         </div>
       </div>
     </section>
@@ -42,21 +48,25 @@
       <div class="flex justify-between">
         <div>
           <h1 class="my-1 font-bold text-2xl p-4 py-0">
-            <span class="border-b-2 border-thawani pb-2">Session</span> History
+            <span class="border-b-2 border-thawani pb-2">{{
+              $t("page_title")
+            }}</span>
+            {{ $t("page_title_sufix") }}
           </h1>
           <span class="text-sm block px-4 mt-2">
-            page {{ page }} - results per page {{ limit }}</span
+            {{ $t("page") }} {{ page }} - {{ $t("result_per") }}
+            {{ limit }}</span
           >
         </div>
         <div>
           <form action="#" method="post" @submit.prevent="get_sessions()">
             <div class="flex-1">
-              <label for="limit" class="inline-block text-gray-500 mb-1"
-                >View</label
-              >
+              <label for="limit" class="inline-block text-gray-500 mb-1">{{
+                $t("view")
+              }}</label>
               <select
                 name="limit"
-                class="p-2 w-12 bg-transparent mr-8"
+                class="p-2 w-2/3 md:w-12 bg-transparent mr-8"
                 v-model="limit"
                 @change="limitChange()"
               >
@@ -75,11 +85,13 @@
         <span class="border-b-2 border-thawani pb-2">Customers</span> List
       </h1>
     </div>
-    <Sessions
-      v-if="tabs.session"
-      :sessions="sessionList"
-      @show-sidebar="show"
-    />
+    <transition name="fade">
+      <Sessions
+        v-if="tabs.session"
+        :sessions="sessionList"
+        @show-sidebar="show"
+      />
+    </transition>
     <CustomerList
       v-if="tabs.customer"
       :customers="customerList"
@@ -106,13 +118,13 @@
           class="inline-block bg-gray-200 text-gray-700 transition duration-300 p-3 w-20 text-center rounded-md shadow cursor-pointer hover:bg-gray-100"
           @click="prevPage()"
         >
-          Prev
+          {{ $t("prev") }}
         </div>
         <div
           @click="nextPage()"
           class="inline-block bg-blue-500 text-white transition duration-300 p-3 w-20 text-center -m-1 rounded-md shadow cursor-pointer hover:bg-blue-700"
         >
-          Next
+          {{ $t("next") }}
         </div>
       </div>
     </div>
@@ -121,9 +133,9 @@
     <div
       class="text-gray-500 bg-gray-100 shadow-sm p-3 rounded-mf flex space-x-4 container my-4 mx-auto"
     >
-      <div>This plugin developed by Muhannad Al-Risi</div>
+      <div>{{ $t("developed") }}</div>
       <div>
-        Found an issue please send it to email muhannad.alrisi@gmail.com
+        {{ $t("footer_contact") }}
       </div>
     </div>
   </div>
@@ -152,7 +164,7 @@ export default {
       customerList: null,
       page: 1,
       limit: 10,
-      selectedIndex: -1,
+      selectedIndex: -1, // -1 means that the window is closed
       tabs: {
         session: true,
         customer: false,
@@ -283,4 +295,12 @@ export default {
   },
 };
 </script>
-<style src='../css/style.css'></style>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+</style>

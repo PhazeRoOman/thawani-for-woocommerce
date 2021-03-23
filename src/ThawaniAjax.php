@@ -23,7 +23,8 @@ class ThawaniAjax extends WC_Gateway_ThawaniGateway
         $secret_key = $this->get_option('secret_key');
         $publishable_key = $this->get_option('publishable_key');
         $environment = $this->get_option('environment');
-        $this->is_save_cards = $this->get_option('save_cards');
+        // disabled for now maybe activate this later 
+        // $this->is_save_cards = $this->get_option('save_cards');
         $this->api = new RestAPI($secret_key, $publishable_key, $environment);
         add_action('wp_ajax_' . $this->ajax_id . '_get_all_sessions', [$this, 'get_all_sessions']);
         add_action('wp_ajax_' . $this->ajax_id . '_get_all_customers', [$this, 'get_all_customers']);
@@ -75,18 +76,19 @@ class ThawaniAjax extends WC_Gateway_ThawaniGateway
             // now get the products  
             // $products = $this->prepare_products($_POST['order_id']);
             $order  = wc_get_order($_POST['order_id']);
-            if ($order->get_user_ID() != 0 && ($this->is_save_cards != 'no')) {
-                $customer_id = $this->get_customer_key($order->get_user_ID());
-                $payload  = $this->payload($order, $customer_id);
-            } else
-                $payload = $this->payload($order);
+            // un-comment this when the feature of the customer saving account is active
+            // if ($order->get_user_ID() != 0 && ($this->is_save_cards != 'no')) {
+            //     $customer_id = $this->get_customer_key($order->get_user_ID());
+            //     $payload  = $this->payload($order, $customer_id);
+            // } else
+            $payload = $this->payload($order);
 
             $response  = $this->api->create_session($payload);
             $parsed_response  = json_decode($response['body']);
             if ($parsed_response->success) {
 
                 $this->set_session_token($parsed_response->data->session_id, $order->get_id());
-                $order->update_status('wc-pending', __('waiting to complete the payment by thawani', 'thawani-gw'));
+                $order->update_status('wc-pending', __('waiting to complete the payment by thawani', 'thawani'));
                 $checkout_link = $this->api->get_redirect_uri($parsed_response->data->session_id);
                 wp_send_json([
                     'checkout' => $checkout_link,
