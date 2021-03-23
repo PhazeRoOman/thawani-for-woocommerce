@@ -309,6 +309,14 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                 'quantity' => 1,
             ];
         }
+        //calculate the taxes VAT 
+        if ((float)$order_items->get_data()['total_tax'] > 0) {
+            $products[] = [
+                'name' => 'VAT 5%',
+                'unit_amount' => (int)$this->format_price($order_items->get_data()['total_tax']),
+                'quantity' => 1
+            ];
+        }
         return $products;
     }
 
