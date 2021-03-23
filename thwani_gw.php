@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: Thawani Gateway Woocommerce
+ * Plugin Name: Thawani Express 
  * Plugin URI: https://Alrisi.net
  * Author: Muhannad Alrisi
  * Author URI: https://alrisi.net
