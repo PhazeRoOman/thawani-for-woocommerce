@@ -274,6 +274,24 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
     }
 
     /**
+     * get the product price with the tax 
+     * 
+     * @param WC_ORDER  $order
+     * 
+     * @return float tax percentage
+     */
+    protected function get_tax_precent($order)
+    {
+        $get_tax = 0;
+        //need the first array 
+        foreach ($order->get_items('tax') as $item) {
+            $get_tax = $item->get_data();
+            break;
+        }
+
+        return $get_tax['rate_percent'];
+    }
+    /**
      *
      * create a products payload for the request payload
      *
@@ -286,11 +304,19 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
 
         $order_items = wc_get_order($order_id);
         $items = $order_items->get_data()['line_items'];
+        // get the tax set of the order 
+        $tax  = $this->get_tax_precent($order_items);
 
         $products = [];
 
         foreach ($items as $item) {
-            $unit_price = $this->format_price($item->get_data()['total']);
+            $product_price  = (float) $item->get_data()['total'];
+
+            if ((float)$tax > 0)
+                $unit_price = $this->format_price($product_price + ($product_price * ($tax / 100)));
+            else
+                $unit_price = $this->format_price($product_price);
+
             $product_name = $item->get_data()['name'];
             if (strlen($product_name) > 40)
                 $product_name = substr($product_name, 0, 30) . '...';
@@ -309,14 +335,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                 'quantity' => 1,
             ];
         }
-        //calculate the taxes VAT 
-        if ((float)$order_items->get_data()['total_tax'] > 0) {
-            $products[] = [
-                'name' => 'VAT 5%',
-                'unit_amount' => (int)$this->format_price($order_items->get_data()['total_tax']),
-                'quantity' => 1
-            ];
-        }
+
         return $products;
     }
 
