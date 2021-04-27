@@ -147,7 +147,7 @@ export default {
       });
     },
     format_date(date) {
-      return moment(date).format("dddd, MMMM Do YYYY, h:mm:ss a");
+      return moment(date).add(4,'h').format("dddd, MMMM Do YYYY, h:mm:ss a");
     },
     hide() {
       this.$emit("hide-sidebar", -1);

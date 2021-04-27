@@ -112,10 +112,10 @@ export default {
       this.$emit("show-sidebar", data);
     },
     format_date(date) {
-      return moment(date).format("LLL");
+      return moment(date).add(4,'h').format("LLL");
     },
     from_now(date) {
-      return moment(date).fromNow();
+      return moment(date).add(4,'h').fromNow();
     },
   },
 };
