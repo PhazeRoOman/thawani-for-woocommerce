@@ -319,7 +319,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
 
             $product_name = $item->get_data()['name'];
             if (strlen($product_name) > 40)
-                $product_name = substr($product_name, 0, 30) . '...';
+                $product_name = mb_substr($product_name, 0, 30 , 'UTF-8') . '...';
             $products[] = [
                 'name' => $product_name,
                 'unit_amount' => ($unit_price / (int) $item->get_data()['quantity']),
