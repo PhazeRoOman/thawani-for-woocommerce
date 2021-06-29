@@ -129,6 +129,21 @@ To view the logs **Go to: WooCommerce > Status > Logs**
 ![thawani logs](./static/logs.png)
 
 The logs messages for this plugin follow the following format `thawani-<DATE-OF-ORDER-PLACEMENT>`. -->
+## View Session History
+
+The Thawani Gateway plugin keeps a record of all the sessions created to process payments and displays them for the admin. 
+
+The plugin keeps a record of:
+- A timestamp of when the session was created
+- Client refrence / Order ID
+- Customer Information
+- Payment Status
+- Total Amount
+
+To access the session history:
+**Go to: WordPress Admin > Thawani Gateway**
+
+![session history](./static/session_history.png)
 
 ## Customer Checkout Flow
 
