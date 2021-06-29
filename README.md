@@ -59,35 +59,35 @@ For live account, please create a [merchant account](https://thawani.om/merchant
 
 1. **Download** the .zip file from this repository.
 
-![download zip file](./download_zip.PNG)
+![download zip file](./static/download_zip.PNG)
 
 2. **Go to: WordPress Admin > Plugins > Add New** to upload the .zip file you downloaded with Choose File.
 
-![install the plugin](./thawani_install.gif)
+![install the plugin](./static/thawani_install.gif)
 
-3. **Activate** the extension.
+3. **Activate** the extension. (If you haven't alreay in the previous step)
 
-![activate the plugin](./activate_plugin_blur.PNG)
+![activate the plugin](./static/activate_plugin_blur.PNG)
 
 More information at: [Managing Plugins](https://wordpress.org/support/article/managing-plugins/).
 
 For the plugin to work properly, please make sure that your permalink settings are set to _post name_. To do that **Go to: Settings > Permalinks > Common Settings** and make sure that _post name_ is selected.
 
-![permalink settings](./permalink.png)
+![permalink settings](./static/permalink.png)
 
 ## Thawani For WooCommerce Set up
 
 1. **Go to: WooCommerce > Settings > Payments**.
 
-![payment settings](./woocommerce_setting.PNG)
+![payment settings](./static/woocommerce_setting.PNG)
 
-2. Select **Thawani Payment Gateway**. You are taken to the configuration screen.
+2. Select **Thawani Gateway**. You are taken to the configuration screen.
 
-![Thawani Payment Gateway](./thawani_payment_gateway_setting.PNG)
+![Thawani Payment Gateway](./static/thawani_payment_gateway_setting.PNG)
 
 3. **Enable/Disable** – Enabled by default. Disable to turn off Thawani Pay.
 
-![enable/disable plugin](./enable_disable.gif)
+![enable/disable plugin](./static/enable_disable.gif)
 
 ## Configuration
 
@@ -97,9 +97,11 @@ For the plugin to work properly, please make sure that your permalink settings a
 
 In development environment you will be able to make mock payments to simulate the payment processing flow of a live account.
 
-To enable development mode you need the User Acceptable Test ("UAT") secret and publishable keys. These two keys can be found on the [Thawani documentation](https://developer.thawani.om/).
+When you are in development mode you will need to use the User Acceptable Test ("UAT") secret and publishable keys and __not__ your own secret and publishable keys. These two keys can be found on the [Thawani documentation](https://developer.thawani.om/).
 
 - Production Environment
+
+Production environment is to be used when the website is live
 
 To setup a live account you need the following:
 
@@ -107,37 +109,40 @@ To setup a live account you need the following:
 - A Thawani merchant account. You can apply by visiting [Thawani's website](https://thawani.om/merchants/).
 - Access to the Thawani merchant dashboard. This is where you can get your live secret and publishable keys. Learn more by reading [Thawani's documentation](https://developer.thawani.om/).
 - Add the following URL: `https//<YOUR-SITE-URL>/wc-api/thawani-payment-status` to the webhook URL section on the Thawani dashboard. Learn more by reading [Thawani's documentation](https://developer.thawani.om/).
-- Add the live secret and publishable keys to the payment settings page.
+- Set the secret and publishable keys in the payment settings page to the secret and publishable keys provided by Thawani
 
-![live keys](./live_keys.png)
+![live keys](./static/live_keys.png)
 
-3. Enable logging
+<!-- 
+will update when implemented
+
+2. Enable logging (To be Implemented)
 
 Thawani For WooCommerce comes with a troubleshooting tool. This is in the form of logs. The logs are added each time a user orders an item, even if the payment fails.
 
 To enable logging make sure that the _Enable Logging_ checkbox is checked.
 
-![enable logging](./enable%20logging.png)
+![enable logging](./static/enable%20logging.png)
 
 To view the logs **Go to: WooCommerce > Status > Logs**
 
-![thawani logs](./logs.png)
+![thawani logs](./static/logs.png)
 
-The logs messages for this plugin follow the following format `thawani-<DATE-OF-ORDER-PLACEMENT>`.
+The logs messages for this plugin follow the following format `thawani-<DATE-OF-ORDER-PLACEMENT>`. -->
 
 ## Customer Checkout Flow
 
-![customer workflow](./customer_workflow.gif)
+![customer workflow](./static/customer_workflow.gif)
 
 Nothing will be change from WooCommerce's default customer checkout flow. Customers will see an option on their checkout page to select payment via Thawani as shown in the image below:
 
-![checkout with thawani](./checkout_page.png)
+![checkout with thawani](./static/checkout_page.png)
 
 ## Admin Order Fulfillment Flow
 
 To view all orders **Go to: WooCommerce > Orders**
 
-![go to order page](./order_page.png)
+![go to order page](./static/order_page.png)
 
 Note that this plugin automatically updates the order status as follows:
 
