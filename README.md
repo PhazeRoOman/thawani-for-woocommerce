@@ -48,6 +48,7 @@ This project makes Thawani's API accessible to the public. Making it easy for an
 - Checks for payment confirmation.
 - Track Session History
 - Logging to make debugging easy.
+- Sharable payment link
 
 ## Requirements
 
@@ -65,7 +66,7 @@ For live account, please create a [merchant account](https://thawani.om/merchant
 
 ![install the plugin](./static/thawani_install.gif)
 
-3. **Activate** the extension. (If you haven't alreay in the previous step)
+3. **Activate** the extension. (If you haven't already in the previous step)
 
 ![activate the plugin](./static/activate_plugin_blur.PNG)
 
@@ -134,7 +135,7 @@ The logs messages for this plugin follow the following format `thawani-<DATE-OF-
 The Thawani Gateway plugin keeps a record of all the sessions created to process payments and displays them for the admin. 
 
 The plugin keeps a record of:
-- A timestamp of when the session was created
+- Timestamp of when the session was created
 - Client refrence / Order ID
 - Customer Information
 - Payment Status
