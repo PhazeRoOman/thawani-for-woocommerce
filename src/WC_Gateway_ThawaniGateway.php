@@ -33,7 +33,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
     /**
      * @var bool true if logging is enabled
      */
-    protected $debug;
+    protected static $debug;
     /**
      * @var mixed true if allowing the plugin to enable saving cards
      */
@@ -50,6 +50,14 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
      * @var string HTTP GET name for wc-api callback
      */
     const GET_MER_REF = 'ref';
+    /**
+     * @var WC_logger object
+     */
+    private static $log = false;
+    /**
+     * @var boolean true if logging is enabled
+     */
+    private static $log_enabled  = false;
 
     public function __construct()
     {
@@ -64,6 +72,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         $this->publishable_key = $this->get_option('publishable_key');
         $this->environment = $this->get_option('environment');
         $this->debug = $this->get_option('debug');
+        self::$log_enabled = $this->debug;
         // disabled for now -- may updated later to enable this feature 
         // $this->is_save_cards = $this->get_option('save_cards');
         $this->api = new RestAPI($this->secret_key, $this->publishable_key, $this->environment);
@@ -483,5 +492,24 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
     public function get_session_token($order_id)
     {
         return get_post_meta($order_id, $this->get_field_name('session'));
+    }
+
+
+    /**
+     * Log a message in woocommerce plugin
+     * Message can be found in woocommerce -> status -> log
+     * 
+     * @param string $message
+     * 
+     * @return void
+     */
+    public function logger($message)
+    {
+        if (true) {
+            if (empty(self::$log)) {
+                self::$log = new \WC_Logger();
+            }
+            self::$log->add('thawani', $message);
+        }
     }
 }
