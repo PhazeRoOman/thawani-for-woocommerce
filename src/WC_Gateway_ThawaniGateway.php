@@ -31,6 +31,10 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
      */
     protected $environment;
     /**
+     * @var bool true if logging is enabled
+     */
+    protected $debug;
+    /**
      * @var mixed true if allowing the plugin to enable saving cards
      */
     protected $is_save_cards = null;
@@ -59,6 +63,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         $this->secret_key = $this->get_option('secret_key');
         $this->publishable_key = $this->get_option('publishable_key');
         $this->environment = $this->get_option('environment');
+        $this->debug = $this->get_option('debug');
         // disabled for now -- may updated later to enable this feature 
         // $this->is_save_cards = $this->get_option('save_cards');
         $this->api = new RestAPI($this->secret_key, $this->publishable_key, $this->environment);
@@ -248,7 +253,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                 'desc_tip' => true,
             ),
             'publishable_key' => array(
-                'title' => __('publishable Key', 'thawani'),
+                'title' => __('Publishable Key', 'thawani'),
                 'type' => 'text',
                 'description' => __('publishable key provided by Thawani', 'thawani'),
                 'desc_tip' => true,
@@ -266,9 +271,16 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                 'type' => 'select',
                 'options' => array(
                     'development' => 'Development',
-                    'production' => 'production',
+                    'production' => 'Production',
                 ),
                 'description' => __('USE THE DEVELOPMENT ENVIRONMENT FOR TESTING ONLY', 'thawani'),
+            ),
+            'debug' => array(
+                'title'       => __('Debug Log', 'thawani'),
+                'type'        => 'checkbox',
+                'label'       => __('Enable logging', 'thawani'),
+                'default'     => 'no',
+                'description' => sprintf(__('Log Thawani events', 'thawani'), wc_get_log_file_path('thawani'))
             ),
         ];
     }
@@ -319,7 +331,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
 
             $product_name = $item->get_data()['name'];
             if (strlen($product_name) > 40)
-                $product_name = mb_substr($product_name, 0, 30 , 'UTF-8') . '...';
+                $product_name = mb_substr($product_name, 0, 30, 'UTF-8') . '...';
             $products[] = [
                 'name' => $product_name,
                 'unit_amount' => ($unit_price / (int) $item->get_data()['quantity']),
