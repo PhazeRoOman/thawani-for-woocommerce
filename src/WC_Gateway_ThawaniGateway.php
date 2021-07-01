@@ -130,9 +130,6 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
             $session_token = $this->get_session_token($id);
             $response = $this->api->get_session($session_token[0]);
             //parse the response
-            $data = json_decode($response['body']);
-            var_dump($data);
-            exit;
             if ($data->success) {
                 $status = strtolower($data->data->payment_status);
                 switch ($status) {
@@ -410,6 +407,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
      */
     public function process_payment($order_id)
     {
+
         global $woocommerce;
         //create the order
         $order = new \WC_Order($order_id);
@@ -521,7 +519,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
      */
     public function logger($message)
     {
-        if (true) {
+        if (self::$log_enabled == 'yes') {
             if (empty(self::$log)) {
                 self::$log = new \WC_Logger();
             }
