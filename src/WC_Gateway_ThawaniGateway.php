@@ -413,35 +413,42 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         global $woocommerce;
         //create the order
         $order = new \WC_Order($order_id);
+
         $this->logger('📝Started payment process for order ' . $order->get_order_number());
-        $payload = $this->payload($order);
         $this->logger('📝Attempting to create Session');
+
+        $payload = $this->payload($order);
         $get_response = $this->api->create_session($payload);
         $response = json_decode($get_response['body']);
+
         if (isset($response->success) && $response->success) {
             $this->logger('📝Session Created Succesfully');
             $this->logger('📝Session ID: ' . $response->data->session_id);
+            $this->logger('📝Response Code: ' . $response->code);
+            $this->logger('📝Response Description: ' . $response->description);
+            $this->logger('📝Success URL: ' . $this->api->get_redirect_uri($response->data->session_id));
+            $this->logger('📝Cancel URL: ' . $this->get_return_url($order));
+
+            $this->set_session_token($response->data->session_id, $order->get_id());
             $order->update_status('wc-pending', __('waiting to complete the payment ', 'thawani'));
-            $array = array(
+            return array(
                 'result' => 'success',
                 'redirect' => $this->api->get_redirect_uri($response->data->session_id),
             );
-        } else {
-            $this->logger('📝Session creation Failed');
-            $order->update_status('wc-failed', __('Failed to redirect to the payment gateway', 'thawani'));
-            $array = array(
-                'result' => 'fail',
-                'redirect' => $this->get_return_url($order),
-            );
         }
+
+        $this->logger('📝Session creation Failed');
         $this->logger('📝Response Code: ' . $response->code);
         $this->logger('📝Response Description: ' . $response->description);
         $this->logger('📝Success URL: ' . $this->api->get_redirect_uri($response->data->session_id));
         $this->logger('📝Cancel URL: ' . $this->get_return_url($order));
-        $this->logger($array['redirect']);
-        $this->set_session_token($response->data->session_id, $order->get_id());
+
         $this->set_session_token('faild order', $order->get_id());
-        return $array;
+        $order->update_status('wc-failed', __('Failed to redirect to the payment gateway', 'thawani'));
+        return array(
+            'result' => 'fail',
+            'redirect' => $this->get_return_url($order),
+        );
     }
 
     /**
