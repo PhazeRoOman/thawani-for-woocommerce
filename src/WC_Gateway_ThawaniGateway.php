@@ -131,7 +131,8 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
             $response = $this->api->get_session($session_token[0]);
             //parse the response
             $data = json_decode($response['body']);
-
+            var_dump($data);
+            exit;
             if ($data->success) {
                 $status = strtolower($data->data->payment_status);
                 switch ($status) {
@@ -421,7 +422,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
             $this->logger('📝Session Created Succesfully');
             $this->logger('📝Session ID: ' . $response->data->session_id);
             $order->update_status('wc-pending', __('waiting to complete the payment ', 'thawani'));
-            $array =  array(
+            $array = array(
                 'result' => 'success',
                 'redirect' => $this->api->get_redirect_uri($response->data->session_id),
             );
@@ -437,6 +438,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         $this->logger('📝Response Description: ' . $response->description);
         $this->logger('📝Success URL: ' . $this->api->get_redirect_uri($response->data->session_id));
         $this->logger('📝Cancel URL: ' . $this->get_return_url($order));
+        $this->logger($array['redirect']);
         $this->set_session_token($response->data->session_id, $order->get_id());
         $this->set_session_token('faild order', $order->get_id());
         return $array;
