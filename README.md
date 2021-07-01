@@ -116,7 +116,7 @@ To setup a live account you need the following:
 
 
 
-2. Enable logging (To be Implemented)
+2. Enable logging
 
 Thawani For WooCommerce comes with a troubleshooting tool. This is in the form of logs. The logs are added each time a user orders an item, even if the payment fails.
 
