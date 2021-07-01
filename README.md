@@ -112,10 +112,9 @@ To setup a live account you need the following:
 - Add the following URL: `https//<YOUR-SITE-URL>/wc-api/thawani-payment-status` to the webhook URL section on the Thawani dashboard. Learn more by reading [Thawani's documentation](https://developer.thawani.om/).
 - Set the secret and publishable keys in the payment settings page to the secret and publishable keys provided by Thawani
 
-![live keys](./static/live_keys.png)
+![live keys](./static/keys.png)
 
 
-will update when implemented
 
 2. Enable logging (To be Implemented)
 
@@ -123,7 +122,7 @@ Thawani For WooCommerce comes with a troubleshooting tool. This is in the form o
 
 To enable logging make sure that the _Enable Logging_ checkbox is checked.
 
-![enable logging](./static/enable%20logging.png)
+![enable logging](./static/logging_enable.png)
 
 To view the logs **Go to: WooCommerce > Status > Logs**
 
