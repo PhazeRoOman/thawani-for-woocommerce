@@ -114,7 +114,7 @@ To setup a live account you need the following:
 
 ![live keys](./static/live_keys.png)
 
-<!-- 
+
 will update when implemented
 
 2. Enable logging (To be Implemented)
@@ -129,7 +129,8 @@ To view the logs **Go to: WooCommerce > Status > Logs**
 
 ![thawani logs](./static/logs.png)
 
-The logs messages for this plugin follow the following format `thawani-<DATE-OF-ORDER-PLACEMENT>`. -->
+The logs messages for this plugin follow the following format `thawani-<DATE-OF-ORDER-PLACEMENT>`.
+
 ## View Session History
 
 The Thawani Gateway plugin keeps a record of all the sessions created to process payments and displays them for the admin. 

@@ -130,6 +130,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
             $session_token = $this->get_session_token($id);
             $response = $this->api->get_session($session_token[0]);
             //parse the response
+            $data = json_decode($response['body']);
             if ($data->success) {
                 $status = strtolower($data->data->payment_status);
                 switch ($status) {
