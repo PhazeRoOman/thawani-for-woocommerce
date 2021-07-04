@@ -174,7 +174,6 @@ For more information about WooCommerce Orders, Go to: [Managing Orders](https://
 We welcome input from teh community please let us know how we can improve this plugin. Do not hesitate to ask us questions on the [issues](https://github.com/PhazeRoOman/thawani_gw/issues) page.
 
 
-## Main core developer 
-* Muhannad AL-Risi 
-    * whatsapp +968 72247666
-    * Email  muhannad.alrisi@gmail.com
+## Maintained By: 
+* PhazeRo 
+    * [PhazeRo Website](https://phaze.ro/)
