@@ -31,10 +31,6 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
      */
     protected $environment;
     /**
-     * @var bool true if logging is enabled
-     */
-    protected static $debug;
-    /**
      * @var mixed true if allowing the plugin to enable saving cards
      */
     protected $is_save_cards = null;
@@ -71,8 +67,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         $this->secret_key = $this->get_option('secret_key');
         $this->publishable_key = $this->get_option('publishable_key');
         $this->environment = $this->get_option('environment');
-        $this->debug = $this->get_option('debug');
-        self::$log_enabled = $this->debug;
+        self::log_enabled = ($this->get_option('debug') == "yes") ? true: false;
         // disabled for now -- may updated later to enable this feature 
         // $this->is_save_cards = $this->get_option('save_cards');
         $this->api = new RestAPI($this->secret_key, $this->publishable_key, $this->environment);
@@ -520,7 +515,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
      */
     public function logger($message)
     {
-        if (self::$log_enabled == 'yes') {
+        if (self::log_enabled){
             if (empty(self::$log)) {
                 self::$log = new \WC_Logger();
             }
