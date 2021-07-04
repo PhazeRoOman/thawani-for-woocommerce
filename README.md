@@ -175,4 +175,4 @@ We welcome input from teh community please let us know how we can improve this p
 
 
 ## Maintained By: 
-* [PhazeRo] (https://phaze.ro/)
+* [PhazeRo](https://phaze.ro/)
