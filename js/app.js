@@ -35,7 +35,6 @@ const messages = {
       qty: 'Quantity'
     },
     developed: 'This plugin developed by Muhannad Al-Risi',
-    footer_contact: 'Found an issue please send it to email muhannad.alrisi@gmail.com'
   },
   ar: {
     plugin: 'ثواني بوابة الدفع',
@@ -69,7 +68,6 @@ const messages = {
       qty: 'الكمية'
     },
     developed: 'تطوير مهند الريسي',
-    footer_contact: 'وجدت مشكلة الرجاء ارسالها الى muhannad.alrisi@gmail.com'
   }
 }
 
