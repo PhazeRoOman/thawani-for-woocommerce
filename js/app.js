@@ -34,7 +34,7 @@ const messages = {
       price: 'Price',
       qty: 'Quantity'
     },
-    developed: 'This plugin developed by Muhannad Al-Risi',
+    developed: 'This plugin developed by PhazeRo',
   },
   ar: {
     plugin: 'ثواني بوابة الدفع',
@@ -67,7 +67,7 @@ const messages = {
       price: 'السعر',
       qty: 'الكمية'
     },
-    developed: 'تطوير مهند الريسي',
+    developed: 'تطوير PhazeRo',
   }
 }
 
