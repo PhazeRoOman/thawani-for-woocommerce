@@ -134,9 +134,7 @@
       class="text-gray-500 bg-gray-100 shadow-sm p-3 rounded-mf flex space-x-4 container my-4 mx-auto"
     >
       <div>{{ $t("developed") }}</div>
-      <div>
-        {{ $t("footer_contact") }}
-      </div>
+     
     </div>
   </div>
 </template>
