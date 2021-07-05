@@ -112,24 +112,24 @@ To setup a live account you need the following:
 - Add the following URL: `https//<YOUR-SITE-URL>/wc-api/thawani-payment-status` to the webhook URL section on the Thawani dashboard. Learn more by reading [Thawani's documentation](https://developer.thawani.om/).
 - Set the secret and publishable keys in the payment settings page to the secret and publishable keys provided by Thawani
 
-![live keys](./static/live_keys.png)
+![live keys](./static/keys.png)
 
-<!-- 
-will update when implemented
 
-2. Enable logging (To be Implemented)
+
+2. Enable logging
 
 Thawani For WooCommerce comes with a troubleshooting tool. This is in the form of logs. The logs are added each time a user orders an item, even if the payment fails.
 
 To enable logging make sure that the _Enable Logging_ checkbox is checked.
 
-![enable logging](./static/enable%20logging.png)
+![enable logging](./static/logging_enable.png)
 
 To view the logs **Go to: WooCommerce > Status > Logs**
 
 ![thawani logs](./static/logs.png)
 
-The logs messages for this plugin follow the following format `thawani-<DATE-OF-ORDER-PLACEMENT>`. -->
+The logs messages for this plugin follow the following format `thawani-<DATE-OF-ORDER-PLACEMENT>`.
+
 ## View Session History
 
 The Thawani Gateway plugin keeps a record of all the sessions created to process payments and displays them for the admin. 
@@ -174,7 +174,5 @@ For more information about WooCommerce Orders, Go to: [Managing Orders](https://
 We welcome input from teh community please let us know how we can improve this plugin. Do not hesitate to ask us questions on the [issues](https://github.com/PhazeRoOman/thawani_gw/issues) page.
 
 
-## Main core developer 
-* Muhannad AL-Risi 
-    * whatsapp +968 72247666
-    * Email  muhannad.alrisi@gmail.com
+## Maintained By: 
+* [PhazeRo](https://phaze.ro/)

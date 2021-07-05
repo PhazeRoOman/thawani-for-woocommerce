@@ -46,6 +46,14 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
      * @var string HTTP GET name for wc-api callback
      */
     const GET_MER_REF = 'ref';
+    /**
+     * @var WC_logger object
+     */
+    private static $log = false;
+    /**
+     * @var boolean true if logging is enabled
+     */
+    private static $log_enabled  = false;
 
     public function __construct()
     {
@@ -59,6 +67,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         $this->secret_key = $this->get_option('secret_key');
         $this->publishable_key = $this->get_option('publishable_key');
         $this->environment = $this->get_option('environment');
+        self::log_enabled = ($this->get_option('debug') == "yes") ? true: false;
         // disabled for now -- may updated later to enable this feature 
         // $this->is_save_cards = $this->get_option('save_cards');
         $this->api = new RestAPI($this->secret_key, $this->publishable_key, $this->environment);
@@ -117,7 +126,6 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
             $response = $this->api->get_session($session_token[0]);
             //parse the response
             $data = json_decode($response['body']);
-
             if ($data->success) {
                 $status = strtolower($data->data->payment_status);
                 switch ($status) {
@@ -248,7 +256,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                 'desc_tip' => true,
             ),
             'publishable_key' => array(
-                'title' => __('publishable Key', 'thawani'),
+                'title' => __('Publishable Key', 'thawani'),
                 'type' => 'text',
                 'description' => __('publishable key provided by Thawani', 'thawani'),
                 'desc_tip' => true,
@@ -266,9 +274,16 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                 'type' => 'select',
                 'options' => array(
                     'development' => 'Development',
-                    'production' => 'production',
+                    'production' => 'Production',
                 ),
                 'description' => __('USE THE DEVELOPMENT ENVIRONMENT FOR TESTING ONLY', 'thawani'),
+            ),
+            'debug' => array(
+                'title'       => __('Debug Log', 'thawani'),
+                'type'        => 'checkbox',
+                'label'       => __('Enable logging', 'thawani'),
+                'default'     => 'no',
+                'description' => sprintf(__('Log Thawani events', 'thawani'), wc_get_log_file_path('thawani'))
             ),
         ];
     }
@@ -319,7 +334,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
 
             $product_name = $item->get_data()['name'];
             if (strlen($product_name) > 40)
-                $product_name = mb_substr($product_name, 0, 30 , 'UTF-8') . '...';
+                $product_name = mb_substr($product_name, 0, 30, 'UTF-8') . '...';
             $products[] = [
                 'name' => $product_name,
                 'unit_amount' => ($unit_price / (int) $item->get_data()['quantity']),
@@ -388,15 +403,25 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
      */
     public function process_payment($order_id)
     {
+
         global $woocommerce;
         //create the order
         $order = new \WC_Order($order_id);
+
+        $this->logger('📝Started payment process for order ' . $order->get_order_number());
+        $this->logger('📝Attempting to create Session');
 
         $payload = $this->payload($order);
         $get_response = $this->api->create_session($payload);
         $response = json_decode($get_response['body']);
 
         if (isset($response->success) && $response->success) {
+            $this->logger('📝Session Created Succesfully');
+            $this->logger('📝Session ID: ' . $response->data->session_id);
+            $this->logger('📝Response Code: ' . $response->code);
+            $this->logger('📝Response Description: ' . $response->description);
+            $this->logger('📝Success URL: ' . $this->api->get_redirect_uri($response->data->session_id));
+            $this->logger('📝Cancel URL: ' . $this->get_return_url($order));
 
             $this->set_session_token($response->data->session_id, $order->get_id());
             $order->update_status('wc-pending', __('waiting to complete the payment ', 'thawani'));
@@ -405,6 +430,12 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                 'redirect' => $this->api->get_redirect_uri($response->data->session_id),
             );
         }
+
+        $this->logger('📝Session creation Failed');
+        $this->logger('📝Response Code: ' . $response->code);
+        $this->logger('📝Response Description: ' . $response->description);
+        $this->logger('📝Success URL: ' . $this->api->get_redirect_uri($response->data->session_id));
+        $this->logger('📝Cancel URL: ' . $this->get_return_url($order));
 
         $this->set_session_token('faild order', $order->get_id());
         $order->update_status('wc-failed', __('Failed to redirect to the payment gateway', 'thawani'));
@@ -471,5 +502,24 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
     public function get_session_token($order_id)
     {
         return get_post_meta($order_id, $this->get_field_name('session'));
+    }
+
+
+    /**
+     * Log a message in woocommerce plugin
+     * Message can be found in woocommerce -> status -> log
+     * 
+     * @param string $message
+     * 
+     * @return void
+     */
+    public function logger($message)
+    {
+        if (self::log_enabled){
+            if (empty(self::$log)) {
+                self::$log = new \WC_Logger();
+            }
+            self::$log->add('thawani', $message);
+        }
     }
 }
