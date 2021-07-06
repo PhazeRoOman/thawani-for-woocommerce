@@ -34,8 +34,7 @@ const messages = {
       price: 'Price',
       qty: 'Quantity'
     },
-    developed: 'This plugin developed by Muhannad Al-Risi',
-    footer_contact: 'Found an issue please send it to email muhannad.alrisi@gmail.com'
+    developed: 'This plugin developed by PhazeRo',
   },
   ar: {
     plugin: 'ثواني بوابة الدفع',
@@ -68,8 +67,7 @@ const messages = {
       price: 'السعر',
       qty: 'الكمية'
     },
-    developed: 'تطوير مهند الريسي',
-    footer_contact: 'وجدت مشكلة الرجاء ارسالها الى muhannad.alrisi@gmail.com'
+    developed: 'تطوير PhazeRo',
   }
 }
 

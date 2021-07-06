@@ -2,9 +2,9 @@
 
 /**
  * Plugin Name: Thawani Express 
- * Plugin URI: https://Alrisi.net
- * Author: Muhannad Alrisi
- * Author URI: https://alrisi.net
+ * Plugin URI: https://phaze.ro/
+ * Author: PhazeRo
+ * Author URI: https://phaze.ro/
  * Description: Thawani Payments Gateway for Woocommerce.
  * Version: 1.1.6
  * License: GPL2
