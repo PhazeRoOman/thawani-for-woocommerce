@@ -1,4 +1,4 @@
-### This issue adresses:
+### This issue addresses:
 - [ ] A Bug in the plugin
 - [ ] A suggestion for improvment
 
