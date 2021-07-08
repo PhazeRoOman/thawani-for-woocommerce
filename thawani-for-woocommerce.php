@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: Thawani Express 
+ * Plugin Name: Thawani for WooCommerce
  * Plugin URI: https://phaze.ro/
  * Author: PhazeRo
  * Author URI: https://phaze.ro/
