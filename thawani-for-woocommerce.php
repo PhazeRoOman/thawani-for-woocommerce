@@ -6,7 +6,7 @@
  * Author: PhazeRo
  * Author URI: https://phaze.ro/
  * Description: Thawani Payments Gateway for Woocommerce.
- * Version: 1.1.6
+ * Version: 1.2.0
  * License: GPL2
  * License URL: http://www.gnu.org/licenses/gpl-2.0.txt
  * text-domain: thawani
