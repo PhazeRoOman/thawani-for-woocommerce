@@ -5,9 +5,8 @@ Author URI: https://phaze.ro/
 Description: Thawani Payments Gateway for Woocommerce.
 Version: 1.2.0
 License: MIT
-License URL: http://www.gnu.org/licenses/gpl-2.0.txt
+License URL: https://mit-license.org/
 text-domain: thawani
 Domain Path : /languages
 
 @package WooCommerce\Thawani
-
