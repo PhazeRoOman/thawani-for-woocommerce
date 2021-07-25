@@ -1,7 +1,7 @@
 <br />
 <p align="center">
   <a href="link to the projects website">
-    <img src="./asset/thawani.svg" alt="Logo" width="250" style="background-color: white">
+    <img src="./asset/thawani.svg" alt="Logo" width="150" style="background-color: white">
   </a>
 
   <h1 align="center">Thawani For WooCommerce</h1>
@@ -10,8 +10,6 @@
     Enables Credit/Debit card payments through Thawani on your WooCommerce shop.
     <br />
     <br />
-    <a href="https://phazero-my.sharepoint.com/:f:/g/personal/m_rawahi_phaze_ro/Eo6RM9fy_PVIpMsu_F8zAl4BqZ7iOez6tq9v1fqElfjxZg?e=P1oLhi">Explore the docs</a>
-    .
     <a href="https://github.com/PhazeRoOman/thawani-for-woocommerce/issues">Report a bug</a>
   </p>
 </p>
