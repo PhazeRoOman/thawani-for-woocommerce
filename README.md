@@ -42,7 +42,7 @@ This project makes Thawani's API accessible to the public. Making it easy for an
 
 ## Contribution
 
-The Thawani for Woocommerce plugin is an open source project since we wanted to allow the community to be a part of it's development. If you wish to contribute and be part of this project look at the [Contribute](./CONTRIBUTING.md) file.
+The Thawani for Woocommerce plugin is a community project launched by [PhazeRo](https://phaze.ro/) where we would like to give everyone the opportunity to be a part of it's development. If you wish to contribute and be part of this project look at the [Contribution](./CONTRIBUTING.md) file.
 
 ## Features
 
