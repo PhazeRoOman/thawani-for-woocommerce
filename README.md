@@ -40,6 +40,10 @@ The need for this project came from the shortage in the Omani market when it com
 
 This project makes Thawani's API accessible to the public. Making it easy for anyone to setup Credit & Debit Payment on their online store.
 
+## Contribution
+
+The Thawani for Woocommerce plugin is an open source project since we wanted to allow the community to be a part of it's development. If you wish to contribute and be part of this project look at the [Contribute](./CONTRIBUTING.md) file.
+
 ## Features
 
 - Credit & Debit card payment.
