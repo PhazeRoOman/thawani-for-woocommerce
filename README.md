@@ -1,7 +1,7 @@
 <br />
 <p align="center">
   <a href="link to the projects website">
-    <img src="https://github.com/PhazeRoOman/thawani-for-woocommerce/blob/167e4f7bebf797a2bea389f577bdadf90323add5/assets/thawani_logo.svg" alt="Logo" width="250" style="background-color: white">
+    <img src="./asset/thawani.svg" alt="Logo" width="150" style="background-color: white">
   </a>
 
   <h1 align="center">Thawani For WooCommerce</h1>
@@ -10,8 +10,6 @@
     Enables Credit/Debit card payments through Thawani on your WooCommerce shop.
     <br />
     <br />
-    <a href="https://phazero-my.sharepoint.com/:f:/g/personal/m_rawahi_phaze_ro/Eo6RM9fy_PVIpMsu_F8zAl4BqZ7iOez6tq9v1fqElfjxZg?e=P1oLhi">Explore the docs</a>
-    .
     <a href="https://github.com/PhazeRoOman/thawani-for-woocommerce/issues">Report a bug</a>
   </p>
 </p>
@@ -39,6 +37,10 @@ The need for this project came from the shortage in the Omani market when it com
 [Thawani Pay](https://thawani.om/about/) is a Payment Gateway that solves this problem. The [Thawani Checkout](https://thawani.om/checkout/) API, allows for transactions to be made using OMR.
 
 This project makes Thawani's API accessible to the public. Making it easy for anyone to setup Credit & Debit Payment on their online store.
+
+## Contribution
+
+The Thawani for Woocommerce plugin is a community project launched by [PhazeRo](https://phaze.ro/) where we would like to give everyone the opportunity to take part in its development. If you wish to contribute and be part of this project look at the [Contribution](./CONTRIBUTING.md) file.
 
 ## Features
 
