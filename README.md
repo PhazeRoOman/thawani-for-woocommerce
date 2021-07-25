@@ -1,7 +1,7 @@
 <br />
 <p align="center">
   <a href="link to the projects website">
-    <img src="https://github.com/PhazeRoOman/thawani-for-woocommerce/blob/167e4f7bebf797a2bea389f577bdadf90323add5/assets/thawani_logo.svg" alt="Logo" width="250" style="background-color: white">
+    <img src="./asset/thawani.svg" alt="Logo" width="250" style="background-color: white">
   </a>
 
   <h1 align="center">Thawani For WooCommerce</h1>
