@@ -10,7 +10,7 @@
     Enables Credit/Debit card payments through Thawani on your WooCommerce shop.
     <br />
     <br />
-    <a href="https://github.com/PhazeRoOman/thawani-for-woocommerce/issues">Report a bug</a>
+    <a href="https://github.com/PhazeRoOman/thawani-for-woocommerce/issues">Report a bug</a> | download
   </p>
 </p>
 
