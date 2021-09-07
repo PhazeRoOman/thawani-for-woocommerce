@@ -1,69 +1,57 @@
-sudo: false
-dist: trusty
-
 language: php
 
-notifications:
-  email:
-    on_success: never
-    on_failure: change
-
-branches:
-  only:
-    - master
+services:
+  - mysql
 
 cache:
   directories:
     - $HOME/.composer/cache
 
-matrix:
-  include:
-    - php: 7.4
-      env: WP_VERSION=latest
-    - php: 7.3
-      env: WP_VERSION=latest
-    - php: 7.2
-      env: WP_VERSION=latest
-    - php: 7.1
-      env: WP_VERSION=latest
-    - php: 7.0
-      env: WP_VERSION=latest
-    - php: 5.6
-      env: WP_VERSION=latest
-    - php: 5.6
-      env: WP_VERSION=trunk
-    - php: 5.6
-      env: WP_TRAVISCI=phpcs
 
-before_script:
+php:
+  - 7.4snapshot
+  - 7.3
+
+# Test against the latest version of WordPress and one version back.
+env:
+  - WP_VERSION=latest
+
+
+matrix:
+  fast_finish: true
+  include:
+    - name: Coding standards
+      php: 7.3
+      env: WP_VERSION=latest
+
+  
+  allow_failures:
+    - name: Bleeding edge
+
+before_install:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - |
-    if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
-      phpenv config-rm xdebug.ini
-    else
-      echo "xdebug.ini does not exist"
-    fi
-  - |
-    if [[ ! -z "$WP_VERSION" ]] ; then
-      bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-      composer global require "phpunit/phpunit=4.8.*|5.7.*"
-    fi
-  - |
-    if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
-      composer global require wp-coding-standards/wpcs
-      composer global require phpcompatibility/php-compatibility
-      composer global require phpcompatibility/phpcompatibility-paragonie
-      composer global require phpcompatibility/phpcompatibility-wp
-      phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs,$HOME/.composer/vendor/phpcompatibility/php-compatibility,$HOME/.composer/vendor/phpcompatibility/phpcompatibility-paragonie,$HOME/.composer/vendor/phpcompatibility/phpcompatibility-wp
-    fi
+
+  # Unless we need XDebug, disable it for improved performance.
+  - phpenv config-rm xdebug.ini || return 0
+
+install:
+  # Install our Composer dependencies
+  - composer install --prefer-dist --no-interaction
+
+  # Install the WordPress core test suite
+  - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
 
 script:
   - |
-    if [[ ! -z "$WP_VERSION" ]] ; then
-      phpunit
-      WP_MULTISITE=1 phpunit
-    fi
-  - |
-    if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
-      phpcs
+    # If we've set the $WP_TRAVISCI variable to run PHPCS, do that instead
+    # of running PHPUnit.
+    if [[ "$WP_TRAVISCI" == "phpcs" ]]; then
+      ./vendor/bin/phpcs
+
+    else
+      # Execute the test suite
+      ./vendor/bin/phpunit
+
+      # Optionally run the tests again in a multisite environment
+      #WP_MULTISITE=1 ./vendor/bin/phpunit
     fi
