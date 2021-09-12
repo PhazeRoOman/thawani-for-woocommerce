@@ -173,11 +173,11 @@ For more information about WooCommerce Orders, Go to: [Managing Orders](https://
 
 ## Frequently Asked Questions
 
-We welcome input from teh community please let us know how we can improve this plugin. Do not hesitate to ask us questions on the [issues](https://github.com/PhazeRoOman/thawani_gw/issues) page.
+We welcome input from the community please let us know how we can improve this plugin. Do not hesitate to ask us questions on the [issues](https://github.com/PhazeRoOman/thawani_gw/issues) page.
 
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License. See [License] (https://github.com/PhazeRoOman/thawani-for-woocommerce/blob/changes/LICENSE.md) for more information.
 
 ## Maintained By: 
 * [PhazeRo](https://phaze.ro/)
