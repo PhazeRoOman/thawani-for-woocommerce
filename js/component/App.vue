@@ -121,6 +121,7 @@
           {{ $t("prev") }}
         </div>
         <div
+          v-if="sessionList !== undefined"
           @click="nextPage()"
           class="inline-block bg-blue-500 text-white transition duration-300 p-3 w-20 text-center -m-1 rounded-md shadow cursor-pointer hover:bg-blue-700"
         >
