@@ -13,7 +13,9 @@
     <a href="https://github.com/PhazeRoOman/thawani-for-woocommerce/issues">Report a bug</a>
   </p>
 </p>
-
+  <p align="center">
+  <a href="https://github.com/PhazeRoOman/thawani-for-woocommerce/releases/latest/download/thawani-for-woocommerce.zip">Download latest release</a>
+</p>
 <br />
 
 > <br>
@@ -100,7 +102,7 @@ For the plugin to work properly, please make sure that your permalink settings a
 
 In development environment you will be able to make mock payments to simulate the payment processing flow of a live account.
 
-When you are in development mode you will need to use the User Acceptable Test ("UAT") secret and publishable keys and __not__ your own secret and publishable keys. These two keys can be found on the [Thawani documentation](https://developer.thawani.om/).
+When you are in development mode you will need to use the User Acceptable Test ("UAT") secret and publishable keys and **not** your own secret and publishable keys. These two keys can be found on the [Thawani documentation](https://developer.thawani.om/).
 
 - Production Environment
 
@@ -115,8 +117,6 @@ To setup a live account you need the following:
 - Set the secret and publishable keys in the payment settings page to the secret and publishable keys provided by Thawani
 
 ![live keys](./static/keys.png)
-
-
 
 2. Enable logging
 
@@ -134,9 +134,10 @@ The logs messages for this plugin follow the following format `thawani-<DATE-OF-
 
 ## View Session History
 
-The Thawani Gateway plugin keeps a record of all the sessions created to process payments and displays them for the admin. 
+The Thawani Gateway plugin keeps a record of all the sessions created to process payments and displays them for the admin.
 
 The plugin keeps a record of:
+
 - Timestamp of when the session was created
 - Client refrence / Order ID
 - Customer Information
@@ -179,5 +180,6 @@ We welcome input from the community please let us know how we can improve this p
 
 Distributed under the MIT License. See [License] (https://github.com/PhazeRoOman/thawani-for-woocommerce/blob/changes/LICENSE.md) for more information.
 
-## Maintained By: 
-* [PhazeRo](https://phaze.ro/)
+## Maintained By:
+
+- [PhazeRo](https://phaze.ro/)
