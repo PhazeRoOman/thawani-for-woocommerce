@@ -4,7 +4,7 @@
 
 ## 1. Project Description:
 ### Prerequisite
-The aim of this section is to introduce the prerequisite for developers that are new to *WordPress plugin development*, and are interested in contributing to this project. Listed below are references to important topics for developers to go through before considering to contribute to the *thawani-for-woocommerce* repository.
+The aim of this section is to introduce the prerequisite for developers that are new to *WordPress plugin development*, and are interested in contributing to this project. Listed below are references to important topics for developers to go through before considering contributing to the *thawani-for-woocommerce* repository.
 
 - [WordPress Filing Structure](https://www.wpbeginner.com/beginners-guide/beginners-guide-to-wordpress-file-and-directory-structure/)
 
