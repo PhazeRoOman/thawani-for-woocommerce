@@ -10,11 +10,12 @@ The aim of this section is to introduce the prerequisite for developers that are
 
 - [WordPress Functions](https://vegibit.com/the-top-100-most-commonly-used-wordpress-functions/)
 
+- [What is WooCommerce](https://ithemes.com/tutorials/what-is-woocommerce/)
+
 - [How to build a WordPress plugin](https://www.wpbeaverbuilder.com/creating-wordpress-plugin-easier-think/)
 
 - [How to build a payment gateway](https://rudrastyh.com/woocommerce/payment-gateway-plugin.html)
 
-- [What is WooCommerce](https://ithemes.com/tutorials/what-is-woocommerce/)
 
 ### User Interface (UI):
 In order to work on the UI of the session history tab you can find all relevant files in the js directory including all the vue components as well as the app.js file
