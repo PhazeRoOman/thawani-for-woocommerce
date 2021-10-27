@@ -3,6 +3,20 @@
 
 
 ## 1. Project Description:
+### Prerequisite
+The aim of this section is to introduce the prerequisite for developers that are new to *WordPress plugin development*, and are interested in contributing to this project. Listed below are references to important topics for developers to go through before considering contributing to the *thawani-for-woocommerce* repository.
+
+- [WordPress Filing Structure](https://www.wpbeginner.com/beginners-guide/beginners-guide-to-wordpress-file-and-directory-structure/)
+
+- [WordPress Functions](https://vegibit.com/the-top-100-most-commonly-used-wordpress-functions/)
+
+- [What is WooCommerce](https://ithemes.com/tutorials/what-is-woocommerce/)
+
+- [How to build a WordPress plugin](https://www.wpbeaverbuilder.com/creating-wordpress-plugin-easier-think/)
+
+- [How to build a payment gateway](https://rudrastyh.com/woocommerce/payment-gateway-plugin.html)
+
+
 ### User Interface (UI):
 In order to work on the UI of the session history tab you can find all relevant files in the js directory including all the vue components as well as the app.js file
 
@@ -12,7 +26,7 @@ You can find all the PHP files used to run the server side requests in the src d
 - The HTTP requests made to the thawani API (./WC_Gateway_ThawaniGateway.php)
 
 #### Coding Standards:
-- Please remaining consistent with indendations and fuction structures
+- Please remain consistent with indentations and function structures
 - Ensure your code is well commented
 - Ensure your code is clear and understandable
 - Use short and descriptive variable and function names
@@ -25,11 +39,11 @@ You can find all the PHP files used to run the server side requests in the src d
 
 
 ### Vuejs 
-For front-end development we utilise the Vuejs framework with [laravel-mix](https://laravel-mix.com/) for building developemnt/prodution js bundles.
+For front-end development we utilise the Vuejs framework with [laravel-mix](https://laravel-mix.com/) for building development/production js bundles.
 
 #### During development 
 1. Ensure that nodejs is installed 
-2. Install nodejs dependancies by `npm i`
+2. Install nodejs dependencies by `npm i`
 3. Start development HRM by running `npm run hot`
     3.1 This will load the bundle in port 8080 `http://localhost:8080/dist/app.js`
 4. open `template/index.php` and add the full link of the running bundle. 
@@ -52,7 +66,7 @@ When creating an issue or starting a conversation in the discussions tab:
 - Stick to the issues template
 - Try to be as descriptive as possible
 - Make the issue or idea clear
-- Please refreain from discussing or addressing issues irrelavent to the plugin
+- Please refrain from discussing or addressing issues irrelevant to the plugin
 
 ## 3. Pull Requests
 After you finish implementing your feature or fixing a bug:
