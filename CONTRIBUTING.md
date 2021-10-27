@@ -10,7 +10,7 @@ The aim of this section is to introduce the prerequisite for developers that are
 
 - [WordPress Functions](https://vegibit.com/the-top-100-most-commonly-used-wordpress-functions/)
 
-- [How to build a WordPress plugin](https://https://www.wpbeginner.com/beginners-guide/beginners-guide-to-wordpress-file-and-directory-structure/codeable.io/blog/wordpress-plugin-development/)
+- [How to build a WordPress plugin](https://www.wpbeaverbuilder.com/creating-wordpress-plugin-easier-think/)
 
 - [How to build a payment gateway](https://rudrastyh.com/woocommerce/payment-gateway-plugin.html)
 
@@ -25,7 +25,7 @@ You can find all the PHP files used to run the server side requests in the src d
 - The HTTP requests made to the thawani API (./WC_Gateway_ThawaniGateway.php)
 
 #### Coding Standards:
-- Please remaining consistent with indentations and function structures
+- Please remain consistent with indentations and function structures
 - Ensure your code is well commented
 - Ensure your code is clear and understandable
 - Use short and descriptive variable and function names
