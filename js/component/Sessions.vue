@@ -63,7 +63,9 @@
             {{ price_format(session.total_amount) }}
           </div>
           <div>
-            <button>{{$t('refund')}}</button>
+            <button 
+            class="bg-blue-100 text-blue-500 hover:bg-blue-900 hover:text-white rounded inline-block p-1 w-full lg:w-4/5 shadow text-center uppercase"
+            >{{$t('refund')}}</button>
           </div>
         </div>
       </div>
