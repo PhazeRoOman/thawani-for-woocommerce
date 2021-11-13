@@ -27,6 +27,10 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
      **/
     protected $publishable_key;
     /**
+     * @var string Success order status
+     */
+    protected $order_status;
+    /**
      * @var string The environment holder of the plugin
      */
     protected $environment;
@@ -67,6 +71,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         $this->secret_key = $this->get_option('secret_key');
         $this->publishable_key = $this->get_option('publishable_key');
         $this->environment = $this->get_option('environment');
+        $this->order_status = $this->get_option('status');
         self::$log_enabled = ($this->get_option('debug') == "yes") ? true: false;
         // disabled for now -- may updated later to enable this feature 
         // $this->is_save_cards = $this->get_option('save_cards');
