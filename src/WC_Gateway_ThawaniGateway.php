@@ -281,6 +281,8 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                     'processing' => __('processing' , 'thawani'),
                     'completed' => __('completed', 'thawani'),
                 ),
+                'description' => __('This is the status that your order will be in after payment is completed', 'thawani'),
+                'desc_tip' => true,
             ),'environment' => array(
                 'title' => __('Select the environment', 'thawani'),
                 'type' => 'select',
