@@ -25,7 +25,13 @@ class Refund{
     { 
         $this->api = $api;
     }
-
+    /**
+     * Get refund details by passing the refund ID
+     * 
+     * @param string $refund_id
+     * 
+     * @return array Response
+     */
     public function get($refund_id)
     {
         return wp_remote_get(
@@ -35,7 +41,13 @@ class Refund{
             ]
         );
     }
-
+    /**
+     * Get the list of the refunds 
+     * 
+     * @param array $http_query skip and limit
+     * 
+     * @return array Response 
+     */
     public function get_all($http_query = null)
     {
         if($http_query == null) {
@@ -55,7 +67,13 @@ class Refund{
             );
         }
     }
-
+    /**
+     * Create new refund 
+     * 
+     * @param array $payload 
+     * 
+     * @return array Response
+     */
     public function create($payload)
     {
         return wp_remote_post(
