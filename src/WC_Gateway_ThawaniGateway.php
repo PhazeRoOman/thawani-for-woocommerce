@@ -219,7 +219,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         $order = wc_get_order($order_id);
         $order_thanks_page = $this->get_return_url($order);
 
-        $order->update_status('wc-processing', __('payment Success', 'thawani'));
+        $order->update_status('wc-'.$this->order_status, __('payment Success', 'thawani'));
 
         wp_redirect($order_thanks_page);
         exit;
