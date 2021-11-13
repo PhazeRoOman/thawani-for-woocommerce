@@ -34,6 +34,7 @@ const messages = {
       price: 'Price',
       qty: 'Quantity'
     },
+    refund: 'Refund',
     developed: 'This plugin developed by PhazeRo',
   },
   ar: {

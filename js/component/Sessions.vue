@@ -2,18 +2,19 @@
   <div class="my-2 p-2">
     <div class="shadow-md">
       <div
-        class="hidden md:grid md:grid-cols-5 md:gap-2 font-semibold bg-gray-100 text-thawani text-base p-2 rounded-md border-b-2"
+        class="hidden md:grid md:grid-cols-6 md:gap-2 font-semibold bg-gray-100 text-thawani text-base p-2 rounded-md border-b-2"
       >
         <div>{{ $t("created_at") }}</div>
         <div>{{ $t("order_id") }}</div>
         <div>{{ $t("customer_info") }}</div>
         <div>{{ $t("payment_status.title") }}</div>
         <div>{{ $t("total_amount") }}</div>
+        <div>{{ $t("refund") }}</div>
       </div>
 
       <div v-if="sessions">
         <div
-          class="grid grid-row-5 md:grid-cols-5 md:gap-2 items-center font-semibold bg-gray-50 text-gray-500 text-base p-2 rounded-md hover:bg-blue-100"
+          class="grid grid-row-6 md:grid-cols-6 md:gap-2 items-center font-semibold bg-gray-50 text-gray-500 text-base p-2 rounded-md hover:bg-blue-100"
           v-for="(session, index) in sessions"
           :key="index"
           :class="{ 'bg-gray-100': index % 2 == 0 }"
@@ -60,6 +61,9 @@
           <div>
             <div class="text-thawani md:hidden">{{ $t("total_amount") }}</div>
             {{ price_format(session.total_amount) }}
+          </div>
+          <div>
+            <button>{{$t('refund')}}</button>
           </div>
         </div>
       </div>
