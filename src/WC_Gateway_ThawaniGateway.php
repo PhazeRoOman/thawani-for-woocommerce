@@ -27,6 +27,10 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
      **/
     protected $publishable_key;
     /**
+     * @var string Success order status
+     */
+    protected $order_status;
+    /**
      * @var string The environment holder of the plugin
      */
     protected $environment;
@@ -67,6 +71,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         $this->secret_key = $this->get_option('secret_key');
         $this->publishable_key = $this->get_option('publishable_key');
         $this->environment = $this->get_option('environment');
+        $this->order_status = $this->get_option('status');
         self::$log_enabled = ($this->get_option('debug') == "yes") ? true: false;
         // disabled for now -- may updated later to enable this feature 
         // $this->is_save_cards = $this->get_option('save_cards');
@@ -214,7 +219,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         $order = wc_get_order($order_id);
         $order_thanks_page = $this->get_return_url($order);
 
-        $order->update_status('wc-processing', __('payment Success', 'thawani'));
+        $order->update_status('wc-'.$this->order_status, __('payment Success', 'thawani'));
 
         wp_redirect($order_thanks_page);
         exit;
@@ -269,7 +274,16 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
             //     'description' => '',
             //     'default' => 'no',
             // ),
-            'environment' => array(
+            'status' => array(
+                'title' => __('Select complete order status', 'thawani'),
+                'type' => 'select',
+                'options' => array(
+                    'processing' => __('processing' , 'thawani'),
+                    'completed' => __('completed', 'thawani'),
+                ),
+                'description' => __('This is the status that your order will be in after payment is completed', 'thawani'),
+                'desc_tip' => true,
+            ),'environment' => array(
                 'title' => __('Select the environment', 'thawani'),
                 'type' => 'select',
                 'options' => array(
