@@ -34,7 +34,7 @@
             v-model="select"
             type="radio"
             id="option1"
-            value="Wrong product on order"
+            value="option1 "
           />
           Wrong product on order</label
         >
@@ -53,7 +53,7 @@
             v-model="select"
             type="radio"
             id="option2"
-            value="Wrong product on order"
+            value="yopn 2"
           />
           Canceled order</label
         >
@@ -72,7 +72,7 @@
             v-model="select"
             type="radio"
             id="option3"
-            value="Wrong product on order"
+            value="option 3"
           />
           Repeated order</label
         >
@@ -122,8 +122,14 @@ export default {
   },
   watch: {
     select: function (val) {
-      if (val.toLowerCase() == "other") this.isOtherSelected = true;
-      else this.isOtherSelected = false;
+      if (val.toLowerCase() == "other") {
+        this.isOtherSelected = true;
+        this.$nextTick(()=> { 
+          this.focusOnTextarea()
+        })
+      }else {
+        this.isOtherSelected = false;
+      }
     },
   },
   methods: {
