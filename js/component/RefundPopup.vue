@@ -33,7 +33,6 @@
           ><input
             v-model="select"
             type="radio"
-            name="option"
             id="option1"
             value="Wrong product on order"
           />
@@ -54,7 +53,6 @@
             v-model="select"
             type="radio"
             id="option2"
-            name="option"
             value="Wrong product on order"
           />
           Canceled order</label
@@ -73,8 +71,7 @@
           <input
             v-model="select"
             type="radio"
-            name="option"
-            id="option"
+            id="option3"
             value="Wrong product on order"
           />
           Repeated order</label
@@ -93,7 +90,6 @@
           ><input
             v-model="select"
             type="radio"
-            name="option"
             id="option4"
             value="other"
           />
