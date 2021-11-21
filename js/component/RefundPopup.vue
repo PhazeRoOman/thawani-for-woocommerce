@@ -108,6 +108,9 @@
       <button class="bg-blue-800 text-white rounded block w-full uppercase p-2">
         Send
       </button>
+      <button class="mt-1 border border-blue-800 text-blue-800 rounded block w-full uppercase p-2">
+        Close
+      </button>
     </div>
   </div>
 </template>
