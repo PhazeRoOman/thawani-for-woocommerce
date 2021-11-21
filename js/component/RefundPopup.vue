@@ -7,20 +7,20 @@
       <ul class="my-2">
         <li
           class="border border-blue-500 p-2 rounded hover:bg-blue-500 hover:text-white cursor-pointer"
-        >Wrong product on order </li>
+        ><label for="option1" class="block"><input v-model="select" type="radio" name="option" id="option1" value="Wrong product on order" /> Wrong product on order</label> </li>
         <li
           class="border border-blue-500 p-2 rounded hover:bg-blue-500 hover:text-white cursor-pointer"
-        >Canceled order</li>
+        ><label for="option2" class="block"><input v-model="select" type="radio" id="option2" name="option" value="Wrong product on order" /> Canceled order</label></li>
         <li
           class="border border-blue-500 p-2 rounded hover:bg-blue-500 hover:text-white cursor-pointer"
-        >Repeated order</li>
+        ><label for="option3" class="block"><input v-model="select" type="radio" name="option" id="option3" value="Wrong product on order" /> Repeated order</label></li>
         <li
           class="border border-blue-500 p-2 rounded hover:bg-blue-500 hover:text-white cursor-pointer"
-        >Other</li>
+        ><label for="option4" class="block"><input v-model="select" type="radio" name="option" id="option4" value="other" /> Other </label></li>
       </ul>
       <div>
-        <textarea name="message" id="message" class="h-32 w-full bg-gray-50 border rounded p-1">I'm typing here
-        </textarea>
+        <textarea :disabled="!isOtherSelected"
+        name="message" id="message" class="h-32 w-full bg-gray-50 border rounded p-1">I'm typing here</textarea>
         <button class="bg-blue-800 text-white rounded block w-full uppercase p-2">
           Send
         </button>
@@ -29,6 +29,20 @@
 </template>
 <script>
 export default {
-    name: "RefundPopup"
+    name: "RefundPopup",
+    data(){
+      return {
+        select: '',
+        isOtherSelected: false
+      };
+    },
+    watch: {
+      select: function(val) { 
+        if (val.toLowerCase() == 'other')
+          this.isOtherSelected = true
+        else 
+          this.isOtherSelected = false
+      }
+    }
 }
 </script>
