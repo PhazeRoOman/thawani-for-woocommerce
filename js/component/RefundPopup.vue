@@ -1,48 +1,139 @@
 <template>
-    <div class="bg-white text-base p-4 fixed left-0 right-0 w-full lg:w-2/6 top-12 lg:top-32 mx-auto rounded">
-      <h1 class="uppercase text-2xl font-bold my-2">{{$t('refund')}}</h1>
-      <p class="text-gray-500 text-base">
-        I want to refund the customer because of
-      </p>
-      <ul class="my-2">
-        <li
-          class="border border-blue-500 p-2 rounded hover:bg-blue-500 hover:text-white cursor-pointer"
-        ><label for="option1" class="block"><input v-model="select" type="radio" name="option" id="option1" value="Wrong product on order" /> Wrong product on order</label> </li>
-        <li
-          class="border border-blue-500 p-2 rounded hover:bg-blue-500 hover:text-white cursor-pointer"
-        ><label for="option2" class="block"><input v-model="select" type="radio" id="option2" name="option" value="Wrong product on order" /> Canceled order</label></li>
-        <li
-          class="border border-blue-500 p-2 rounded hover:bg-blue-500 hover:text-white cursor-pointer"
-        ><label for="option3" class="block"><input v-model="select" type="radio" name="option" id="option3" value="Wrong product on order" /> Repeated order</label></li>
-        <li
-          class="border border-blue-500 p-2 rounded hover:bg-blue-500 hover:text-white cursor-pointer"
-        ><label for="option4" class="block"><input v-model="select" type="radio" name="option" id="option4" value="other" /> Other </label></li>
-      </ul>
-      <div>
-        <textarea :disabled="!isOtherSelected"
-        name="message" id="message" class="h-32 w-full bg-gray-50 border rounded p-1">I'm typing here</textarea>
-        <button class="bg-blue-800 text-white rounded block w-full uppercase p-2">
-          Send
-        </button>
-      </div>
+  <div
+    class="
+      bg-white
+      text-base
+      p-4
+      fixed
+      left-0
+      right-0
+      w-full
+      lg:w-2/6
+      top-12
+      lg:top-32
+      mx-auto
+      rounded
+    "
+  >
+    <h1 class="uppercase text-2xl font-bold my-2">{{ $t("refund") }}</h1>
+    <p class="text-gray-500 text-base">
+      I want to refund the customer because of
+    </p>
+    <ul class="my-2">
+      <li
+        class="
+          border border-blue-500
+          p-2
+          rounded
+          hover:bg-blue-500 hover:text-white
+          cursor-pointer
+        "
+      >
+        <label for="option1" class="block"
+          ><input
+            v-model="select"
+            type="radio"
+            name="option"
+            id="option1"
+            value="Wrong product on order"
+          />
+          Wrong product on order</label
+        >
+      </li>
+      <li
+        class="
+          border border-blue-500
+          p-2
+          rounded
+          hover:bg-blue-500 hover:text-white
+          cursor-pointer
+        "
+      >
+        <label for="option2" class="block"
+          ><input
+            v-model="select"
+            type="radio"
+            id="option2"
+            name="option"
+            value="Wrong product on order"
+          />
+          Canceled order</label
+        >
+      </li>
+      <li
+        class="
+          border border-blue-500
+          p-2
+          rounded
+          hover:bg-blue-500 hover:text-white
+          cursor-pointer
+        "
+      >
+        <label for="option3" class="block">
+          <input
+            v-model="select"
+            type="radio"
+            name="option"
+            id="option"
+            value="Wrong product on order"
+          />
+          Repeated order</label
+        >
+      </li>
+      <li
+        class="
+          border border-blue-500
+          p-2
+          rounded
+          hover:bg-blue-500 hover:text-white
+          cursor-pointer
+        "
+      >
+        <label for="option4" class="block" @click="focusOnTextarea"
+          ><input
+            v-model="select"
+            type="radio"
+            name="option"
+            id="option4"
+            value="other"
+          />
+          Other
+        </label>
+      </li>
+    </ul>
+    <div>
+      <textarea
+        :disabled="!isOtherSelected"
+        name="message"
+        id="message"
+        ref="message"
+        class="h-32 w-full bg-gray-50 border rounded p-1"
+      ></textarea>
+      <button class="bg-blue-800 text-white rounded block w-full uppercase p-2">
+        Send
+      </button>
     </div>
+  </div>
 </template>
 <script>
 export default {
-    name: "RefundPopup",
-    data(){
-      return {
-        select: '',
-        isOtherSelected: false
-      };
+  name: "RefundPopup",
+  data() {
+    return {
+      select: "",
+      isOtherSelected: false,
+    };
+  },
+  watch: {
+    select: function (val) {
+      if (val.toLowerCase() == "other") this.isOtherSelected = true;
+      else this.isOtherSelected = false;
     },
-    watch: {
-      select: function(val) { 
-        if (val.toLowerCase() == 'other')
-          this.isOtherSelected = true
-        else 
-          this.isOtherSelected = false
-      }
-    }
-}
+  },
+  methods: {
+    focusOnTextarea() {
+      this.$refs.message.focus();
+    },
+  },
+};
 </script>
