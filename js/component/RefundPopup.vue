@@ -20,10 +20,10 @@
   >
     <h1 class="text-2xl font-bold my-2">
       <span class="uppercase">{{ $t("refund") }}</span>
-      <small class="text-sm">Order #283493</small>
+      <small class="text-sm"> {{$t('order')}} #283493</small>
     </h1>
     <p class="text-gray-500 text-base">
-      I want to refund the customer because of
+      {{ $t('refund_option_description')}}
     </p>
     <ul class="my-2">
       <li
@@ -40,9 +40,9 @@
             v-model="select"
             type="radio"
             id="option1"
-            value="option1 "
+            :value="$t('refund_option.wrong_product')"
           />
-          Wrong product on order</label
+          {{$t('refund_option.wrong_product')}}</label
         >
       </li>
       <li
@@ -59,9 +59,9 @@
             v-model="select"
             type="radio"
             id="option2"
-            value="yopn 2"
+            :value="$t('refund_option.cancel_order')"
           />
-          Canceled order</label
+          {{$t('refund_option.wrong_product')}}</label
         >
       </li>
       <li
@@ -78,9 +78,9 @@
             v-model="select"
             type="radio"
             id="option3"
-            value="option 3"
+            :value="$t('refund_option.repeated_order')"
           />
-          Repeated order</label
+          {{$t('refund_option.repeated_order')}}</label
         >
       </li>
       <li
@@ -99,7 +99,7 @@
             id="option4"
             value="other"
           />
-          Other
+          {{$t('refund_option.other')}}
         </label>
       </li>
     </ul>
@@ -112,10 +112,10 @@
         class="h-32 w-full bg-gray-50 border rounded p-1"
       ></textarea>
       <button class="bg-blue-800 text-white rounded block w-full uppercase p-2">
-        Send
+        {{$t('send')}}
       </button>
       <button class="mt-1 text-gray-500 rounded block w-full uppercase p-2 hover:underline">
-        Close
+        {{$t('close')}}
       </button>
     </div>
   </div>

@@ -35,6 +35,15 @@ const messages = {
       qty: 'Quantity'
     },
     refund: 'Refund',
+    order: 'Order',
+    refund_option_description: 'I want to refund because of the following:',
+    refund_option: {
+      wrong_product: 'Wrong product on Order',
+      cancel_order: 'Cancelled Order',
+      repeated_order: 'Repeated Order',
+      other: 'Other'
+    },
+    send: "Send",
     developed: 'This plugin developed by PhazeRo',
   },
   ar: {
