@@ -15,7 +15,10 @@
       rounded
     "
   >
-    <h1 class="uppercase text-2xl font-bold my-2">{{ $t("refund") }}</h1>
+    <h1 class="text-2xl font-bold my-2">
+      <span class="uppercase">{{ $t("refund") }}</span>
+      <small class="text-sm">Order #283493</small>
+    </h1>
     <p class="text-gray-500 text-base">
       I want to refund the customer because of
     </p>
