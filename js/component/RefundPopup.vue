@@ -3,16 +3,17 @@
     class="
       bg-white
       text-base
-      p-4
+      p-20
       fixed
       left-0
       right-0
       w-full
-      lg:w-2/6
+      lg:w-3/6
       top-12
       lg:top-32
       mx-auto
       rounded
+      z-20
     "
   >
     <h1 class="text-2xl font-bold my-2">
