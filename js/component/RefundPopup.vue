@@ -111,7 +111,7 @@
       <button class="bg-blue-800 text-white rounded block w-full uppercase p-2">
         Send
       </button>
-      <button class="mt-1 border border-blue-800 text-blue-800 rounded block w-full uppercase p-2">
+      <button class="mt-1 text-gray-500 rounded block w-full uppercase p-2 hover:underline">
         Close
       </button>
     </div>
