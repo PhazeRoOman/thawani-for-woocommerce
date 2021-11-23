@@ -3,7 +3,8 @@
     class="
       bg-white
       text-base
-      p-20
+      px-20
+      py-8
       fixed
       left-0
       right-0
@@ -11,6 +12,7 @@
       lg:w-3/6
       top-12
       lg:top-32
+      lg:p-8
       mx-auto
       rounded
       z-20
