@@ -171,6 +171,7 @@ export default {
       page: 1,
       limit: 10,
       isRefund: false,
+      refundData: null,
       selectedIndex: -1, // -1 means that the window is closed
       tabs: {
         session: true,
@@ -301,6 +302,7 @@ export default {
     },
     showRefundPopup(data){
       this.isRefund = true
+      this.refundData = data
     },
     hideRefundPopup(value){
       this.isRefund = !value
