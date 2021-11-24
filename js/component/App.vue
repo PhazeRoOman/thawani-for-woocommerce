@@ -3,6 +3,7 @@
     <RefundPopup 
       v-if="isRefund"
       @close-popup="hideRefundPopup"
+      :session="refundSession"
     />
     <!-- header --->
     <transition name="fade">
@@ -171,7 +172,7 @@ export default {
       page: 1,
       limit: 10,
       isRefund: false,
-      refundData: null,
+      refundSession: null,
       selectedIndex: -1, // -1 means that the window is closed
       tabs: {
         session: true,
@@ -302,11 +303,11 @@ export default {
     },
     showRefundPopup(data){
       this.isRefund = true
-      this.refundData = data
+      this.refundSession = data
     },
     hideRefundPopup(value){
       this.isRefund = !value
-      this.refundData = null
+      this.refundSession = null
     }    
   },
 };
