@@ -117,7 +117,7 @@
         class="h-32 w-full bg-gray-50 border rounded p-1"
         v-model="message"
       ></textarea>
-      <button @click.prevent="confirm" class="bg-blue-800 text-white rounded block w-full uppercase p-2">
+      <button @click.prevent="toggleConfirm" class="bg-blue-800 text-white rounded block w-full uppercase p-2">
         {{$t('send')}}
       </button>
       <button @click.prevent="closePopup" class="mt-1 text-gray-500 rounded block w-full uppercase p-2 hover:underline">
