@@ -1,9 +1,10 @@
 <template>
   <div>
+    <RefundPopup v-if="isRefund"  />
     <!-- header --->
     <transition name="fade">
       <div
-        v-if="selectedIndex >= 0"
+        v-if="selectedIndex >= 0 || isRefund"
         class="bg-gray-600 bg-opacity-50 top-0 fixed right-0 left-0 bottom-0"
       ></div>
     </transition>
@@ -90,6 +91,7 @@
         v-if="tabs.session"
         :sessions="sessionList"
         @show-sidebar="show"
+        @show-refund="showRefundPopup"
       />
     </transition>
     <CustomerList
@@ -146,6 +148,7 @@ import Sessions from "./Sessions";
 import SessionSidebar from "./SessionSidebar";
 import CustomerList from "./CustomerList";
 import CustomerSidebar from "./CustomerSidebar";
+import RefundPopup from './RefundPopup';
 // import Sessions from "./Sessions.vue";
 let site_url = null;
 const action_prefix = "thawani_gw";
@@ -156,6 +159,7 @@ export default {
     SessionSidebar,
     CustomerList,
     CustomerSidebar,
+    RefundPopup
   },
   data() {
     return {
@@ -163,6 +167,7 @@ export default {
       customerList: null,
       page: 1,
       limit: 10,
+      isRefund: false,
       selectedIndex: -1, // -1 means that the window is closed
       tabs: {
         session: true,
@@ -291,6 +296,9 @@ export default {
 
       this.get_sessions();
     },
+    showRefundPopup(data){
+      this.isRefund = true
+    }
   },
 };
 </script>
