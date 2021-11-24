@@ -23,6 +23,7 @@
       <small class="text-sm"> {{$t('order')}} <a 
       :href="`./post.php?post=${session.metadata.order_id}&action=edit`"
       target="_blank"
+      class="text-blue-600 hover:underline hover:text-blue-700"
       >
       #{{ session.metadata.order_id }}</a> </small>
     </h1>
