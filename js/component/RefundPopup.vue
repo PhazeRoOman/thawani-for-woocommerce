@@ -110,6 +110,7 @@
         id="message"
         ref="message"
         class="h-32 w-full bg-gray-50 border rounded p-1"
+        v-model="message"
       ></textarea>
       <button class="bg-blue-800 text-white rounded block w-full uppercase p-2">
         {{$t('send')}}
@@ -127,6 +128,7 @@ export default {
     return {
       select: '',
       isOtherSelected: false,
+      message: ''
     };
   },
   watch: {
