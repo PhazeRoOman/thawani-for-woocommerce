@@ -1,6 +1,9 @@
 <template>
   <div>
-    <RefundPopup v-if="isRefund"  />
+    <RefundPopup 
+      v-if="isRefund"
+      @close-popup="hideRefundPopup"
+    />
     <!-- header --->
     <transition name="fade">
       <div
@@ -298,7 +301,10 @@ export default {
     },
     showRefundPopup(data){
       this.isRefund = true
-    }
+    },
+    hideRefundPopup(value){
+      this.isRefund = !value
+    }    
   },
 };
 </script>
