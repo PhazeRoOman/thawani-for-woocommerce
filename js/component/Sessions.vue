@@ -65,6 +65,7 @@
           <div>
             <button 
             class="bg-blue-100 text-blue-500 hover:bg-blue-900 hover:text-white rounded inline-block p-1 w-full lg:w-4/5 shadow text-center uppercase"
+            @click="showRefund(session)"
             >{{$t('refund')}}</button>
           </div>
         </div>
@@ -123,6 +124,9 @@ export default {
     from_now(date) {
       return moment(date).add(4,'h').fromNow();
     },
+    showRefund(data){ 
+      this.$emit('show-refund' ,data);
+    }
   },
 };
 </script>
