@@ -306,6 +306,7 @@ export default {
     },
     hideRefundPopup(value){
       this.isRefund = !value
+      this.refundData = null
     }    
   },
 };
