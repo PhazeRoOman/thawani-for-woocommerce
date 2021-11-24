@@ -20,7 +20,7 @@
   >
     <h1 class="text-2xl font-bold my-2">
       <span class="uppercase">{{ $t("refund") }}</span>
-      <small class="text-sm"> {{$t('order')}} #283493</small>
+      <small class="text-sm"> {{$t('order')}} #{{ session.metadata.order_id }} </small>
     </h1>
     <p class="text-gray-500 text-base">
       {{ $t('refund_option_description')}}
@@ -124,6 +124,7 @@
 <script>
 export default {
   name: "RefundPopup",
+  props:['session'],
   data() {
     return {
       select: '',
