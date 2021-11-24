@@ -20,7 +20,11 @@
   >
     <h1 class="text-2xl font-bold my-2">
       <span class="uppercase">{{ $t("refund") }}</span>
-      <small class="text-sm"> {{$t('order')}} #{{ session.metadata.order_id }} </small>
+      <small class="text-sm"> {{$t('order')}} <a 
+      :href="`./post.php?post=${session.metadata.order_id}&action=edit`"
+      target="_blank"
+      >
+      #{{ session.metadata.order_id }}</a> </small>
     </h1>
     <p class="text-gray-500 text-base">
       {{ $t('refund_option_description')}}
