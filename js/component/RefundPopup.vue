@@ -156,6 +156,9 @@ export default {
     },
     closePopup(){
       this.$emit('close-popup', true);
+    },
+    toggleConfirm(){
+      this.isConfirm = !this.isConfirm
     }
   },
 };
