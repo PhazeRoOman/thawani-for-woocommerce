@@ -125,7 +125,7 @@ export default {
   name: "RefundPopup",
   data() {
     return {
-      select: "",
+      select: '',
       isOtherSelected: false,
     };
   },
