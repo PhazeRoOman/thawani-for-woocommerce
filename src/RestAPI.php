@@ -202,4 +202,12 @@ class RestAPI
     {
         return  $this->customer;
     }
+    /**
+     * Get Refund instance 
+     * 
+     * @return object \Thawani\Endpoint\Refund
+     */
+    public function get_refund_instance(){
+        return $this->refund;
+    }
 }
