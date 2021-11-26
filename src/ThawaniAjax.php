@@ -178,7 +178,10 @@ class ThawaniAjax extends WC_Gateway_ThawaniGateway
         ]);
 
         $http_status = wp_remote_retrieve_response_code($response);
+        if($http_status == 200) { 
+            $wc_order->update_status('wc-refunded', $_POST['message']);
+        }
         wp_send_json($response['body'], $http_status);
-        
+
     }
 }
