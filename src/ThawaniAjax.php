@@ -155,5 +155,7 @@ class ThawaniAjax extends WC_Gateway_ThawaniGateway
                 'error' => 'Order ID is empty'
             ], 400);
         }
+        $wc_order = new \WC_Order($_POST['order_id']);
+        
     }
 }
