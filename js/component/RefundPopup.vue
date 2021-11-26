@@ -218,7 +218,9 @@ export default {
           qs.stringify(
             {
               action: 'thawani_gw_send_refund',
-              order_id: this.session.metadata.order_id
+              order_id: this.session.metadata.order_id,
+              invoice: this.session.invoice,
+              message
             }
           )
         );
