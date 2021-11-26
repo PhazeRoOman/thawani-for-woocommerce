@@ -156,6 +156,7 @@ class ThawaniAjax extends WC_Gateway_ThawaniGateway
             ], 400);
         }
         $wc_order = new \WC_Order($_POST['order_id']);
-        
+
+        $refund  = $this->api->get_refund_instance();
     }
 }
