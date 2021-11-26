@@ -168,5 +168,17 @@ class ThawaniAjax extends WC_Gateway_ThawaniGateway
         $wc_order = new \WC_Order($_POST['order_id']);
 
         $refund  = $this->api->get_refund_instance();
+
+        $response  = $refund->create([
+            'payment_id' => $_POST['invoice'],
+            'reason' => $_POST['message'],
+            'metadata' => [
+                'order_id' => $_POST['order_id']
+            ]
+        ]);
+
+        $http_status = wp_remote_retrieve_response_code($response);
+        wp_send_json($response['body'], $http_status);
+        
     }
 }
