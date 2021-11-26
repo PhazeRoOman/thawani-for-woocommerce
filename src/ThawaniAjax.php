@@ -155,6 +155,16 @@ class ThawaniAjax extends WC_Gateway_ThawaniGateway
                 'error' => 'Order ID is empty'
             ], 400);
         }
+        if(empty($_POST['message'])){
+            wp_send_json([
+                'error' => 'Message is empty'
+            ], 400);
+        }
+        if(empty($_POST['invoice'])) { 
+            wp_send_json([
+                'error' => 'invoice ID is empty'
+            ], 400);
+        }
         $wc_order = new \WC_Order($_POST['order_id']);
 
         $refund  = $this->api->get_refund_instance();
