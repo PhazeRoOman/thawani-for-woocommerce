@@ -209,6 +209,10 @@ export default {
     },
     async sendRefund(){
       try {
+        let message = this.select; 
+        if( this.select.toLowerCase() === 'other')
+          message = this.message;
+
         const response  = await axios.post(
           site_url + '/wp-admin/admin-ajax.php',
           qs.stringify(
