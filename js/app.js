@@ -43,6 +43,9 @@ const messages = {
       repeated_order: 'Repeated Order',
       other: 'Other'
     },
+    confirm_refund: 'Are you sure of refund this Order ?',
+    yes: 'Yes',
+    no: 'No',
     send: "Send",
     developed: 'This plugin developed by PhazeRo',
   },

@@ -20,10 +20,14 @@
   >
   <!-- confirm --> 
   <div v-if="isConfirm" class="p-8 bg-white absolute top-32 w-3/6 left-0 right-0 mx-auto shadow-md rounded z-10">
-    <h3 class="font-bold text-center">Are you sure of refund this Order ?</h3>
+    <h3 class="font-bold text-center">{{ $t('confirm_refund') }}</h3>
     <div class="mt-4 flex">
-      <button @click.prevent="toggleConfirm" class="text-gray-500 rounded block w-full uppercase p-2 hover:underline">No</button>
-      <button class="bg-blue-800 hover:bg-blue-500 text-white rounded block w-full uppercase p-2">Yes</button>
+      <button @click.prevent="toggleConfirm" class="text-gray-500 rounded block w-full uppercase p-2 hover:underline">
+        {{$t('no')}}
+      </button>
+      <button class="bg-blue-800 hover:bg-blue-500 text-white rounded block w-full uppercase p-2">
+        {{$t('yes')}}
+      </button>
     </div>
   </div>
   <div v-if="isConfirm" class="bg-gray-800 opacity-30 absolute inset-0"></div>
