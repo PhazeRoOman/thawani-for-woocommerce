@@ -25,7 +25,7 @@
       <button @click.prevent="toggleConfirm" class="text-gray-500 rounded block w-full uppercase p-2 hover:underline">
         {{$t('no')}}
       </button>
-      <button class="bg-blue-800 hover:bg-blue-500 text-white rounded block w-full uppercase p-2">
+      <button @click.prevent="sendRefund" class="bg-blue-800 hover:bg-blue-500 text-white rounded block w-full uppercase p-2">
         {{$t('yes')}}
       </button>
     </div>
@@ -43,6 +43,9 @@
         {{orderStatus}}
       </span>
     </h1>
+    <div v-if="errorMessage" class="text-red-400">
+      {{this.errorMessage}}
+    </div>
     <p class="text-gray-500 text-base">
       {{ $t('refund_option_description')}}
     </p>
@@ -133,7 +136,7 @@
         class="h-32 w-full bg-gray-50 border rounded p-1"
         v-model="message"
       ></textarea>
-      <button @click.prevent="toggleConfirm" class="bg-blue-800 text-white rounded block w-full uppercase p-2">
+      <button @click.prevent="validate()" class="bg-blue-800 text-white rounded block w-full uppercase p-2">
         {{$t('send')}}
       </button>
       <button @click.prevent="closePopup" class="mt-1 text-gray-500 rounded block w-full uppercase p-2 hover:underline">
@@ -156,6 +159,7 @@ export default {
       message: '',
       isConfirm: false,
       orderStatus: '',
+      errorMessage:''
     };
   },
   watch: {
@@ -195,7 +199,15 @@ export default {
     },
     toggleConfirm(){
       this.isConfirm = !this.isConfirm
-    }
+    },
+    validate(){
+      if(this.select === '') {
+        this.errorMessage = 'please select refund reason';
+        return false
+      }
+      this.toggleConfirm()
+    },
+    
   },
 };
 </script>
