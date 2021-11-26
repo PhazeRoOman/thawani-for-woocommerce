@@ -39,6 +39,9 @@
       class="text-blue-600 hover:underline hover:text-blue-700"
       >
       #{{ session.metadata.order_id }}</a> </small>
+      <span class="inline-block mx-2 text-xs p-1 rounded-md bg-gray-100 text-gray-600">
+        {{orderStatus}}
+      </span>
     </h1>
     <p class="text-gray-500 text-base">
       {{ $t('refund_option_description')}}
@@ -140,6 +143,9 @@
   </div>
 </template>
 <script>
+let site_url = null;
+import axios  from 'axios';
+import qs  from 'querystring'; 
 export default {
   name: "RefundPopup",
   props:['session'],
@@ -148,7 +154,8 @@ export default {
       select: '',
       isOtherSelected: false,
       message: '',
-      isConfirm: false
+      isConfirm: false,
+      orderStatus: '',
     };
   },
   watch: {
@@ -162,6 +169,22 @@ export default {
         this.isOtherSelected = false;
       }
     },
+  },
+  async mounted(){
+    site_url = document.querySelector("#thawani_url_admin").dataset.url;
+    try{ 
+      const {data}  = await axios.post(
+    site_url + '/wp-admin/admin-ajax.php',
+    qs.stringify({ 
+        order_id: this.session.metadata.order_id,
+        action: 'thawani_gw_get_order_status'
+      })
+    );
+    this.orderStatus = data.status
+    }catch(error) {
+      console.error(error)
+    }
+    
   },
   methods: {
     focusOnTextarea() {
