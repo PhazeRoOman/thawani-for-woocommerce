@@ -207,7 +207,21 @@ export default {
       }
       this.toggleConfirm()
     },
-    
+    async sendRefund(){
+      try {
+        const response  = await axios.post(
+          site_url + '/wp-admin/admin-ajax.php',
+          qs.stringify(
+            {
+              action: 'thawani_gw_send_refund',
+              order_id: this.session.metadata.order_id
+            }
+          )
+        );
+      }catch(error){ 
+        console.error(error)
+      }
+    }
   },
 };
 </script>
