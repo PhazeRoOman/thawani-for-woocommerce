@@ -30,6 +30,8 @@ class ThawaniAjax extends WC_Gateway_ThawaniGateway
         add_action('wp_ajax_' . $this->ajax_id . '_get_all_customers', [$this, 'get_all_customers']);
         add_action('wp_ajax_' . $this->ajax_id . '_get_customer_payment', [$this, 'get_customer_payment']);
         add_action('wp_ajax_' . $this->ajax_id . '_get_checkout', [$this, 'get_checkout_url']);
+        add_action('wp_ajax_' . $this->ajax_id . '_send_refund', [$this, 'send_refund']);
+        add_action('wp_ajax_' . $this->ajax_id . '_get_order_status', [$this, 'get_order_status']);
     }
 
 
@@ -127,5 +129,26 @@ class ThawaniAjax extends WC_Gateway_ThawaniGateway
             wp_die();
         }
         wp_send_json('hello', 200);
+    }
+
+    public function get_order_status()
+    {
+        $order_id = $_POST['order_id']; 
+
+        if(empty($order_id)) { 
+            wp_send_json([
+                'error' => 'Order ID is empty'
+            ], 400);
+        }
+
+        $wc_order = new \WC_Order($order_id);
+        wp_send_json([
+            'status'  => $wc_order->get_status()
+        ], 200);
+    }
+
+    public function send_refund()
+    {
+        
     }
 }
