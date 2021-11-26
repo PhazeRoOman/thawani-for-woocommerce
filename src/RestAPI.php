@@ -5,6 +5,7 @@ namespace Thawani;
 use Thawani\Endpoint\Customer;
 use Thawani\Endpoint\Payment;
 use Thawani\Endpoint\Session;
+use Thawani\Endpoint\Refund;
 use Thawani\ThawaniAjax;
 
 /**
@@ -30,6 +31,7 @@ class RestAPI
     private $session = null;
     private $customer = null;
     private $payment = null;
+    private $refund  = null;
     public function __construct($secret_key, $publishable_key, $env)
     {
         $this->secret_key = $secret_key;
@@ -39,7 +41,7 @@ class RestAPI
         $this->session = new Session($this);
         $this->customer = new Customer($this);
         $this->payment = new Payment($this);
-
+        $this->refund = new Refund($this);
         // new ThawaniAjax($this);
     }
 
