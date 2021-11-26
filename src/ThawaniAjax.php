@@ -150,7 +150,7 @@ class ThawaniAjax extends WC_Gateway_ThawaniGateway
     public function send_refund()
     {
         
-        if(!empty($_POST['order_id'])) {
+        if(empty($_POST['order_id'])) {
             wp_send_json([
                 'error' => 'Order ID is empty'
             ], 400);
