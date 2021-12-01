@@ -1,9 +1,9 @@
 ### This issue addresses:
 - [ ] A Bug in the plugin
-- [ ] A suggestion for improvment
+- [ ] A suggestion for improvement
 
 <!-- 
-Remove unnecessary Secion Bug or Suggestion
+Remove unnecessary Section Bug or Suggestion
 Please Include correct labeling
 -->
 
@@ -22,7 +22,7 @@ Please Include correct labeling
 - If you reviewed the codebase any idea how this bug can be resolved
 
 #### WordPress Environment Versions:
-- Wordpress Version: 
+- WordPress Version: 
 - WooCommerce Version:
 - PHP Version:
 
@@ -31,5 +31,5 @@ Please Include correct labeling
 - What should this feature do. Be as descriptive as possible
 
 #### Reason:
-- How will this feature help our communaity
-- What challange does it tackle
+- How will this feature help our community
+ What challenge does it tackle
