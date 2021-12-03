@@ -22,6 +22,13 @@ class ComposerStaticInitb637f60363ff2e38139e0d20e1a4920b
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Thawani\\AdminDashboard' => __DIR__ . '/../..' . '/src/AdminDashboard.php',
+        'Thawani\\Endpoint\\Customer' => __DIR__ . '/../..' . '/src/Endpoint/Customer.php',
+        'Thawani\\Endpoint\\PaymentMethods' => __DIR__ . '/../..' . '/src/Endpoint/PaymentMethods.php',
+        'Thawani\\Endpoint\\Session' => __DIR__ . '/../..' . '/src/Endpoint/Session.php',
+        'Thawani\\RestAPI' => __DIR__ . '/../..' . '/src/RestAPI.php',
+        'Thawani\\ThawaniAjax' => __DIR__ . '/../..' . '/src/ThawaniAjax.php',
+        'Thawani\\WC_Gateway_ThawaniGateway' => __DIR__ . '/../..' . '/src/WC_Gateway_ThawaniGateway.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
