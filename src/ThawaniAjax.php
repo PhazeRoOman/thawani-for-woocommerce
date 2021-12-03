@@ -150,7 +150,10 @@ class ThawaniAjax extends WC_Gateway_ThawaniGateway
     public function get_payment_id($invoice)
     {
         $payment  = $this->api->get_payment_instance();
-        
+        $http_query = [
+            'checkout_invoice' => $invoice
+        ];
+        return $payment->get_by_query($http_query);
     }
 
     public function send_refund()
