@@ -14,7 +14,7 @@ use \Thawani\RestAPI;
  * @author      Muhannad Alrisi
  * @package     WooCommerce\Thawani
  */
-class Payment
+class PaymentMethods
 {
 
     private $api = null;
