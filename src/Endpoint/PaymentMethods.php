@@ -5,7 +5,7 @@ namespace Thawani\Endpoint;
 use \Thawani\RestAPI;
 
 /**
- * Thwawni gateWay Payment endpoint handler
+ * Thawani gateway Payment Methods endpoint handler
  *
  * Integration of Thawani API class
  *
@@ -14,7 +14,7 @@ use \Thawani\RestAPI;
  * @author      Muhannad Alrisi
  * @package     WooCommerce\Thawani
  */
-class Payment
+class PaymentMethods
 {
 
     private $api = null;
