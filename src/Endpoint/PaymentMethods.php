@@ -5,7 +5,7 @@ namespace Thawani\Endpoint;
 use \Thawani\RestAPI;
 
 /**
- * Thwawni gateWay Payment Methods endpoint handler
+ * Thawani gateway Payment Methods endpoint handler
  *
  * Integration of Thawani API class
  *
