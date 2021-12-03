@@ -3,7 +3,7 @@
 namespace Thawani;
 
 use Thawani\Endpoint\Customer;
-use Thawani\Endpoint\Payment;
+use Thawani\Endpoint\PaymentMethods;
 use Thawani\Endpoint\Session;
 use Thawani\ThawaniAjax;
 
@@ -29,7 +29,7 @@ class RestAPI
 
     private $session = null;
     private $customer = null;
-    private $payment = null;
+    private $payment_methods = null;
     public function __construct($secret_key, $publishable_key, $env)
     {
         $this->secret_key = $secret_key;
@@ -38,7 +38,7 @@ class RestAPI
 
         $this->session = new Session($this);
         $this->customer = new Customer($this);
-        $this->payment = new Payment($this);
+        $this->payment_methods = new PaymentMethods($this);
 
         // new ThawaniAjax($this);
     }
@@ -169,15 +169,15 @@ class RestAPI
     }
 
     /**
-     * get payment method of the customers
+     * get payment methods method of the customers
      *
      * @param string $customer_token
      *
      * @return array response
      */
-    public function get_payment($customer_token)
+    public function get_payment_methods($customer_token)
     {
-        return $this->payment->get($customer_token);
+        return $this->payment_methods->get($customer_token);
     }
 
     /**
@@ -189,7 +189,7 @@ class RestAPI
      */
     public function delete_payment_method($card_token)
     {
-        return $this->payment->delete($card_token);
+        return $this->payment_methods->delete($card_token);
     }
     /**
      * get the customer instance 
