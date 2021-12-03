@@ -147,6 +147,12 @@ class ThawaniAjax extends WC_Gateway_ThawaniGateway
         ], 200);
     }
 
+    public function get_payment_id($invoice)
+    {
+        $payment  = $this->api->get_payment_instance();
+        
+    }
+
     public function send_refund()
     {
         
