@@ -178,6 +178,12 @@ class ThawaniAjax extends WC_Gateway_ThawaniGateway
 
         $refund  = $this->api->get_refund_instance();
 
+        $payment_response =  $this->get_payment_id($_POST['invoice']);
+        
+        $payment = json_decode($payment_response['body']);
+
+        $payment_id = $payment->data[0]->payment_id;
+
         $response  = $refund->create([
             'payment_id' => $_POST['invoice'],
             'reason' => $_POST['message'],
