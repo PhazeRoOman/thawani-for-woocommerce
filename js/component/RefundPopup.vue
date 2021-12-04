@@ -205,6 +205,10 @@ export default {
         this.errorMessage = 'please select refund reason';
         return false
       }
+      if(this.orderStatus === 'refunded') {  
+        this.errorMessage = 'Can not refund. it is refunded';
+        return false
+      }
       this.toggleConfirm()
     },
     async sendRefund(){
@@ -224,6 +228,7 @@ export default {
             }
           )
         );
+        console.log(response)
       }catch(error){ 
         console.error(error)
       }
