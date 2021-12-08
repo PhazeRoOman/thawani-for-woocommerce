@@ -21,13 +21,39 @@
   <!-- confirm --> 
   <div v-if="isConfirm" class="p-8 bg-white absolute top-32 w-3/6 left-0 right-0 mx-auto shadow-md rounded z-10">
     <h3 class="font-bold text-center">{{ $t('confirm_refund') }}</h3>
-    <div class="mt-4 flex">
+    <div v-if="isLoading">
+      <!-- sending a request --> 
+     <div class="flex justify-center mt-3 mb-1">
+       <div v-if="!isDone">
+          <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+         </svg>
+       </div>
+       <div v-if="isSuccess != -1" class="text-center">
+         <div v-if="isSuccess  === 1">
+           <span class="text-thawani">{{requestMessage.success}}</span>
+         </div>
+         <div v-else>
+           <span class="text-red-400">{{requestMessage.error}}</span>
+         </div>
+
+         <button @click.prevent="closePopup" class="bg-blue-800 hover:bg-blue-500 text-white rounded block w-full uppercase p-2">
+          {{$t('close')}}
+        </button>
+       </div>
+     </div>
+      <!-- /sending request --> 
+    </div>
+    <div v-else>
+      <div class="mt-4 flex">
       <button @click.prevent="toggleConfirm" class="text-gray-500 rounded block w-full uppercase p-2 hover:underline">
         {{$t('no')}}
       </button>
       <button @click.prevent="sendRefund" class="bg-blue-800 hover:bg-blue-500 text-white rounded block w-full uppercase p-2">
         {{$t('yes')}}
       </button>
+    </div>
     </div>
   </div>
   <div v-if="isConfirm" class="bg-gray-800 opacity-30 absolute inset-0"></div>
@@ -219,12 +245,13 @@ export default {
       this.toggleConfirm()
     },
     async sendRefund(){
-      try {
+
         let message = this.select; 
         if( this.select.toLowerCase() === 'other')
           message = this.message;
 
-        const response  = await axios.post(
+        this.isLoading = true
+        const response  = axios.post(
           site_url + '/wp-admin/admin-ajax.php',
           qs.stringify(
             {
@@ -234,10 +261,16 @@ export default {
               message
             }
           )
-        );
-      }catch(error){ 
-        console.error(error)
-      }
+        ).then( response  => { 
+          this.isDone = true
+          this.isSuccess = 1 
+        }).catch(error => { 
+            console.error(error)
+            this.isDone = true
+            this.isSuccess = 0
+        });
+        
+      
     }
   },
 };
