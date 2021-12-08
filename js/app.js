@@ -80,6 +80,19 @@ const messages = {
       price: 'السعر',
       qty: 'الكمية'
     },
+    refund: 'إسترجاع',
+    order: 'طلب',
+    refund_option_description: 'إسترجاع المبلغ لواحد من الاسباب التالية',
+    refund_option: {
+      wrong_product: 'منتج غير صحيح في الطلب',
+      cancel_order: 'إلغاء الطلب',
+      repeated_order: 'الطلب متكرر',
+      other: 'سبب آخر'
+    },
+    confirm_refund: 'هل أنت متأكد من عملية استرجاع الطلب',
+    yes: 'نعم',
+    no: 'لا',
+    send: "إرسال",
     developed: 'تطوير PhazeRo',
   }
 }
