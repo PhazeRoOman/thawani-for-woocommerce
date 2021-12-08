@@ -159,7 +159,14 @@ export default {
       message: '',
       isConfirm: false,
       orderStatus: '',
-      errorMessage:''
+      errorMessage:'',
+      isLoading: false,
+      isDone: false,
+      requestMessage: { 
+        success :'The payment has refunded.',
+        error: 'Cannot refund. Time passed to make the refund workable.'
+      },
+      isSuccess: -1
     };
   },
   watch: {
