@@ -40,8 +40,13 @@
             </div>
           </div>
           <div>
-            <div class="text-thawani md:hidden">{{ $t("order_id") }}</div>
-            {{ session.client_reference_id.trim() }}
+            <a
+              :href="`./post.php?post=${session.metadata.order_id}&action=edit`"
+              target="_blank"
+              class="bg-blue-100 text-blue-500 hover:bg-blue-900 hover:text-white rounded inline-block p-1 w-full lg:w-4/5 shadow text-center uppercase"
+            >
+              {{ session.metadata.order_id }}
+            </a>
           </div>
           <div>
             <div class="text-thawani md:hidden">{{ $t("customer_info") }}</div>
@@ -63,10 +68,12 @@
             {{ price_format(session.total_amount) }}
           </div>
           <div>
-            <button 
-            class="bg-blue-100 text-blue-500 hover:bg-blue-900 hover:text-white rounded inline-block p-1 w-full lg:w-4/5 shadow text-center uppercase"
-            @click="showRefund(session)"
-            >{{$t('refund')}}</button>
+            <button
+              class="bg-blue-100 text-blue-500 hover:bg-blue-900 hover:text-white rounded inline-block p-1 w-full lg:w-4/5 shadow text-center uppercase"
+              @click="showRefund(session)"
+            >
+              {{ $t("refund") }}
+            </button>
           </div>
         </div>
       </div>
@@ -119,14 +126,18 @@ export default {
       this.$emit("show-sidebar", data);
     },
     format_date(date) {
-      return moment(date).add(4,'h').format("LLL");
+      return moment(date)
+        .add(4, "h")
+        .format("LLL");
     },
     from_now(date) {
-      return moment(date).add(4,'h').fromNow();
+      return moment(date)
+        .add(4, "h")
+        .fromNow();
     },
-    showRefund(data){ 
-      this.$emit('show-refund' ,data);
-    }
+    showRefund(data) {
+      this.$emit("show-refund", data);
+    },
   },
 };
 </script>
