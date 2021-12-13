@@ -46,7 +46,6 @@ class RestAPI
         $this->refund = new Refund($this);
         $this->payment_methods = new PaymentMethods($this);
         $this->payment  = new Payment($this);
-        // new ThawaniAjax($this);
     }
 
     /**
