@@ -30,6 +30,8 @@ class ThawaniAjax extends WC_Gateway_ThawaniGateway
         add_action('wp_ajax_' . $this->ajax_id . '_get_all_customers', [$this, 'get_all_customers']);
         add_action('wp_ajax_' . $this->ajax_id . '_get_customer_payment', [$this, 'get_customer_payment']);
         add_action('wp_ajax_' . $this->ajax_id . '_get_checkout', [$this, 'get_checkout_url']);
+        add_action('wp_ajax_' . $this->ajax_id . '_send_refund', [$this, 'send_refund']);
+        add_action('wp_ajax_' . $this->ajax_id . '_get_order_status', [$this, 'get_order_status']);
     }
 
 
@@ -127,5 +129,74 @@ class ThawaniAjax extends WC_Gateway_ThawaniGateway
             wp_die();
         }
         wp_send_json('hello', 200);
+    }
+
+    public function get_order_status()
+    {
+        $order_id = $_POST['order_id']; 
+
+        if(empty($order_id)) { 
+            wp_send_json([
+                'error' => 'Order ID is empty'
+            ], 400);
+        }
+
+        $wc_order = new \WC_Order($order_id);
+        wp_send_json([
+            'status'  => $wc_order->get_status()
+        ], 200);
+    }
+
+    public function get_payment_id($invoice)
+    {
+        $payment  = $this->api->get_payment_instance();
+        $http_query = [
+            'checkout_invoice' => $invoice
+        ];
+        return $payment->get_by_query($http_query);
+    }
+
+    public function send_refund()
+    {
+        
+        if(empty($_POST['order_id'])) {
+            wp_send_json([
+                'error' => 'Order ID is empty'
+            ], 400);
+        }
+        if(empty($_POST['message'])){
+            wp_send_json([
+                'error' => 'Message is empty'
+            ], 400);
+        }
+        if(empty($_POST['invoice'])) { 
+            wp_send_json([
+                'error' => 'invoice ID is empty'
+            ], 400);
+        }
+        $wc_order = new \WC_Order($_POST['order_id']);
+
+        $refund  = $this->api->get_refund_instance();
+
+        $payment_response =  $this->get_payment_id($_POST['invoice']);
+        
+        $payment = json_decode($payment_response['body']);
+
+        $payment_id = $payment->data[0]->payment_id;
+
+        $response  = $refund->create([
+            'payment_id' => $payment_id,
+            'reason' => $_POST['message'],
+            'metadata' => [
+                'order_id' => $_POST['order_id']
+            ]
+        ]);
+
+        $http_status = wp_remote_retrieve_response_code($response);
+        if($http_status == 200) { 
+            $wc_order->update_status('wc-refunded', $_POST['message']);
+        }
+        wp_send_json($response['body'], $http_status);
+
     }
 }

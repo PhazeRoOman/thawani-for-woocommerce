@@ -34,6 +34,19 @@ const messages = {
       price: 'Price',
       qty: 'Quantity'
     },
+    refund: 'Refund',
+    order: 'Order',
+    refund_option_description: 'I want to refund because of the following:',
+    refund_option: {
+      wrong_product: 'Wrong product on Order',
+      cancel_order: 'Cancelled Order',
+      repeated_order: 'Repeated Order',
+      other: 'Other'
+    },
+    confirm_refund: 'Are you sure of refund this Order ?',
+    yes: 'Yes',
+    no: 'No',
+    send: "Send",
     developed: 'This plugin developed by PhazeRo',
   },
   ar: {
@@ -67,6 +80,19 @@ const messages = {
       price: 'السعر',
       qty: 'الكمية'
     },
+    refund: 'إسترجاع',
+    order: 'طلب',
+    refund_option_description: 'إسترجاع المبلغ لواحد من الاسباب التالية',
+    refund_option: {
+      wrong_product: 'منتج غير صحيح في الطلب',
+      cancel_order: 'إلغاء الطلب',
+      repeated_order: 'الطلب متكرر',
+      other: 'سبب آخر'
+    },
+    confirm_refund: 'هل أنت متأكد من عملية استرجاع الطلب',
+    yes: 'نعم',
+    no: 'لا',
+    send: "إرسال",
     developed: 'تطوير PhazeRo',
   }
 }

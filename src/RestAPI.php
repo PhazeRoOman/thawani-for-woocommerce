@@ -5,6 +5,8 @@ namespace Thawani;
 use Thawani\Endpoint\Customer;
 use Thawani\Endpoint\PaymentMethods;
 use Thawani\Endpoint\Session;
+use Thawani\Endpoint\Refund;
+use Thawani\Endpoint\Payment;
 use Thawani\ThawaniAjax;
 
 /**
@@ -29,7 +31,10 @@ class RestAPI
 
     private $session = null;
     private $customer = null;
+    private $refund  = null;
     private $payment_methods = null;
+    private $payment = null;
+
     public function __construct($secret_key, $publishable_key, $env)
     {
         $this->secret_key = $secret_key;
@@ -38,9 +43,9 @@ class RestAPI
 
         $this->session = new Session($this);
         $this->customer = new Customer($this);
+        $this->refund = new Refund($this);
         $this->payment_methods = new PaymentMethods($this);
-
-        // new ThawaniAjax($this);
+        $this->payment  = new Payment($this);
     }
 
     /**
@@ -199,5 +204,23 @@ class RestAPI
     public function get_customer_instance()
     {
         return  $this->customer;
+    }
+    /**
+     * Get Refund instance 
+     * 
+     * @return object \Thawani\Endpoint\Refund
+     */
+    public function get_refund_instance(){
+        return $this->refund;
+    }
+
+    /**
+     * Get Payment instance 
+     * 
+     * @return object \Thawani\Endpoint\Payment
+     */
+    public function get_payment_instance()
+    {
+        return $this->payment; 
     }
 }
