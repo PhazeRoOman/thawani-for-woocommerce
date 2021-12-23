@@ -43,7 +43,7 @@
             <a
               :href="`./post.php?post=${session.metadata.order_id}&action=edit`"
               target="_blank"
-              class="bg-blue-100 text-blue-500 hover:bg-blue-900 hover:text-white rounded inline-block p-1 w-full lg:w-4/5 shadow text-center uppercase"
+              class="text-blue-500 hover:text-blue-800"
             >
               {{ session.metadata.order_id }}
             </a>
@@ -68,10 +68,12 @@
             {{ price_format(session.total_amount) }}
           </div>
           <div>
-            <button 
-            class="bg-blue-100 text-blue-500 hover:bg-blue-900 hover:text-white rounded inline-block p-1 w-full lg:w-4/5 shadow text-center uppercase"
-            @click="showRefund(session)"
-            >{{$t('refund')}}</button>
+            <button
+              class="bg-blue-100 text-blue-500 hover:bg-blue-900 hover:text-white rounded inline-block p-1 w-full lg:w-4/5 shadow text-center uppercase"
+              @click="showRefund(session)"
+            >
+              {{ $t("refund") }}
+            </button>
           </div>
         </div>
       </div>
@@ -136,9 +138,9 @@ export default {
     showRefund(data) {
       this.$emit("show-refund", data);
     },
-    showRefund(data){ 
-      this.$emit('show-refund' ,data);
-    }
+    showRefund(data) {
+      this.$emit("show-refund", data);
+    },
   },
 };
 </script>
