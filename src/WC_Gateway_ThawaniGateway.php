@@ -444,12 +444,14 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                 'redirect' => $this->api->get_redirect_uri($response->data->session_id),
             );
         }
-
+        
         $this->logger('📝Session creation Failed');
-        $this->logger('📝Response Code: ' . $response->code);
-        $this->logger('📝Response Description: ' . $response->description);
+        $this->logger('📝Response log');
+        foreach($response as $key => $value) { 
+            $this->logger("📝Response {$key} : "  . $value);
+        }
         $this->logger('📝Success URL: ' . $this->api->get_redirect_uri($response->data->session_id));
-        $this->logger('📝Cancel URL: ' . $this->get_return_url($order));
+        $this->logger('📝Cancel URL: ' . $this->get_return_url($order));        
 
         $this->set_session_token('faild order', $order->get_id());
         $order->update_status('wc-failed', __('Failed to redirect to the payment gateway', 'thawani'));
