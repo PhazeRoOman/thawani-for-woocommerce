@@ -444,7 +444,6 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                 'redirect' => $this->api->get_redirect_uri($response->data->session_id),
             );
         }
-        
         $this->logger('📝Session creation Failed');
         $this->logger('📝Response log');
         foreach($response as $key => $value) { 
