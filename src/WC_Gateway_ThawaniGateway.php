@@ -451,7 +451,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
             $this->logger("📝Response {$key} : "  . $value);
         }
         $this->logger('📝Success URL: ' . $this->api->get_redirect_uri($response->data->session_id));
-        $this->logger('📝Cancel URL: ' . $this->get_return_url($order));        
+        $this->logger('📝Cancel URL: ' . $this->get_return_url($order));
 
         $this->set_session_token('faild order', $order->get_id());
         $order->update_status('wc-failed', __('Failed to redirect to the payment gateway', 'thawani'));
