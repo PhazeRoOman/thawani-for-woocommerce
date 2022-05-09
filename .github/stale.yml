@@ -9,7 +9,7 @@ daysUntilClose: 1
 # Issues or Pull Requests with these labels will never be considered stale. Set to `[]` to disable
 exemptLabels:
   - bug
-  - Bug(Potintail)
+  - Bug(Potential)
   - chore
   - documentation
   - "help wanted"
