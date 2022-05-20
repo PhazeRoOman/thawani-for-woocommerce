@@ -351,7 +351,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                 $product_name = mb_substr($product_name, 0, 30, 'UTF-8') . '...';
             $products[] = [
                 'name' => $product_name,
-                'unit_amount' => ($unit_price / (int) $item->get_data()['quantity']),
+                'unit_amount' => (int)ceil(($unit_price / (int) $item->get_data()['quantity'])),
                 'quantity' => $item->get_data()['quantity'],
             ];
         }
