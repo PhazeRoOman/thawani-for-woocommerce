@@ -337,14 +337,15 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         $tax  = $this->get_tax_precent($order_items);
 
         $products = [];
+        $tax_sum = 0;
 
         foreach ($items as $item) {
             $product_price  = (float) $item->get_data()['total'];
 
             if ((float)$tax > 0)
-                $unit_price = $this->format_price($product_price + ($product_price * ($tax / 100)));
-            else
-                $unit_price = $this->format_price($product_price);
+                (float)$tax_sum = (float)$tax_sum + $this->format_price($product_price * ($tax / 100));
+
+            $unit_price = $this->format_price($product_price);
 
             $product_name = $item->get_data()['name'];
             if (strlen($product_name) > 40)
@@ -355,6 +356,15 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                 'quantity' => $item->get_data()['quantity'],
             ];
         }
+
+        //Add tax amount 
+        if ((float)$tax > 0)
+            $products[] = [
+                'name' => "Tax",
+                'unit_amount' => $tax_sum,
+                'quantity' => 1,
+            ];
+            
         //do the shipping
         $shipping_total = $order_items->get_data()['shipping_total'];
         if ((int) $this->format_price($shipping_total) > 0) {
@@ -446,7 +456,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         }
         $this->logger('📝Session creation Failed');
         $this->logger('📝Response log');
-        foreach($response as $key => $value) { 
+        foreach($response as $key => $value) {
             $this->logger("📝Response {$key} : "  . $value);
         }
         $this->logger('📝Success URL: ' . $this->api->get_redirect_uri($response->data->session_id));
