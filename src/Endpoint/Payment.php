@@ -10,7 +10,7 @@ use Thawani\RestAPI;
  * Integration of Thawani API class
  *
  * @class       Payment
- * @version     1.4.0
+ * @version     1.4.1
  * @author      PhazeRo
  * @package     WooCommerce\Thawani
  */
