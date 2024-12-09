@@ -297,7 +297,7 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                 'type'        => 'checkbox',
                 'label'       => __('Enable logging', 'thawani'),
                 'default'     => 'no',
-                'description' => sprintf(__('Log Thawani events', 'thawani'), wc_get_log_file_path('thawani'))
+                'description' => __('Log Thawani events in WooCommerce logs', 'thawani')
             ),
         ];
     }
