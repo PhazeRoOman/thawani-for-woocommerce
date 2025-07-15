@@ -341,6 +341,11 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
         foreach ($items as $item) {
             $product_price  = (float) $item->get_data()['total'];
 
+            // skip items with zero price (Free/Gift Products) to avoid error when order is placed
+            if ($product_price <= 0) {
+                continue;
+            }
+
             if ((float)$tax > 0)
                 $unit_price = $this->format_price($product_price + ($product_price * ($tax / 100)));
             else
