@@ -122,32 +122,86 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
      */
     public function process_callback()
     {
+        $id = isset($_GET[self::GET_MER_REF]) ? sanitize_text_field($_GET[self::GET_MER_REF]) : null;
+        $is_webhook = false;
+        $webhook_session_id = null;
 
-        $id = $_GET[self::GET_MER_REF];
+        // catch Thawani Webhook POST payload
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $payload = json_decode(file_get_contents('php://input'), true);
 
-        if (($id && intval($id)) ?? false) {
-            //get the session token
-            $session_token = $this->get_session_token($id);
-            $response = $this->api->get_session($session_token[0]);
-            //parse the response
-            $data = json_decode($response['body']);
-            if ($data->success) {
-                $status = strtolower($data->data->payment_status);
-                switch ($status) {
-                    case 'unpaid':
-                        $this->redirect_to_order_page($id);
-                        break;
-                    case 'paid':
-                        $this->update_order_status_success($id);
-                        break;
-                    case 'cancelled':
-                        $this->update_order_status_failed($id);
-                        break;
-                }
+            if (isset($payload['event_type']) && $payload['event_type'] === 'checkout.completed') {
+                $id = $payload['data']['client_reference_id'] ?? null;
+                $webhook_session_id = $payload['data']['session_id'] ?? null;
+                $is_webhook = true;
             } else {
-                $this->update_order_status_cancelled($id);
+                // acknowledge other webhook events (like payment.failed) so Thawani stops retrying
+                status_header(200);
+                exit;
             }
         }
+
+        // fallback for Thawani dropping the ?ref= parameter during browser redirect after payment
+        if (empty($id) && !$is_webhook && isset(WC()->session)) {
+            $id = WC()->session->get('thawani_pending_order_id');
+        }
+
+        // process the Payment Status
+        if ($id && intval($id)) {
+            $order = wc_get_order($id);
+
+            // abort if order doesn't exist
+            if (!$order) {
+                if ($is_webhook) { status_header(200); exit; }
+                wp_redirect(site_url(), 301); exit;
+            }
+
+            // HPOS Database Check
+            $session_token = $this->get_session_token($id);
+            $token_to_use = is_array($session_token) ? ($session_token[0] ?? '') : $session_token;
+
+            // fallback to webhook session_id if DB lookup fails
+            if (empty($token_to_use) && $webhook_session_id) {
+                $token_to_use = $webhook_session_id;
+            }
+
+            if (!empty($token_to_use)) {
+                $response = $this->api->get_session($token_to_use);
+                $body = isset($response['body']) ? json_decode($response['body']) : null;
+
+                if ($body && isset($body->success) && $body->success && isset($body->data->payment_status)) {
+                    $status = strtolower($body->data->payment_status);
+                    switch ($status) {
+                        case 'unpaid':
+                            if ($is_webhook) { status_header(200); exit; }
+                            $this->redirect_to_order_page($order);
+                            break;
+                        case 'paid':
+                            if (isset(WC()->session)) { WC()->session->__unset('thawani_pending_order_id'); }
+                            $this->update_order_status_success($order, $is_webhook);
+                            break;
+                        case 'cancelled':
+                            $this->update_order_status_failed($order, $is_webhook);
+                            break;
+                    }
+                } else {
+                    // prevent malicious DoS: only cancel if the failed session strictly matches the DB record
+                    if ($token_to_use === (is_array($session_token) ? ($session_token[0] ?? '') : $session_token)) {
+                        $this->update_order_status_cancelled($order, $is_webhook);
+                    } else {
+                        if ($is_webhook) { status_header(200); exit; }
+                    }
+                }
+            }
+        }
+
+        // return OK to Webhook
+        if ($is_webhook) {
+            status_header(200);
+            exit;
+        }
+
+        // fallback for empty GET redirects
         wp_redirect(site_url(), 301);
         exit;
     }
@@ -175,12 +229,27 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
      *
      * @since 1.0.0
      */
-    protected function update_order_status_failed($order_id)
+    protected function update_order_status_success($order, $is_webhook = false)
     {
-        $order = wc_get_order($order_id);
-        $order->update_status('wc-failed', __('Customer has cancelled the payment or not completed it ', 'thawani'));
-        wc_add_notice(__('You have cancelled the payment, maybe adding to cart or remove item', 'thawani'), 'notice');
-        wp_redirect(wc_get_cart_url());
+        // do not trigger hooks if already completed
+        if (!$order->has_status(array('processing', 'completed'))) {
+            // trigger native WooCommerce on-purchase stock reduction & emails
+            $order->payment_complete();
+
+            $target_status = !empty($this->order_status) ? $this->order_status : 'processing';
+            if (!$order->has_status($target_status)) {
+                $order->update_status('wc-'.$target_status, __('Payment Success via Thawani Webhook/Callback', 'thawani'));
+            } else {
+                $order->add_order_note(__('Payment Success via Thawani Webhook/Callback', 'thawani'));
+            }
+        }
+
+        if ($is_webhook) { 
+            status_header(200); 
+            exit; 
+        }
+
+        wp_redirect($this->get_return_url($order));
         exit;
     }
     /**
@@ -360,7 +429,8 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
                 'quantity' => $item->get_data()['quantity'],
             ];
         }
-        //do the shipping
+
+        // do the shipping
         $shipping_total = $order_items->get_data()['shipping_total'];
         if ((int) $this->format_price($shipping_total) > 0) {
             $products[] = [
@@ -424,38 +494,51 @@ class WC_Gateway_ThawaniGateway extends \WC_Payment_Gateway
     {
 
         global $woocommerce;
-        //create the order
+        // create the order
         $order = new \WC_Order($order_id);
 
-        $this->logger('📝Started payment process for order ' . $order->get_order_number());
-        $this->logger('📝Attempting to create Session');
+        $this->logger('Started payment process for order ' . $order->get_order_number());
+        $this->logger('Attempting to create Session');
 
         $payload = $this->payload($order);
         $get_response = $this->api->create_session($payload);
-        $response = json_decode($get_response['body']);
+        
+        // prevent fatal error if Thawani API is unresponsive
+        $response = !empty($get_response['body']) ? json_decode($get_response['body']) : null;
 
-        if (isset($response->success) && $response->success) {
-            $this->logger('📝Session Created Succesfully');
-            $this->logger('📝Session ID: ' . $response->data->session_id);
-            $this->logger('📝Response Code: ' . $response->code);
-            $this->logger('📝Response Description: ' . $response->description);
-            $this->logger('📝Success URL: ' . $this->api->get_redirect_uri($response->data->session_id));
-            $this->logger('📝Cancel URL: ' . $this->get_return_url($order));
+        if ($response && isset($response->success) && $response->success) {
+            $this->logger('Session Created Succesfully');
+            $this->logger('Session ID: ' . $response->data->session_id);
+            if (isset($response->code)) { $this->logger('Response Code: ' . $response->code); }
+            if (isset($response->description)) { $this->logger('Response Description: ' . $response->description); }
+            $this->logger('Success URL: ' . $this->api->get_redirect_uri($response->data->session_id));
+            $this->logger('Cancel URL: ' . $this->get_return_url($order));
 
             $this->set_session_token($response->data->session_id, $order->get_id());
+            
+            // allow user to be recovered smoothly during dropped-parameter browser redirect
+            if (isset(WC()->session)) {
+                WC()->session->set('thawani_pending_order_id', $order_id);
+            }
+
             $order->update_status('wc-pending', __('waiting to complete the payment ', 'thawani'));
             return array(
                 'result' => 'success',
                 'redirect' => $this->api->get_redirect_uri($response->data->session_id),
             );
         }
-        $this->logger('📝Session creation Failed');
-        $this->logger('📝Response log');
-        foreach($response as $key => $value) { 
-            $this->logger("📝Response {$key} : "  . $value);
+        
+        $this->logger('Session creation Failed');
+        $this->logger('Response log');
+        if (is_object($response) || is_array($response)) {
+            foreach($response as $key => $value) { 
+                $this->logger("Response {$key} : "  . (is_string($value) ? $value : json_encode($value)));
+            }
         }
-        $this->logger('📝Success URL: ' . $this->api->get_redirect_uri($response->data->session_id));
-        $this->logger('📝Cancel URL: ' . $this->get_return_url($order));
+        if ($response && isset($response->data->session_id)) {
+            $this->logger('Success URL: ' . $this->api->get_redirect_uri($response->data->session_id));
+        }
+        $this->logger('Cancel URL: ' . $this->get_return_url($order));
 
         $this->set_session_token('faild order', $order->get_id());
         $order->update_status('wc-failed', __('Failed to redirect to the payment gateway', 'thawani'));
